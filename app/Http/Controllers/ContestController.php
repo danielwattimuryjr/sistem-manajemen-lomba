@@ -18,7 +18,8 @@ class ContestController extends Controller
      */
     public function index()
     {
-        $contests = Contest::get(['title', 'description']);
+        $contests = Contest::orderBy('created_at', 'desc')
+                        ->get(['title', 'description', 'start_date', 'end_date', 'isActive', 'slug']);
 
         return Inertia::render('Contest/Index', compact('contests'));
     }
@@ -38,10 +39,10 @@ class ContestController extends Controller
     {
         DB::beginTransaction();
         try {
-            $contest = Contest::create($request->validated());
+            Contest::create($request->validated());
             DB::commit();
             
-            return to_route('perlombaan.index');
+            return to_route('perlombaan.index')->with('success', 'Perlombaan berhasil ditambahkan!');
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [
                 'file' => $th->getFile(),
@@ -58,7 +59,11 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        //
+        $contestDetails = $contest->only(['title', 'description', 'start_date', 'end_date', 'isActive', 'slug']);
+
+        return Inertia::render('Contest/Detail', [
+            'contest' => $contestDetails
+        ]);
     }
 
     /**
@@ -66,7 +71,11 @@ class ContestController extends Controller
      */
     public function edit(Contest $contest)
     {
-        //
+        $contestDetails = $contest->only(['title', 'description', 'start_date', 'end_date', 'isActive', 'slug']);
+
+        return Inertia::render('Contest/Edit',[
+           'contest' => $contestDetails
+        ]);
     }
 
     /**
@@ -74,7 +83,21 @@ class ContestController extends Controller
      */
     public function update(UpdateContestRequest $request, Contest $contest)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $contest->update($request->validated());
+            DB::commit();
+            
+            return to_route('perlombaan.index');
+        } catch (\Throwable $th) {
+            Log::error('Exception caught: ' . $th->getMessage(), [
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            DB::rollBack();
+        }
     }
 
     /**
@@ -82,6 +105,21 @@ class ContestController extends Controller
      */
     public function destroy(Contest $contest)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $contest->delete();
+
+            DB::commit();
+
+            return to_route('perlombaan.index')->with('success', 'Perlombaan berhasil dihapus!');
+        } catch (\Throwable $th) {
+            Log::error('Exception caught: ' . $th->getMessage(), [
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            DB::rollBack();
+        }
     }
 }

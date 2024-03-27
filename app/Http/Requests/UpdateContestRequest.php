@@ -11,6 +11,12 @@ class UpdateContestRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $user = auth()->user();
+        
+        if ($user && $user->hasRole('ADMIN')) {
+            return true;
+        }
+
         return false;
     }
 

@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('contests', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
+            $table->longText('description');
             $table->string('start_date');
             $table->string('end_date');
+            $table->boolean('isActive')->default(true);
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

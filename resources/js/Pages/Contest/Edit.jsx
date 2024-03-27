@@ -14,7 +14,7 @@ import {
 import { CircleX, Save } from "lucide-react";
 import slugify from "react-slugify";
 
-const ContestCreatePage = () => {
+const ContestEditPage = ({ contest }) => {
     const formatDate = (date, format) => {
         const map = {
             dd: date.getDate().toString().padStart(2, "0"),
@@ -25,26 +25,28 @@ const ContestCreatePage = () => {
         return format.replace(/dd|MMMM|yyyy/gi, (matched) => map[matched]);
     };
 
-    const { data, setData, post, processing, errors } = useForm({
-        title: "",
-        description: "",
-        slug: "",
-        isActive: 1,
-        end_date: formatDate(new Date(), "dd MMMM yyyy"),
-        start_date: formatDate(new Date(), "dd MMMM yyyy"),
+    const { data, setData, put, processing, errors } = useForm({
+        title: contest.title,
+        description: contest.description,
+        slug: contest.slug,
+        isActive: contest.isActive,
+        end_date: formatDate(new Date(contest.end_date), "dd MMMM yyyy"),
+        start_date: formatDate(new Date(contest.start_date), "dd MMMM yyyy"),
     });
 
-    const storeData = (e) => {
+    const updateData = (e) => {
         e.preventDefault();
-        post(route("perlombaan.store"));
+        put(route("perlombaan.update", contest.slug));
     };
+
+    console.log(data);
 
     return (
         <AdminLayout>
-            <PageTitle title={"Tambah Perlombaan"} />
+            <PageTitle title={"Update Data Perlombaan"} />
 
             <Card>
-                <form className="flex flex-col gap-4" onSubmit={storeData}>
+                <form className="flex flex-col gap-4" onSubmit={updateData}>
                     {/* Title Perlombaan */}
                     <div>
                         <div className="mb-2 block">
@@ -178,4 +180,4 @@ const ContestCreatePage = () => {
     );
 };
 
-export default ContestCreatePage;
+export default ContestEditPage;

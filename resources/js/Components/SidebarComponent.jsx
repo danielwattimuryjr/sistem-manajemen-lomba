@@ -23,20 +23,6 @@ const Sidebar = () => {
                     >
                         Perlombaan
                     </FlowbiteSidebar.Item>
-                    <FlowbiteSidebar.Item
-                        href={"#"}
-                        icon={Package}
-                        active={route().current("*products*")}
-                    >
-                        Products
-                    </FlowbiteSidebar.Item>
-                    <FlowbiteSidebar.Item
-                        href="#"
-                        icon={PiggyBank}
-                        active={route().current("*orders*")}
-                    >
-                        Orders
-                    </FlowbiteSidebar.Item>
                 </FlowbiteSidebar.ItemGroup>
             </FlowbiteSidebar.Items>
         </FlowbiteSidebar>

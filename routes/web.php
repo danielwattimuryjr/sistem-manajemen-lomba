@@ -25,6 +25,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('perlombaan', ContestController::class);
+Route::prefix('/admin/')->middleware(['auth', 'role:ADMIN'])->name('perlombaan.')
+    ->group(function () {
+        Route::controller(ContestController::class)->group(function () {
+            Route::get('/contest', 'index')->name('index');
+            Route::get('/contest/edit/{contest:slug}', 'edit')->name('edit');
+            Route::get('/contest/create', 'create')->name('create');
+            Route::get('/contest/detail/{contest:slug}', 'show')->name('show');
+            Route::post('/contest/create', 'store')->name('store');
+            Route::patch('/contest/update/{contest:slug}', 'update')->name('update');
+            Route::delete('/contest/delete/{contest:slug}', 'destroy')->name('destroy');
+        });
+});
 
 require __DIR__.'/auth.php';

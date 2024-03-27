@@ -12,7 +12,13 @@ class StoreContestRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $user = auth()->user();
+        
+        if ($user && $user->hasRole('ADMIN')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -23,10 +29,11 @@ class StoreContestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
-            'description' => 'required|string',
+            'title' => 'required|string|unique:contests,title',
+            'description' => 'required',
             'start_date' => 'required|date_format:d F Y',
-            'end_date' => ['required','date_format:d F Y', new EndDateAfterOrEqualStartDate($this->input('start_date'))]
+            'end_date' => ['required','date_format:d F Y', new EndDateAfterOrEqualStartDate($this->input('start_date'))],
+            'slug' => 'required|unique:contests,slug'
         ];
     }
 
@@ -35,6 +42,7 @@ class StoreContestRequest extends FormRequest
         return [
             'title.required' => 'Judul acara harus diisi',
             'title.string' => 'Judul acara harus berupa teks',
+            'title.unique' => 'Judul perlombaan sudah digunakan sebelumnya. Harap pilih judul yang berbeda.',
             'description.required' => 'Deskripsi acara harus diisi',
             'description.string' => 'Deskripsi acara harus berupa teks',
             'start_date.required' => 'Tanggal mulai acara harus diisi',
