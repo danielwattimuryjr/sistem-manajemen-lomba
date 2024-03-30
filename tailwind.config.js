@@ -24,6 +24,6 @@ export default {
         forms,
         require("flowbite/plugin"),
         require("@tailwindcss/typography"),
-        require("tailwindcss-animated"),
+        require("tailwindcss-animate"),
     ],
 };
