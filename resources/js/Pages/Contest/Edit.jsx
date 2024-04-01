@@ -14,7 +14,7 @@ import {
 import { CircleX, Save } from "lucide-react";
 import slugify from "react-slugify";
 
-const ContestEditPage = ({ contest }) => {
+const ContestEditPage = ({ contest: { data: contestData } }) => {
     const formatDate = (date, format) => {
         const map = {
             dd: date.getDate().toString().padStart(2, "0"),
@@ -26,17 +26,20 @@ const ContestEditPage = ({ contest }) => {
     };
 
     const { data, setData, put, processing, errors } = useForm({
-        title: contest.title,
-        description: contest.description,
-        slug: contest.slug,
-        isActive: contest.isActive,
-        end_date: formatDate(new Date(contest.end_date), "dd MMMM yyyy"),
-        start_date: formatDate(new Date(contest.start_date), "dd MMMM yyyy"),
+        title: contestData.title,
+        description: contestData.description,
+        slug: contestData.slug,
+        isActive: contestData.isActive,
+        end_date: formatDate(new Date(contestData.end_date), "dd MMMM yyyy"),
+        start_date: formatDate(
+            new Date(contestData.start_date),
+            "dd MMMM yyyy",
+        ),
     });
 
     const updateData = (e) => {
         e.preventDefault();
-        put(route("perlombaan.update", contest.slug));
+        put(route("perlombaan.update", contestData.slug));
     };
 
     console.log(data);
@@ -93,7 +96,7 @@ const ContestEditPage = ({ contest }) => {
                         />
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-2">
+                    <div className="flex flex-col gap-2 md:flex-row">
                         {/* Start Date */}
                         <div className="flex-1">
                             <div className="mb-2 block">
@@ -111,7 +114,7 @@ const ContestEditPage = ({ contest }) => {
                                     const selectedDate = new Date(e);
                                     const formattedDate = formatDate(
                                         selectedDate,
-                                        "dd MMMM yyyy"
+                                        "dd MMMM yyyy",
                                     );
 
                                     setData("start_date", formattedDate);
@@ -139,7 +142,7 @@ const ContestEditPage = ({ contest }) => {
                                     const selectedDate = new Date(e);
                                     const formattedDate = formatDate(
                                         selectedDate,
-                                        "dd MMMM yyyy"
+                                        "dd MMMM yyyy",
                                     );
 
                                     setData("end_date", formattedDate);
@@ -171,7 +174,7 @@ const ContestEditPage = ({ contest }) => {
                         <CircleX className="mr-2 h-5 w-5" />
                         Clear
                     </Button>
-                    <div className="flex flex-col md:flex-row gap-2">
+                    <div className="flex flex-col gap-2 md:flex-row">
                         {/* Submit Button */}
                     </div>
                 </form>

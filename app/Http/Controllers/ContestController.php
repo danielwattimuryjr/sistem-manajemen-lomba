@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContestRequest;
 use App\Http\Requests\UpdateContestRequest;
+use App\Http\Resources\ContestResource;
 use App\Models\Contest;
 use Illuminate\Support\Facades\{
     DB,
@@ -18,10 +19,12 @@ class ContestController extends Controller
      */
     public function index()
     {
-        $contests = Contest::orderBy('created_at', 'desc')
-                        ->get(['title', 'description', 'start_date', 'end_date', 'isActive', 'slug']);
+        $query = Contest::query();
+        $query->orderByDesc("created_at");
 
-        return Inertia::render('Contest/Index', compact('contests'));
+        return Inertia::render('Contest/Index', [
+            'contests' => ContestResource::collection($query->get()),
+        ]);
     }
 
     /**
@@ -41,7 +44,7 @@ class ContestController extends Controller
         try {
             Contest::create($request->validated());
             DB::commit();
-            
+
             return to_route('perlombaan.index')->with('success', 'Perlombaan berhasil ditambahkan!');
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [
@@ -59,10 +62,8 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        $contestDetails = $contest->only(['title', 'description', 'start_date', 'end_date', 'isActive', 'slug']);
-
         return Inertia::render('Contest/Detail', [
-            'contest' => $contestDetails
+            'contest' => new ContestResource($contest)
         ]);
     }
 
@@ -71,10 +72,8 @@ class ContestController extends Controller
      */
     public function edit(Contest $contest)
     {
-        $contestDetails = $contest->only(['title', 'description', 'start_date', 'end_date', 'isActive', 'slug']);
-
-        return Inertia::render('Contest/Edit',[
-           'contest' => $contestDetails
+       return Inertia::render('Contest/Edit',[
+            'contest' => new ContestResource($contest)
         ]);
     }
 
@@ -87,7 +86,7 @@ class ContestController extends Controller
         try {
             $contest->update($request->validated());
             DB::commit();
-            
+
             return to_route('perlombaan.index');
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [

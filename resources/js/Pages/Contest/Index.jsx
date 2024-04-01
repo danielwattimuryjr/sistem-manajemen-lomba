@@ -15,17 +15,17 @@ import { useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
 
-const ContestIndexPage = ({ contests }) => {
+const ContestIndexPage = ({ contests: { data } }) => {
     // State will used
     const [openModal, setOpenModal] = useState(false);
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const { delete: destroy, processing, errors } = useForm();
 
-    const filteredItems = contests.filter(
+    const filteredItems = data.filter(
         (item) =>
             item.title &&
-            item.title.toLowerCase().includes(filterText.toLowerCase())
+            item.title.toLowerCase().includes(filterText.toLowerCase()),
     );
 
     const deleteContest = (id) => {
@@ -90,7 +90,7 @@ const ContestIndexPage = ({ contests }) => {
             cell: (row) => {
                 return (
                     <>
-                        <div className="flex flex-col lg:flex-row gap-2">
+                        <div className="flex flex-col gap-2 lg:flex-row">
                             <Tooltip content="Lihat detail perlombaan">
                                 <Button
                                     color={"success"}

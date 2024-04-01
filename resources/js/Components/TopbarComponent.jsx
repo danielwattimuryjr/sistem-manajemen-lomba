@@ -8,7 +8,7 @@ const Topbar = () => {
 
     return (
         <header className="border-b">
-            <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
+            <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
                 <button onClick={() => sidebar.toggleShow()}>
                     {sidebar.isOpen ? (
                         <X className="rotate-0 scale-100 transition-all dark:-rotate-90" />
@@ -25,11 +25,7 @@ const Topbar = () => {
                     Panel
                 </Link>
 
-                <div className="flex flex-row gap-2">
-                    <DarkThemeToggle />
-
-                    <Avatar placeholderInitials="DW" />
-                </div>
+                <Avatar placeholderInitials="DW" />
             </div>
         </header>
     );

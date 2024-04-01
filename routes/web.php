@@ -15,7 +15,15 @@ Route::get('/', function () {
     return Inertia::render('LandingPage');
 })->name('landing.page');
 
-Route::get('/perlombaan', [GuestController::class, 'getActivePerlombaan'])->name('public.perlombaan.all');
+Route::prefix('/perlombaan/')->controller(GuestController::class)
+    ->name('public.perlombaan.')->group(function () {
+
+        Route::get('/',  'getActivePerlombaan')->name('all');
+        Route::get('/{contest:slug}',  'getPerlombaanDetail')->name('detail');
+        Route::middleware(['auth'])->group(function () {
+            Route::get('/{contest:slug}/pendaftaran', 'openFormPendaftaran')->name('form-daftar');
+        });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

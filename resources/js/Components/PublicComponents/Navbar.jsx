@@ -1,22 +1,23 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import NavLink from "./NavLink";
-import { Button } from "flowbite-react";
-import { LogIn } from "lucide-react";
-import { Link } from "@inertiajs/react";
+import { Button, Tooltip } from "flowbite-react";
+import { LogIn, Power } from "lucide-react";
+import { Link, usePage } from "@inertiajs/react";
 
-const PublicNavbar = ({ auth }) => {
+const PublicNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
+    const { auth } = usePage().props;
 
     return (
         <nav className="relative bg-white shadow dark:bg-gray-800">
-            <div className="container px-6 py-4 mx-auto">
+            <div className="container mx-auto px-6 py-4">
                 <div className="lg:flex lg:items-center lg:justify-between">
                     <div className="flex items-center justify-between">
                         <a href="#">
                             <img
-                                className="w-auto h-6 sm:h-7"
+                                className="h-6 w-auto sm:h-7"
                                 src="https://merakiui.com/images/full-logo.svg"
                                 alt=""
                             />
@@ -26,13 +27,13 @@ const PublicNavbar = ({ auth }) => {
                             <button
                                 onClick={toggle}
                                 type="button"
-                                className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
+                                className="text-gray-500 hover:text-gray-600 focus:text-gray-600 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400"
                                 aria-label="toggle menu"
                             >
                                 {isOpen ? (
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="w-6 h-6"
+                                        className="h-6 w-6"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -47,7 +48,7 @@ const PublicNavbar = ({ auth }) => {
                                 ) : (
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="w-6 h-6"
+                                        className="h-6 w-6"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -66,13 +67,13 @@ const PublicNavbar = ({ auth }) => {
 
                     <div
                         className={cn(
-                            "absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center",
+                            "absolute inset-x-0 z-20 w-full bg-white px-6 py-4 transition-all duration-300 ease-in-out dark:bg-gray-800 lg:relative lg:top-0 lg:mt-0 lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:bg-transparent lg:p-0 lg:opacity-100",
                             isOpen
                                 ? "translate-x-0 opacity-100 "
-                                : "opacity-0 -translate-x-full"
+                                : "-translate-x-full opacity-0",
                         )}
                     >
-                        <div className="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8">
+                        <div className="-mx-6 flex flex-col lg:mx-8 lg:flex-row lg:items-center">
                             <NavLink href="/">Beranda</NavLink>
 
                             <NavLink href={route("public.perlombaan.all")}>
@@ -82,27 +83,56 @@ const PublicNavbar = ({ auth }) => {
                             <NavLink href="#">Kontak</NavLink>
 
                             <NavLink href="#">FAQ</NavLink>
+
+                            {auth.user && (
+                                <div className="lg:hidden">
+                                    <NavLink
+                                        href={route("logout")}
+                                        method="post"
+                                        // as="button"
+                                        type="button"
+                                    >
+                                        Logout
+                                    </NavLink>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="flex items-center mt-4 lg:mt-0">
-                            {auth ? (
-                                <button
-                                    type="button"
-                                    className="flex items-center focus:outline-none"
-                                    aria-label="toggle profile dropdown"
-                                >
-                                    <div className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                                            className="object-cover w-full h-full"
-                                            alt="avatar"
-                                        />
-                                    </div>
+                        <div className="mt-4 flex items-center lg:mt-0">
+                            {auth.user ? (
+                                <>
+                                    <button
+                                        type="button"
+                                        className="flex items-center focus:outline-none"
+                                        aria-label="toggle profile dropdown"
+                                    >
+                                        <div className="h-8 w-8 overflow-hidden rounded-full border-2 border-gray-400">
+                                            <img
+                                                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
+                                                className="h-full w-full object-cover"
+                                                alt="avatar"
+                                            />
+                                        </div>
 
-                                    <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                                        {(auth && auth.user.name) || "Username"}
-                                    </h3>
-                                </button>
+                                        <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
+                                            {(auth && auth.user.name) ||
+                                                "Username"}
+                                        </h3>
+                                    </button>
+
+                                    <Tooltip content="Sign Out">
+                                        <button
+                                            class="mx-4 hidden transform text-gray-600 transition-colors duration-300 hover:text-gray-700 focus:text-gray-700 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400 lg:block"
+                                            aria-label="show notifications"
+                                        >
+                                            <Power
+                                                className="h-6 w-6 text-red-600"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            />
+                                        </button>
+                                    </Tooltip>
+                                </>
                             ) : (
                                 <Button
                                     color="blue"
