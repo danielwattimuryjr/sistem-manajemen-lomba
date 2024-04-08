@@ -8,3 +8,8 @@
     border-radius: 0 0 5px 5px;
     min-height: 100px;
 }
+
+.ProseMirror p:empty::before {
+    content: "";
+    display: inline-block;
+}

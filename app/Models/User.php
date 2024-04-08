@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +13,8 @@ use Laratrust\Traits\HasRolesAndPermissions;
 
 class User extends Authenticatable implements LaratrustUser
 {
-    use HasFactory, Notifiable, HasRolesAndPermissions;
+    use HasFactory, Notifiable, HasRolesAndPermissions, Uuid;
+
 
     /**
      * The attributes that are mass assignable.
@@ -45,5 +48,10 @@ class User extends Authenticatable implements LaratrustUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public function userProfile() {
+        return $this->hasOne(UserProfile::class);
     }
 }

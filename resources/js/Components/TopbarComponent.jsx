@@ -1,7 +1,7 @@
-import { useSidebar } from "@/libs/zustand";
+import { useSidebar } from "@/lib/zustand";
 import { Link } from "@inertiajs/react";
-import { Avatar, DarkThemeToggle } from "flowbite-react";
-import { Menu, X } from "lucide-react";
+import { Avatar, DarkThemeToggle, Tooltip } from "flowbite-react";
+import { Menu, Power, X } from "lucide-react";
 
 const Topbar = () => {
     const sidebar = useSidebar();
@@ -25,7 +25,21 @@ const Topbar = () => {
                     Panel
                 </Link>
 
-                <Avatar placeholderInitials="DW" />
+                <Tooltip content="Sign Out">
+                    <Link
+                        as="button"
+                        type="button"
+                        method="post"
+                        className="mx-4 hidden transform text-gray-600 transition-colors duration-300 hover:text-gray-700 focus:text-gray-700 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400 lg:block"
+                        href={route("logout")}
+                    >
+                        <Power
+                            className="h-6 w-6 text-red-600"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        />
+                    </Link>
+                </Tooltip>
             </div>
         </header>
     );

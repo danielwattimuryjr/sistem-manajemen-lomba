@@ -1,18 +1,22 @@
-import { useSidebar } from "@/libs/zustand";
+import { useSidebar } from "@/lib/zustand";
+import { usePage } from "@inertiajs/react";
 import { Sidebar as FlowbiteSidebar } from "flowbite-react";
-import { CircleGauge, Medal, Package, PiggyBank, Users } from "lucide-react";
+import { CircleGauge, Medal, Users } from "lucide-react";
 
 const Sidebar = () => {
     const sidebar = useSidebar();
+    const {
+        auth: { user },
+    } = usePage().props;
 
     return (
         <FlowbiteSidebar className={!sidebar.isOpen && "hidden"}>
             <FlowbiteSidebar.Items>
                 <FlowbiteSidebar.ItemGroup>
                     <FlowbiteSidebar.Item
-                        href="#"
+                        href={route("admin.dashboard")}
                         icon={CircleGauge}
-                        active={route().current("dashboard")}
+                        active={route().current("admin.dashboard")}
                     >
                         Home
                     </FlowbiteSidebar.Item>
@@ -23,6 +27,15 @@ const Sidebar = () => {
                     >
                         Perlombaan
                     </FlowbiteSidebar.Item>
+                    {user.role == "SUPERADMIN" && (
+                        <FlowbiteSidebar.Item
+                            href={route("admin-management.index")}
+                            icon={Users}
+                            active={route().current("*admin-management*")}
+                        >
+                            Manage Admin
+                        </FlowbiteSidebar.Item>
+                    )}
                 </FlowbiteSidebar.ItemGroup>
             </FlowbiteSidebar.Items>
         </FlowbiteSidebar>

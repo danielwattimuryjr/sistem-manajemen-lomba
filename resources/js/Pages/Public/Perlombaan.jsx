@@ -24,16 +24,13 @@ const PerlombaanAll = ({ contests: { data }, queryParams = null }) => {
     return (
         <PublicLayout>
             <Head title="Perlombaan" />
-            <div className="mx-auto max-w-lg text-center">
-                <h2 className="text-3xl font-bold text-black sm:text-4xl">
-                    Daftar Perlombaan
-                </h2>
-
-                <p className="mt-4 text-black">
-                    Lihatlah seluruh perlombaan yang ada, dan segeralah
-                    daftarkan dirimu!
-                </p>
-            </div>
+            <h2 class="mb-4 text-center text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                Daftar Perlombaan
+            </h2>
+            <p class="mb-8 text-center font-light text-gray-500 dark:text-gray-400 sm:text-xl lg:mb-16">
+                Lihatlah seluruh perlombaan yang ada, dan segeralah daftarkan
+                dirimu!
+            </p>
 
             {/* Search */}
             <Searchbar
@@ -43,11 +40,26 @@ const PerlombaanAll = ({ contests: { data }, queryParams = null }) => {
             />
 
             {/* Get All Perlombaan */}
-            <ul className="mt-8 grid gap-4 sm:grid-cols-2 md:gap-5 ">
-                {data.map((d) => {
-                    return <ContestCard contest={d} />;
-                })}
-            </ul>
+            {data.length === 0 ? (
+                <div className="mt-8 flex items-center justify-center p-10">
+                    {queryParams["title"] ? (
+                        <p className="text-center">
+                            Perlombaan dengan nama <b>{queryParams["title"]}</b>{" "}
+                            tidak ditemukan. 😊
+                        </p>
+                    ) : (
+                        <p className="text-center">
+                            Data Perlombaan masih kosong. Harap bersabar 😊
+                        </p>
+                    )}
+                </div>
+            ) : (
+                <ul className="mt-8 grid gap-4 sm:grid-cols-2 md:gap-5 ">
+                    {data.map((d) => {
+                        return <ContestCard contest={d} />;
+                    })}
+                </ul>
+            )}
         </PublicLayout>
     );
 };

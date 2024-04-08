@@ -12,7 +12,7 @@ const Searchbar = (props) => {
                 defaultValue={props.value}
                 onBlur={props.onChange}
                 onKeyDown={props.onKeyPress}
-                placeholder="Search by name"
+                placeholder="Cari Berdasarkan Nama"
             />
         </div>
     );

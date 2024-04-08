@@ -16,18 +16,27 @@ import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
 const ContestIndexPage = ({ contests: { data } }) => {
-    // State will used
+    // State untuk modal dan form
     const [openModal, setOpenModal] = useState(false);
     const [filterText, setFilterText] = useState("");
+
+    // State untuk data table
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const { delete: destroy, processing, errors } = useForm();
 
+    // Function untuk execute delete data admin
+    const deleteAdmin = (id) => {
+        destroy(route("admin-management.destroy", id));
+        setOpenModal(false);
+    };
+    // Funciton untuk handle filter by title
     const filteredItems = data.filter(
         (item) =>
             item.title &&
             item.title.toLowerCase().includes(filterText.toLowerCase()),
     );
 
+    // Function untuk handle delete contest
     const deleteContest = (id) => {
         destroy(route("perlombaan.destroy", id));
         setOpenModal(false);
@@ -50,6 +59,7 @@ const ContestIndexPage = ({ contests: { data } }) => {
         );
     }, [filterText, resetPaginationToggle]);
 
+    // Mendefinisikan Kolom untuk data table
     const ContestTableColumn = [
         {
             name: "Nama Perlombaan",
@@ -190,8 +200,8 @@ const ContestIndexPage = ({ contests: { data } }) => {
                 data={filteredItems}
                 subHeader
                 subHeaderComponent={subHeaderComponentMemo}
-                paginationResetDefaultPage={resetPaginationToggle}
                 pagination
+                paginationResetDefaultPage={resetPaginationToggle}
             />
         </AdminLayout>
     );

@@ -8,14 +8,16 @@ import { Link, usePage } from "@inertiajs/react";
 const PublicNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
-    const { auth } = usePage().props;
+    const {
+        auth: { user },
+    } = usePage().props;
 
     return (
         <nav className="relative bg-white shadow dark:bg-gray-800">
             <div className="container mx-auto px-6 py-4">
                 <div className="lg:flex lg:items-center lg:justify-between">
                     <div className="flex items-center justify-between">
-                        <a href="#">
+                        <a href="/">
                             <img
                                 className="h-6 w-auto sm:h-7"
                                 src="https://merakiui.com/images/full-logo.svg"
@@ -80,11 +82,11 @@ const PublicNavbar = () => {
                                 Perlombaan
                             </NavLink>
 
-                            <NavLink href="#">Kontak</NavLink>
+                            <NavLink href={route("faq")}>FAQ</NavLink>
 
-                            <NavLink href="#">FAQ</NavLink>
+                            <NavLink href={route("contact-us")}>Kontak</NavLink>
 
-                            {auth.user && (
+                            {user && (
                                 <div className="lg:hidden">
                                     <NavLink
                                         href={route("logout")}
@@ -99,38 +101,42 @@ const PublicNavbar = () => {
                         </div>
 
                         <div className="mt-4 flex items-center lg:mt-0">
-                            {auth.user ? (
+                            {user ? (
                                 <>
-                                    <button
-                                        type="button"
-                                        className="flex items-center focus:outline-none"
-                                        aria-label="toggle profile dropdown"
-                                    >
-                                        <div className="h-8 w-8 overflow-hidden rounded-full border-2 border-gray-400">
-                                            <img
-                                                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                                                className="h-full w-full object-cover"
-                                                alt="avatar"
-                                            />
-                                        </div>
+                                    <Tooltip content={"Profile"}>
+                                        <Link
+                                            type="button"
+                                            className="flex items-center focus:outline-none"
+                                            aria-label="toggle profile dropdown"
+                                            href={route("profile.edit")}
+                                        >
+                                            <div className="h-8 w-8 overflow-hidden rounded-full border-2 border-gray-400">
+                                                <img
+                                                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
+                                                    className="h-full w-full object-cover"
+                                                    alt="avatar"
+                                                />
+                                            </div>
 
-                                        <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                                            {(auth && auth.user.name) ||
-                                                "Username"}
-                                        </h3>
-                                    </button>
+                                            <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
+                                                {user.name}
+                                            </h3>
+                                        </Link>
+                                    </Tooltip>
 
                                     <Tooltip content="Sign Out">
-                                        <button
+                                        <Link
+                                            type="button"
+                                            method="post"
                                             class="mx-4 hidden transform text-gray-600 transition-colors duration-300 hover:text-gray-700 focus:text-gray-700 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400 lg:block"
-                                            aria-label="show notifications"
+                                            href={route("logout")}
                                         >
                                             <Power
                                                 className="h-6 w-6 text-red-600"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                             />
-                                        </button>
+                                        </Link>
                                     </Tooltip>
                                 </>
                             ) : (

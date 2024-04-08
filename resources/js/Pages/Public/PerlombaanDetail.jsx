@@ -3,7 +3,7 @@ import PublicLayout from "@/Layouts/PublicLayout";
 import { Head, Link } from "@inertiajs/react";
 import { Button, Card } from "flowbite-react";
 
-const PerlombaanDetail = ({ contest: { data } }) => {
+const PerlombaanDetail = ({ contest: { data }, auth: { user } }) => {
     return (
         <PublicLayout>
             <Head title={`Detail ${data.title}`} />
@@ -20,6 +20,7 @@ const PerlombaanDetail = ({ contest: { data } }) => {
 
             <Card className="mt-4">
                 <div
+                    className="ProseMirror"
                     dangerouslySetInnerHTML={{
                         __html: data.description,
                     }}

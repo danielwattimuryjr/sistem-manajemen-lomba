@@ -1,19 +1,26 @@
 <?php
 
+use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\ContestController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/', function () {
     return Inertia::render('LandingPage');
 })->name('landing.page');
+
+Route::get('/frequently-ask-question', function () {
+    return Inertia::render('Public/Faq');
+})->name('faq');
+
+Route::get('/contact-us', function () {
+    return Inertia::render('Public/Contact');
+})->name('contact-us');
 
 Route::prefix('/perlombaan/')->controller(GuestController::class)
     ->name('public.perlombaan.')->group(function () {
@@ -28,20 +35,46 @@ Route::prefix('/perlombaan/')->controller(GuestController::class)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('/admin/')->middleware(['auth', 'role:ADMIN'])->name('perlombaan.')
-    ->group(function () {
-        Route::controller(ContestController::class)->group(function () {
-            Route::get('/contest', 'index')->name('index');
-            Route::get('/contest/edit/{contest:slug}', 'edit')->name('edit');
-            Route::get('/contest/create', 'create')->name('create');
-            Route::get('/contest/detail/{contest:slug}', 'show')->name('show');
-            Route::post('/contest/create', 'store')->name('store');
-            Route::patch('/contest/update/{contest:slug}', 'update')->name('update');
-            Route::delete('/contest/delete/{contest:slug}', 'destroy')->name('destroy');
+Route::prefix('/admin/')->middleware('auth')->group(function () {
+        // ADMIN / SUPERADMIN Can access
+        Route::middleware('role:ADMIN|SUPERADMIN')->group(function () {
+
+            // Ke halaman dashboard milik admin
+            Route::get('/dashboard', function() {
+                return Inertia::render('Private/AdminDashboard');
+            })->name('admin.dashboard');
+
+            // Routes untuk manajemen lomba
+            Route::controller(ContestController::class)->prefix('/contest')
+                ->name('perlombaan.')->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/edit/{contest:slug}', 'edit')->name('edit');
+                    Route::get('/create', 'create')->name('create');
+                    Route::get('/detail/{contest:slug}', 'show')->name('show');
+                    Route::post('/create', 'store')->name('store');
+                    Route::patch('/update/{contest:slug}', 'update')->name('update');
+                    Route::delete('/delete/{contest:slug}', 'destroy')->name('destroy');
+                });
         });
+
+        // Only SUPERADMIN
+        Route::middleware('role:SUPERADMIN')->group(function () {
+            // Routes untuk manajemen Admin
+            Route::controller(AdminManagementController::class)->prefix('/manage-admin')
+                ->name('admin-management.')->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/edit/{user:uuid}', 'edit')->name('edit');
+                    Route::get('/create', 'create')->name('create');
+                    // Route::get('/detail/{user:uuid}', 'show')->name('show');
+                    Route::post('/create/', 'store')->name('store');
+                    Route::patch('/update/{user:uuid}', 'update')->name('update');
+                    Route::delete('/delete/{user:uuid}', 'destroy')->name('destroy');
+                });
+
+        });
+
 });
 
 require __DIR__.'/auth.php';

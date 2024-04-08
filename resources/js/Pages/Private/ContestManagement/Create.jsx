@@ -84,14 +84,15 @@ const ContestCreatePage = () => {
 
                         <Tiptap
                             content={data.description}
-                            onChange={(content) =>
-                                setData("description", content)
-                            }
+                            onChange={(content) => {
+                                setData("description", content);
+                                console.log(content);
+                            }}
                             error={errors?.description}
                         />
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-2">
+                    <div className="flex flex-col gap-2 md:flex-row">
                         {/* Start Date */}
                         <div className="flex-1">
                             <div className="mb-2 block">
@@ -109,7 +110,7 @@ const ContestCreatePage = () => {
                                     const selectedDate = new Date(e);
                                     const formattedDate = formatDate(
                                         selectedDate,
-                                        "dd MMMM yyyy"
+                                        "dd MMMM yyyy",
                                     );
 
                                     setData("start_date", formattedDate);
@@ -137,7 +138,7 @@ const ContestCreatePage = () => {
                                     const selectedDate = new Date(e);
                                     const formattedDate = formatDate(
                                         selectedDate,
-                                        "dd MMMM yyyy"
+                                        "dd MMMM yyyy",
                                     );
 
                                     setData("end_date", formattedDate);
@@ -169,9 +170,6 @@ const ContestCreatePage = () => {
                         <CircleX className="mr-2 h-5 w-5" />
                         Clear
                     </Button>
-                    <div className="flex flex-col md:flex-row gap-2">
-                        {/* Submit Button */}
-                    </div>
                 </form>
             </Card>
         </AdminLayout>

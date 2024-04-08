@@ -13,8 +13,8 @@ class StoreContestRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        
-        if ($user && $user->hasRole('ADMIN')) {
+
+        if ($user && $user->hasRole(['ADMIN', 'SUPERADMIN'])) {
             return true;
         }
 

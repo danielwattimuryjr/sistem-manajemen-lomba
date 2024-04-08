@@ -71,6 +71,7 @@ const ContestDetailPage = ({ contest: { data } }) => {
 
                 {open && (
                     <div
+                        className="ProseMirror"
                         dangerouslySetInnerHTML={{
                             __html: data.description,
                         }}

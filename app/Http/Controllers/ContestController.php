@@ -22,7 +22,7 @@ class ContestController extends Controller
         $query = Contest::query();
         $query->orderByDesc("created_at");
 
-        return Inertia::render('Contest/Index', [
+        return Inertia::render('Private/ContestManagement/Index', [
             'contests' => ContestResource::collection($query->get()),
         ]);
     }
@@ -32,7 +32,7 @@ class ContestController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Contest/Create');
+        return Inertia::render('Private/ContestManagement/Create');
     }
 
     /**
@@ -62,7 +62,7 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        return Inertia::render('Contest/Detail', [
+        return Inertia::render('Private/ContestManagement/Detail', [
             'contest' => new ContestResource($contest)
         ]);
     }
@@ -72,7 +72,7 @@ class ContestController extends Controller
      */
     public function edit(Contest $contest)
     {
-       return Inertia::render('Contest/Edit',[
+       return Inertia::render('Private/ContestManagement/Edit',[
             'contest' => new ContestResource($contest)
         ]);
     }

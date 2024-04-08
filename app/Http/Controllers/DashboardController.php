@@ -9,8 +9,8 @@ class DashboardController extends Controller
     public function index() {
         $user = auth()->user();
 
-        if ($user->hasRole("ADMIN")){
-            return to_route('perlombaan.index');
+        if ($user->hasRole(["ADMIN", "SUPERADMIN"])){
+            return to_route('admin.dashboard');
         } else {
             return to_route('landing.page');
         }

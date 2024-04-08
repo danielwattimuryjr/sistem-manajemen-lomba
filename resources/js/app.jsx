@@ -7,7 +7,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { DarkThemeToggle, Flowbite } from "flowbite-react";
 
 createInertiaApp({
-    title: (title) => `${title}`,
+    title: (title) => `Bajra Sandhi | ${title}`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,
