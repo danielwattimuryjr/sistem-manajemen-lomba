@@ -15,7 +15,6 @@ class AdminManagementController extends Controller
     public function index() {
         $query = User::query();
         $query->whereHasRole('ADMIN')->orderByDesc('created_at');
-        $query->with('userProfile');
 
         return Inertia::render('Private/AdminManagement/Index', [
             'users' => AdminResource::collection($query->get()),
@@ -41,6 +40,8 @@ class AdminManagementController extends Controller
                 'line' => $th->getLine(),
                 'trace' => $th->getTraceAsString(),
             ]);
+
+            return back()->with('error', "Gagal menambahkan data Admin baru.");
         }
     }
 
@@ -66,6 +67,8 @@ class AdminManagementController extends Controller
                 'line' => $th->getLine(),
                 'trace' => $th->getTraceAsString(),
             ]);
+
+            return back()->with('error', "Gagal mengupdate data ADMIN.");
         }
     }
 
@@ -85,6 +88,8 @@ class AdminManagementController extends Controller
             ]);
 
             DB::rollBack();
+
+            return back()->with('error', "Gagal menghapus data Admin");
         }
     }
 }

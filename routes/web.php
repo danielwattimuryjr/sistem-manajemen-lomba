@@ -33,8 +33,8 @@ Route::prefix('/perlombaan/')->controller(GuestController::class)
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/profile', [ProfileController::class, 'saveData'])->name('profile.update');
 });
 
 Route::prefix('/admin/')->middleware('auth')->group(function () {

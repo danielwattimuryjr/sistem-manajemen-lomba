@@ -2,38 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Enum\GenderEnum;
+use App\Http\Requests\UpdateUserProfileRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): Response
-    {
-        return Inertia::render('Private/UserProfile/Edit');
+    public function index () {
+        $genders = [
+            'male' => GenderEnum::MALE,
+            'female' => GenderEnum::FEMALE,
+        ];
+
+        return inertia()->render('Private/ProfilePage', [
+            'availableGenders' => $genders,
+            'queryParams' => request()->query() ?: null
+        ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function saveData(UpdateUserProfileRequest $request) {
+        $user = auth()->user();
+        DB::beginTransaction();
+        try{
+            $user->update($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+            DB::commit();
+
+            return to_route('profile.index')->with('success', "Berhasil mengubah profile.");
+        } catch(\Throwable $th) {
+            DB::rollBack();
+            Log::error('Exception caught: ' . $th->getMessage(), [
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            return back()->with('error', "Gagal mengupdate data profil.");
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
     }
 }

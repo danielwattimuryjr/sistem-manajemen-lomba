@@ -54,6 +54,8 @@ class ContestController extends Controller
             ]);
 
             DB::rollBack();
+
+            return back()->with('error', "Gagal menambahkan data perlombaan");
         }
     }
 
@@ -96,6 +98,8 @@ class ContestController extends Controller
             ]);
 
             DB::rollBack();
+
+            return back()->with('error', "Gagal mengupdate data perlombaan");
         }
     }
 
@@ -119,6 +123,8 @@ class ContestController extends Controller
             ]);
 
             DB::rollBack();
+
+            return back()->with('error', "Gagal menghapus data perlombaan");
         }
     }
 }

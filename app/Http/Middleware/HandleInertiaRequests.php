@@ -31,16 +31,21 @@ class HandleInertiaRequests extends Middleware
     {
         $user = auth()->user();
 
-        if ($user) {
-            $role = $user->roles->first()->name;
+    if ($user) {
+        $role = $user->roles->first()->name;
 
-            $user = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $role
-            ];
-        }
+        $user = [
+            'full_name' => $user->full_name,
+            'email' => $user->email,
+            'nik' => $user->nik,
+            'd_o_b' => $user->d_o_b,
+            'address' => $user->address,
+            'phone_number' => $user->phone_number,
+            'gender' => $user->gender,
+            'role' => $role,
+        ];
+    }
+
 
         return [
             ...parent::share($request),
@@ -50,6 +55,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'success' => fn () => $request->session()->get('success'),
+                'error'   => fn () => $request->session()->get('error'),
             ],
         ];
     }

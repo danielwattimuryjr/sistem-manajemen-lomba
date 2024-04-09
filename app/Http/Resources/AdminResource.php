@@ -16,9 +16,8 @@ class AdminResource extends JsonResource
     {
         return [
             'uuid' => $this->uuid,
-            'name' => $this->name,
+            'full_name' => $this->full_name,
             'email' => $this->email,
-            'profile_data' => new ProfileResource($this->userProfile)
         ];
     }
 }

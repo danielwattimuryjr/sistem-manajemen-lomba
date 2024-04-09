@@ -9,7 +9,7 @@ import { useState } from "react";
 const CreateAdminPage = () => {
     const [visible, setVisible] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
-        name: "",
+        full_name: "",
         email: "",
         password: "",
     });
@@ -34,7 +34,7 @@ const CreateAdminPage = () => {
                         <div className="mb-2 block">
                             <Label
                                 htmlFor="name-admin"
-                                color={errors?.name && "failure"}
+                                color={errors?.full_name && "failure"}
                                 value="Name"
                             />
                         </div>
@@ -43,10 +43,14 @@ const CreateAdminPage = () => {
                             id="name-admin"
                             type="text"
                             placeholder="Cth. Admin A"
-                            value={data.name}
-                            onChange={(e) => setData("name", e.target.value)}
-                            color={errors?.name && "failure"}
-                            helperText={errors?.name && errors.name}
+                            value={data.full?.full_name}
+                            onChange={(e) =>
+                                setData("full_name", e.target.value)
+                            }
+                            color={errors?.full_name && "failure"}
+                            helperText={
+                                errors?.full_name && errors.full?.full_name
+                            }
                         />
                     </div>
 

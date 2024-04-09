@@ -1,11 +1,13 @@
+import ErrorToast from "@/Components/ErrorToast";
 import Sidebar from "@/Components/SidebarComponent";
+import SuccessToast from "@/Components/SuccessToast";
 import Topbar from "@/Components/TopbarComponent";
 import { Head, usePage } from "@inertiajs/react";
-import { Toast } from "flowbite-react";
-import { BadgeCheck } from "lucide-react";
 
 const AdminLayout = ({ children }) => {
-    const { flash } = usePage().props;
+    const {
+        flash: { success, error },
+    } = usePage().props;
 
     return (
         <>
@@ -28,17 +30,8 @@ const AdminLayout = ({ children }) => {
                     </main>
                 </div>
 
-                {flash?.success && (
-                    <Toast className="absolute bottom-0 right-0 shadow-xl duration-500 animate-in slide-in-from-bottom md:bottom-5 md:right-5">
-                        <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
-                            <BadgeCheck className="h-5 w-5" />
-                        </div>
-                        <div className="ml-3 text-sm font-normal">
-                            {flash.success}
-                        </div>
-                        <Toast.Toggle />
-                    </Toast>
-                )}
+                {success && <SuccessToast message={success} />}
+                {error && <ErrorToast message={error} />}
             </div>
         </>
     );

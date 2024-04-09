@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enum\GenderEnum;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,9 +23,15 @@ class User extends Authenticatable implements LaratrustUser
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'full_name',
         'email',
         'password',
+        'nik',
+        'full_name',
+        'd_o_b',
+        'address',
+        'phone_number',
+        'gender'
     ];
 
     /**
@@ -47,11 +54,7 @@ class User extends Authenticatable implements LaratrustUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'gender' => GenderEnum::class
         ];
-    }
-
-
-    public function userProfile() {
-        return $this->hasOne(UserProfile::class);
     }
 }

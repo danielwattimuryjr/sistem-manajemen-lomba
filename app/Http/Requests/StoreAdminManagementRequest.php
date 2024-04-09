@@ -30,8 +30,8 @@ class StoreAdminManagementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', Password::defaults()],
         ];
     }
@@ -39,13 +39,12 @@ class StoreAdminManagementRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Kolom nama harus diisi.',
-            'name.string' => 'Kolom nama harus berupa teks.',
-            'name.max' => 'Kolom nama tidak boleh lebih dari 255 karakter.',
+            'full_name.required' => 'Kolom nama harus diisi.',
+            'full_name.string' => 'Kolom nama harus berupa teks.',
+            'full_name.max' => 'Kolom nama tidak boleh lebih dari 255 karakter.',
 
             'email.required' => 'Kolom email harus diisi.',
             'email.string' => 'Kolom email harus berupa teks.',
-            'email.lowercase' => 'Kolom email harus dalam huruf kecil.',
             'email.email' => 'Format email tidak valid.',
             'email.max' => 'Kolom email tidak boleh lebih dari 255 karakter.',
             'email.unique' => 'Email sudah digunakan.',

@@ -108,7 +108,7 @@ const PublicNavbar = () => {
                                             type="button"
                                             className="flex items-center focus:outline-none"
                                             aria-label="toggle profile dropdown"
-                                            href={route("profile.edit")}
+                                            href={route("profile.index")}
                                         >
                                             <div className="h-8 w-8 overflow-hidden rounded-full border-2 border-gray-400">
                                                 <img
@@ -119,7 +119,7 @@ const PublicNavbar = () => {
                                             </div>
 
                                             <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                                                {user.name}
+                                                {user.full_name}
                                             </h3>
                                         </Link>
                                     </Tooltip>
@@ -128,7 +128,7 @@ const PublicNavbar = () => {
                                         <Link
                                             type="button"
                                             method="post"
-                                            class="mx-4 hidden transform text-gray-600 transition-colors duration-300 hover:text-gray-700 focus:text-gray-700 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400 lg:block"
+                                            className="mx-4 hidden transform text-gray-600 transition-colors duration-300 hover:text-gray-700 focus:text-gray-700 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400 lg:block"
                                             href={route("logout")}
                                         >
                                             <Power

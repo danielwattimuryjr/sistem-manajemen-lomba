@@ -1,12 +1,14 @@
 import PageTitle from "@/Components/PageHeader";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { Button, Card, Label, TextInput } from "flowbite-react";
-import { CircleX, FilePenLine, Save } from "lucide-react";
+import { CircleX, FilePenLine } from "lucide-react";
 
 const EditAdminPage = ({ user: { data: userData } }) => {
+    const page = usePage().props;
+    console.log(page);
     const { data, setData, patch, processing, errors } = useForm({
-        name: userData.name,
+        full_name: userData.full_name,
         email: userData.email,
     });
 
@@ -26,7 +28,7 @@ const EditAdminPage = ({ user: { data: userData } }) => {
                         <div className="mb-2 block">
                             <Label
                                 htmlFor="name-admin"
-                                color={errors?.name && "failure"}
+                                color={errors?.full_name && "failure"}
                                 value="Name"
                             />
                         </div>
@@ -35,10 +37,12 @@ const EditAdminPage = ({ user: { data: userData } }) => {
                             id="name-admin"
                             type="text"
                             placeholder="Cth. Admin A"
-                            value={data.name}
-                            onChange={(e) => setData("name", e.target.value)}
-                            color={errors?.name && "failure"}
-                            helperText={errors?.name && errors.name}
+                            value={data.full_name}
+                            onChange={(e) =>
+                                setData("full_name", e.target.value)
+                            }
+                            color={errors?.full_name && "failure"}
+                            helperText={errors?.full_name && errors.full_name}
                         />
                     </div>
 

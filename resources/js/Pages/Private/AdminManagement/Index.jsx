@@ -19,8 +19,8 @@ const ManageAdminPage = ({ users: { data } }) => {
     // Function untuk handle filter Admin by name
     const filteredItems = data.filter(
         (item) =>
-            item.name &&
-            item.name.toLowerCase().includes(filterText.toLowerCase()),
+            item.full_name &&
+            item.full_name.toLowerCase().includes(filterText.toLowerCase()),
     );
 
     // Function untuk execute delete data admin
@@ -50,7 +50,7 @@ const ManageAdminPage = ({ users: { data } }) => {
     const AdminTableColumn = [
         {
             name: "Nama",
-            selector: (row) => row.name,
+            selector: (row) => row.full_name,
             sortable: true,
         },
 
