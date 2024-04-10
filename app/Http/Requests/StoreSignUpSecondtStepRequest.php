@@ -6,7 +6,7 @@ use App\Enum\GenderEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUserProfileRequest extends FormRequest
+class StoreSignUpSecondtStepRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,11 +15,9 @@ class UpdateUserProfileRequest extends FormRequest
     {
         $user = auth()->user();
 
-        if ($user) {
-            return true;
-        }
+        if ($user) return false;
 
-        return false;
+        return true;
     }
 
     /**
@@ -29,8 +27,6 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = auth()->id();
-
         $genderValues = array_map(function (GenderEnum $gender) {
             return $gender->value;
         }, GenderEnum::cases());
@@ -40,7 +36,7 @@ class UpdateUserProfileRequest extends FormRequest
             'nik'           => [
                 'required',
                 'numeric',
-                Rule::unique('users','nik')->ignore($userId)
+                Rule::unique('users','nik')
             ],
             'd_o_b'           => 'required|date_format:d F Y',
             'address'       => 'required',

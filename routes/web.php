@@ -77,4 +77,8 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
 
 });
 
+Route::get('/test-login', function() {
+    return Inertia::render('Auth/SignIn');
+});
+
 require __DIR__.'/auth.php';

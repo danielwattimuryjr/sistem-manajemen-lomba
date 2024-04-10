@@ -1,37 +1,20 @@
 import PageTitle from "@/Components/PageHeader";
 import Tiptap from "@/Components/Tiptap";
 import AdminLayout from "@/Layouts/AdminLayout";
+import { formatDate } from "@/lib/utils";
 import { useForm } from "@inertiajs/react";
-import {
-    Button,
-    Card,
-    Datepicker,
-    Label,
-    TextInput,
-    Textarea,
-    Toast,
-} from "flowbite-react";
+import { Button, Card, Datepicker, Label, TextInput } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import slugify from "react-slugify";
 
 const ContestCreatePage = () => {
-    const formatDate = (date, format) => {
-        const map = {
-            dd: date.getDate().toString().padStart(2, "0"),
-            MMMM: date.toLocaleString("en-US", { month: "long" }),
-            yyyy: date.getFullYear(),
-        };
-
-        return format.replace(/dd|MMMM|yyyy/gi, (matched) => map[matched]);
-    };
-
     const { data, setData, post, processing, errors } = useForm({
         title: "",
         description: "",
         slug: "",
         isActive: 1,
-        end_date: formatDate(new Date(), "dd MMMM yyyy"),
-        start_date: formatDate(new Date(), "dd MMMM yyyy"),
+        end_date: formatDate(),
+        start_date: formatDate(),
     });
 
     const storeData = (e) => {
@@ -106,15 +89,9 @@ const ContestCreatePage = () => {
                                 id="start-date"
                                 color={errors?.start_date && "failure"}
                                 value={data.start_date}
-                                onSelectedDateChanged={(e) => {
-                                    const selectedDate = new Date(e);
-                                    const formattedDate = formatDate(
-                                        selectedDate,
-                                        "dd MMMM yyyy",
-                                    );
-
-                                    setData("start_date", formattedDate);
-                                }}
+                                onSelectedDateChanged={(e) =>
+                                    setData("start_date", formatDate(e))
+                                }
                                 helperText={
                                     errors?.start_date && errors.start_date
                                 }
@@ -134,15 +111,9 @@ const ContestCreatePage = () => {
                             <Datepicker
                                 id="end-date"
                                 value={data.end_date}
-                                onSelectedDateChanged={(e) => {
-                                    const selectedDate = new Date(e);
-                                    const formattedDate = formatDate(
-                                        selectedDate,
-                                        "dd MMMM yyyy",
-                                    );
-
-                                    setData("end_date", formattedDate);
-                                }}
+                                onSelectedDateChanged={(e) =>
+                                    setData("end_date", formatDate(e))
+                                }
                                 color={errors?.end_date && "failure"}
                                 helperText={errors?.end_date && errors.end_date}
                             />

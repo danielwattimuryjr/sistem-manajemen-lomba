@@ -42,7 +42,10 @@ class ContestController extends Controller
     {
         DB::beginTransaction();
         try {
-            Contest::create($request->validated());
+            $validated = $request->validated();
+            $validated['created_by'] = auth()->id();
+
+            Contest::create($validated);
             DB::commit();
 
             return to_route('perlombaan.index')->with('success', 'Perlombaan berhasil ditambahkan!');

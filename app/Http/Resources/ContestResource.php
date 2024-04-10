@@ -20,6 +20,7 @@ class ContestResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'isActive' => $this->isActive,
+            'quota' => $this->quota,
             'slug' => $this->slug,
         ];
     }

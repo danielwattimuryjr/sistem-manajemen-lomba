@@ -15,6 +15,12 @@ class Contest extends Model
         'start_date',
         'end_date',
         'isActive',
-        'slug'
+        'quota',
+        'slug',
+        'created_by'
     ];
+
+    public function createdBy() {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

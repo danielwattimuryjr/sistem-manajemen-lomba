@@ -1,14 +1,13 @@
-import { Label, TextInput } from "flowbite-react";
+import { Label, Textarea } from "flowbite-react";
 
-const InputText = (props) => {
+const TextareaInput = (props) => {
     return (
         <div>
             <div className="mb-2 block">
                 <Label color={props.color} value={props.label} />
             </div>
-            <TextInput
+            <Textarea
                 className="w-full"
-                type={props.type || "text"}
                 placeholder={props.placeholder}
                 value={props.value}
                 onChange={props.onChange}
@@ -19,4 +18,4 @@ const InputText = (props) => {
     );
 };
 
-export default InputText;
+export default TextareaInput;

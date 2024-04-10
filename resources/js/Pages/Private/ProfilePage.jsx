@@ -11,19 +11,21 @@ import {
     Textarea,
 } from "flowbite-react";
 import { useForm } from "@inertiajs/react";
+import { formatDate } from "@/lib/utils";
 
 const ProfilePage = ({
     auth: { user },
     availableGenders: genders,
     queryParams = null,
 }) => {
+    console.log(user);
     queryParams = queryParams || {};
 
     // Form hook dari inertia
     const { data, setData, patch, processing, errors, reset } = useForm({
         full_name: user.full_name,
         nik: user.nik,
-        d_o_b: user.d_o_b,
+        d_o_b: formatDate(user.d_o_b),
         address: user.address,
         phone_number: user.phone_number,
         gender: user.gender,
@@ -46,17 +48,6 @@ const ProfilePage = ({
         patch(route("profile.update"));
     };
 
-    // Function untuk convert tanggal
-    const formatDate = (date, format) => {
-        const map = {
-            dd: date.getDate().toString().padStart(2, "0"),
-            MMMM: date.toLocaleString("en-US", { month: "long" }),
-            yyyy: date.getFullYear(),
-        };
-
-        return format.replace(/dd|MMMM|yyyy/gi, (matched) => map[matched]);
-    };
-
     // Function untuk handle onChange pada gender radio button
     const handleGenderChange = (e) => {
         setData("gender", e.target.value);
@@ -68,7 +59,7 @@ const ProfilePage = ({
 
             <PageTitle title={"Profile Saya"} />
 
-            <div class="mb-8 mt-4 rounded-lg bg-white p-5 shadow-lg lg:col-span-2">
+            <div className="mb-8 mt-4 rounded-lg bg-white p-5 shadow-lg lg:col-span-2">
                 {/* TODO: ISI DENGAN INFORMASI DATA DIRI */}
                 <form
                     className="flex flex-col gap-4"
@@ -127,15 +118,9 @@ const ProfilePage = ({
                             <Datepicker
                                 color={errors?.d_o_b && "failure"}
                                 value={data.d_o_b}
-                                onSelectedDateChanged={(e) => {
-                                    const selectedDate = new Date(e);
-                                    const formattedDate = formatDate(
-                                        selectedDate,
-                                        "dd MMMM yyyy",
-                                    );
-
-                                    setData("d_o_b", formattedDate);
-                                }}
+                                onSelectedDateChanged={(e) =>
+                                    setData("d_o_b", formatDate(e))
+                                }
                                 helperText={errors?.d_o_b && errors.d_o_b}
                             />
                         ) : (
@@ -241,7 +226,7 @@ const ProfilePage = ({
                     )}
                 </form>
             </div>
-            <div class=" grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8"></div>
+            <div className=" grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8"></div>
 
             <PageTitle title={"Perlombaan yang saya ikuti"} />
         </PublicLayout>
