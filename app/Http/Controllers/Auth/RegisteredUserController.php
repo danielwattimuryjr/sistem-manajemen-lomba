@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Enum\GenderEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSignUpFirstStepRequest;
+use App\Http\Requests\StoreSignUpSecondStepRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -33,11 +34,8 @@ class RegisteredUserController extends Controller
         ]);
     }
 
-    public function validateFirstStep(Request $request) {
-        $request->validate([
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+    public function validateFirstStep(StoreSignUpFirstStepRequest $request) {
+        $request->validated();
     }
 
     /**
@@ -45,35 +43,9 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreSignUpSecondStepRequest $request): RedirectResponse
     {
-        $genderValues = array_map(function (GenderEnum $gender) {
-            return $gender->value;
-        }, GenderEnum::cases());
-
-        $request->validate([
-            'full_name'     => 'required',
-            'nik'           => [
-                'required',
-                'numeric',
-                Rule::unique('users','nik')
-            ],
-            'd_o_b'           => 'required|date_format:d F Y',
-            'address'       => 'required',
-            'phone_number'  => 'required',
-            'gender' => 'required|in:' . implode(',', $genderValues),
-        ]);
-
-        $user = User::create([
-            'full_name' => $request->full_name,
-            'nik' => $request->nik,
-            'd_o_b' => $request->d_o_b,
-            'address' => $request->alamat,
-            'phone_number' => $request->phone_number,
-            'gender' => $request->gender,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ])->addRole('GUEST');
+        $user = User::create($request->validated())->addRole('GUEST');
 
         event(new Registered($user));
 
