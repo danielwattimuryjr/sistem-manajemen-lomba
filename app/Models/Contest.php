@@ -20,7 +20,14 @@ class Contest extends Model
         'created_by'
     ];
 
-    public function createdBy() {
+    public function createdBy()
+    {
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    // Relasi untuk mendapatkan data partisipan
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

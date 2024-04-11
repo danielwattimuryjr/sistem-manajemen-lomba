@@ -70,7 +70,6 @@ const SignUp = ({ availableGenders: genders }) => {
         <AuthLayout title={"Sign Up"}>
             <Head title="Sign Up" />
             <Card className="w-full sm:max-w-3xl md:mt-0 xl:p-0">
-                {JSON.stringify(errors)}
                 <div className="space-y-4 md:space-y-6">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                         {`Tahap ${formStep} dari 2`}

@@ -48,7 +48,10 @@ class ContestController extends Controller
             Contest::create($validated);
             DB::commit();
 
-            return to_route('perlombaan.index')->with('success', 'Perlombaan berhasil ditambahkan!');
+            return to_route('perlombaan.index')->with('message', [
+                'type' => 'success',
+                'text' => 'Perlombaan berhasil ditambahkan.',
+            ]);
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [
                 'file' => $th->getFile(),
@@ -58,7 +61,10 @@ class ContestController extends Controller
 
             DB::rollBack();
 
-            return back()->with('error', "Gagal menambahkan data perlombaan");
+            return back()->with('message', [
+                'type' => 'Error',
+                'text' => 'Gagal menambahkan data perlombaan'
+            ]);
         }
     }
 
@@ -77,7 +83,7 @@ class ContestController extends Controller
      */
     public function edit(Contest $contest)
     {
-       return Inertia::render('Private/ContestManagement/Edit',[
+        return Inertia::render('Private/ContestManagement/Edit', [
             'contest' => new ContestResource($contest)
         ]);
     }
@@ -92,7 +98,10 @@ class ContestController extends Controller
             $contest->update($request->validated());
             DB::commit();
 
-            return to_route('perlombaan.index');
+            return to_route('perlombaan.index')->with('message', [
+                'type' => 'success',
+                'text' => 'Data perlombaan berhasil diperbaharui.'
+            ]);
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [
                 'file' => $th->getFile(),
@@ -102,7 +111,10 @@ class ContestController extends Controller
 
             DB::rollBack();
 
-            return back()->with('error', "Gagal mengupdate data perlombaan");
+            return back()->with('message', [
+                "type" => "error",
+                "text" => 'Terjadi kesalahan saat memperbaharui data perlombaan.'
+            ]);
         }
     }
 
@@ -117,7 +129,10 @@ class ContestController extends Controller
 
             DB::commit();
 
-            return to_route('perlombaan.index')->with('success', 'Perlombaan berhasil dihapus!');
+            return to_route('perlombaan.index')->with('message', [
+                'type' => 'success',
+                'text' => 'Perlombaan berhasil dihapus.'
+            ]);
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [
                 'file' => $th->getFile(),
@@ -127,7 +142,10 @@ class ContestController extends Controller
 
             DB::rollBack();
 
-            return back()->with('error', "Gagal menghapus data perlombaan");
+            return back()->with('message', [
+                'type' => 'error',
+                'text' => 'Terjadi kesalahan saat menghapus data perlombaan.'
+            ]);
         }
     }
 }

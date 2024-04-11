@@ -40,4 +40,18 @@ class UpdateAdminManagementRequest extends FormRequest
             ],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'full_name.required' => 'Nama lengkap harus diisi.',
+            'full_name.string' => 'Nama lengkap hanya boleh terdiri dari huruf dan spasi.',
+            'full_name.max' => 'Panjang nama lengkap tidak boleh lebih dari 255 huruf.',
+            'email.required' => 'Alamat email harus diisi.',
+            'email.string' => 'Alamat email hanya boleh terdiri dari huruf, angka, dan karakter khusus seperti @ dan titik.',
+            'email.email' => 'Format alamat email tidak valid. Contoh format email yang benar: namaanda@email.com',
+            'email.max' => 'Panjang alamat email tidak boleh lebih dari 255 huruf.',
+            'email.unique' => 'Alamat email tersebut sudah terdaftar sebelumnya.',
+        ];
+    }
 }

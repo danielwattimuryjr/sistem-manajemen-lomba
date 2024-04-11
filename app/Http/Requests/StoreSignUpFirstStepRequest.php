@@ -15,7 +15,8 @@ class StoreSignUpFirstStepRequest extends FormRequest
     {
         $user = auth()->user();
 
-        if ($user) return false;
+        if ($user)
+            return false;
 
         return true;
     }
@@ -28,8 +29,24 @@ class StoreSignUpFirstStepRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Kolom email harus diisi.',
+            'email.string' => 'Kolom email harus berupa teks.',
+            'email.email' => 'Format email tidak valid.',
+            'email.max' => 'Kolom email tidak boleh lebih dari 255 karakter.',
+            'email.unique' => 'Email sudah digunakan.',
+
+            'password.required' => 'Kolom password harus diisi.',
+            'password.string' => 'Kolom password harus berupa teks.',
+            'password.min' => 'Password minimal :min karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ];
     }
 }

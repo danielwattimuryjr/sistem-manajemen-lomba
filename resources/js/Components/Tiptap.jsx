@@ -30,6 +30,7 @@ const Tiptap = ({ content, onChange, error }) => {
             }),
             Underline,
         ],
+        content,
         editorProps: {
             attributes: {
                 class: "focus:ring-2 focus:ring-violet-600 mt-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-700 leading-normal",
@@ -45,7 +46,7 @@ const Tiptap = ({ content, onChange, error }) => {
         <div>
             <Toolbar editor={editor} content={content} />
             <EditorContent editor={editor} />
-            {error && <div className="text-red-500 mt-1">{error}</div>}
+            {error && <div className="mt-1 text-red-500">{error}</div>}
         </div>
     );
 };

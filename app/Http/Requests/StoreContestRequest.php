@@ -32,8 +32,9 @@ class StoreContestRequest extends FormRequest
             'title' => 'required|string|unique:contests,title',
             'description' => 'required',
             'start_date' => 'required|date_format:d F Y',
-            'end_date' => ['required','date_format:d F Y', new EndDateAfterOrEqualStartDate($this->input('start_date'))],
-            'slug' => 'required|unique:contests,slug'
+            'end_date' => ['required', 'date_format:d F Y', new EndDateAfterOrEqualStartDate($this->input('start_date'))],
+            'slug' => 'required|unique:contests,slug',
+            'quota' => 'numeric|min:0'
         ];
     }
 
@@ -52,6 +53,8 @@ class StoreContestRequest extends FormRequest
             'required' => ':attribute wajib diisi.',
             'string' => ':attribute harus berupa teks.',
             'date_format' => ':attribute harus ditulis dengan format "10 Maret 2023".',
+            'quota.numeric' => 'Kuota harus berupa angka.',
+            'quota.min' => 'Kuota harus minimal :min.',
         ];
     }
 }

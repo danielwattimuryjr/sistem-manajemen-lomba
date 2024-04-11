@@ -5,8 +5,6 @@ import { Button, Card, Label, TextInput } from "flowbite-react";
 import { CircleX, FilePenLine } from "lucide-react";
 
 const EditAdminPage = ({ user: { data: userData } }) => {
-    const page = usePage().props;
-    console.log(page);
     const { data, setData, patch, processing, errors } = useForm({
         full_name: userData.full_name,
         email: userData.email,

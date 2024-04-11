@@ -42,6 +42,7 @@ class User extends Authenticatable implements LaratrustUser
     protected $hidden = [
         'password',
         'remember_token',
+        'nik'
     ];
 
     /**
@@ -56,5 +57,14 @@ class User extends Authenticatable implements LaratrustUser
             'password' => 'hashed',
             'gender' => GenderEnum::class
         ];
+    }
+
+    /**
+     * ? Relasi untuk mendapatkan data perlombaan
+     * ? apa saja yang diikuti oleh user
+     */
+    public function contests()
+    {
+        return $this->belongsToMany(Contest::class);
     }
 }

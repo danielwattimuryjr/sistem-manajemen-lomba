@@ -5,7 +5,7 @@ import { usePage } from "@inertiajs/react";
 
 const PublicLayout = ({ children }) => {
     const {
-        flash: { success, error },
+        flash: { message },
     } = usePage().props;
 
     return (
@@ -16,8 +16,10 @@ const PublicLayout = ({ children }) => {
                     {children}
                 </div>
             </main>
-            {success && <SuccessToast message={success} />}
-            {error && <ErrorToast message={error} />}
+            {message?.type == "success" && (
+                <SuccessToast message={message.text} />
+            )}
+            {message?.type == "error" && <ErrorToast message={message.text} />}
         </>
     );
 };

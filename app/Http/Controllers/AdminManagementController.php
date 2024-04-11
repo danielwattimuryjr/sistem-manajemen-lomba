@@ -12,7 +12,8 @@ use Inertia\Inertia;
 
 class AdminManagementController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $query = User::query();
         $query->whereHasRole('ADMIN')->orderByDesc('created_at');
 
@@ -21,11 +22,13 @@ class AdminManagementController extends Controller
         ]);
     }
 
-    public function create() {
+    public function create()
+    {
         return Inertia::render('Private/AdminManagement/Create');
     }
 
-    public function store(StoreAdminManagementRequest $request) {
+    public function store(StoreAdminManagementRequest $request)
+    {
         DB::beginTransaction();
         try {
             User::create($request->validated())->addRole("ADMIN");
@@ -45,13 +48,15 @@ class AdminManagementController extends Controller
         }
     }
 
-    public function edit(User $user) {
-        return Inertia::render('Private/AdminManagement/Edit',[
+    public function edit(User $user)
+    {
+        return Inertia::render('Private/AdminManagement/Edit', [
             'user' => new AdminResource($user)
         ]);
     }
 
-    public function update(User $user, UpdateAdminManagementRequest $request) {
+    public function update(User $user, UpdateAdminManagementRequest $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -72,7 +77,8 @@ class AdminManagementController extends Controller
         }
     }
 
-    public function destroy(User $user) {
+    public function destroy(User $user)
+    {
         DB::beginTransaction();
         try {
             $user->delete();

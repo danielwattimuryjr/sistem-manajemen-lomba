@@ -76,7 +76,7 @@ const PublicNavbar = () => {
                         )}
                     >
                         <div className="-mx-6 flex flex-col lg:mx-8 lg:flex-row lg:items-center">
-                            <NavLink href="/">Beranda</NavLink>
+                            <NavLink href={route("welcome")}>Beranda</NavLink>
 
                             <NavLink href={route("public.perlombaan.all")}>
                                 Perlombaan

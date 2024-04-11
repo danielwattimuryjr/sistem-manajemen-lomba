@@ -1,15 +1,18 @@
+import DateInput from "@/Components/DateInput";
 import PageTitle from "@/Components/PageHeader";
+import InputText from "@/Components/Textinput";
 import Tiptap from "@/Components/Tiptap";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { formatDate } from "@/lib/utils";
 import { useForm } from "@inertiajs/react";
-import { Button, Card, Datepicker, Label, TextInput } from "flowbite-react";
+import { Button, Card, Label } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import slugify from "react-slugify";
 
 const ContestCreatePage = () => {
     const { data, setData, post, processing, errors } = useForm({
         title: "",
+        quota: 0,
         description: "",
         slug: "",
         isActive: 1,
@@ -28,31 +31,41 @@ const ContestCreatePage = () => {
 
             <Card>
                 <form className="flex flex-col gap-4" onSubmit={storeData}>
-                    {/* Title Perlombaan */}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="title-perlombaan"
+                    <div className="flex flex-col gap-2 md:flex-row">
+                        {/* Title Perlombaan */}
+                        <div className="flex-1">
+                            <InputText
+                                label={"Nama Perlombaan"}
+                                value={data.title}
+                                placeholder={"Cth. Cerdas Cermat"}
+                                onChange={(e) =>
+                                    setData((data) => ({
+                                        ...data,
+                                        title: e.target.value,
+                                        slug: slugify(e.target.value),
+                                    }))
+                                }
                                 color={errors?.title && "failure"}
-                                value="Nama Perlombaan"
+                                helperText={errors?.title}
                             />
                         </div>
-                        <TextInput
-                            className="w-full"
-                            id="title-perlombaan"
-                            type="text"
-                            placeholder="Cth. Cerdas Cermat"
-                            value={data.title}
-                            onChange={(e) =>
-                                setData((data) => ({
-                                    ...data,
-                                    title: e.target.value,
-                                    slug: slugify(e.target.value),
-                                }))
-                            }
-                            color={errors?.title && "failure"}
-                            helperText={errors?.title && errors.title}
-                        />
+
+                        <div className="flex-1">
+                            {/* Quota Peserta */}
+                            <InputText
+                                label={"Quota Peserta"}
+                                value={data.quota}
+                                type="number"
+                                color={errors?.quota && "failure"}
+                                onChange={(e) =>
+                                    setData("quota", e.target.value)
+                                }
+                                helperText={
+                                    errors?.quota ||
+                                    "Kosongkan jika kuota peserta tak terbatas"
+                                }
+                            />
+                        </div>
                     </div>
 
                     {/* Deskripsi Perlombaan */}
@@ -78,44 +91,30 @@ const ContestCreatePage = () => {
                     <div className="flex flex-col gap-2 md:flex-row">
                         {/* Start Date */}
                         <div className="flex-1">
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="start-date"
-                                    color={errors?.start_date && "failure"}
-                                    value="Tgl. Mulai"
-                                />
-                            </div>
-                            <Datepicker
-                                id="start-date"
+                            <DateInput
+                                label={"Tgl. Mulai"}
                                 color={errors?.start_date && "failure"}
                                 value={data.start_date}
                                 onSelectedDateChanged={(e) =>
                                     setData("start_date", formatDate(e))
                                 }
-                                helperText={
-                                    errors?.start_date && errors.start_date
-                                }
+                                helperText={errors?.start_date}
                             />
                         </div>
 
                         {/* End Date */}
                         <div className="flex-1">
-                            <div className="mb-2 block">
-                                <Label
-                                    htmlFor="end-date"
-                                    color={errors?.end_date && "failure"}
-                                    value="Tgl. Selesai"
-                                />
-                            </div>
-
-                            <Datepicker
-                                id="end-date"
+                            <DateInput
+                                label={"Tgl. Selesai"}
                                 value={data.end_date}
                                 onSelectedDateChanged={(e) =>
                                     setData("end_date", formatDate(e))
                                 }
                                 color={errors?.end_date && "failure"}
-                                helperText={errors?.end_date && errors.end_date}
+                                helperText={
+                                    errors?.end_date ||
+                                    "Tanggal selesai harus di atas tanggal mulai"
+                                }
                             />
                         </div>
                     </div>
@@ -136,7 +135,6 @@ const ContestCreatePage = () => {
                         color="failure"
                         className="w-full"
                         disabled={processing}
-                        isProcessing={processing}
                     >
                         <CircleX className="mr-2 h-5 w-5" />
                         Clear

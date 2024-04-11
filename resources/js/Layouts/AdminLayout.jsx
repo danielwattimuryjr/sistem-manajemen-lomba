@@ -6,7 +6,7 @@ import { Head, usePage } from "@inertiajs/react";
 
 const AdminLayout = ({ children }) => {
     const {
-        flash: { success, error },
+        flash: { message },
     } = usePage().props;
 
     return (
@@ -30,8 +30,12 @@ const AdminLayout = ({ children }) => {
                     </main>
                 </div>
 
-                {success && <SuccessToast message={success} />}
-                {error && <ErrorToast message={error} />}
+                {message?.type == "success" && (
+                    <SuccessToast message={message.text} />
+                )}
+                {message?.type == "error" && (
+                    <ErrorToast message={message.text} />
+                )}
             </div>
         </>
     );
