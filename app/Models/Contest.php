@@ -28,6 +28,6 @@ class Contest extends Model
     // Relasi untuk mendapatkan data partisipan
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

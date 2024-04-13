@@ -1,16 +1,25 @@
 import { Label, Datepicker } from "flowbite-react";
 
-const DateInput = (props) => {
+const DateInput = ({
+    label,
+    value,
+    placeholder,
+    onSelectedDateChanged,
+    color,
+    helperText,
+    ...props
+}) => {
     return (
         <div>
             <div className="mb-2 block">
-                <Label color={props.color} value={props.label} />
+                <Label color={color} value={label} />
             </div>
             <Datepicker
-                color={props.color}
-                value={props.value}
-                onSelectedDateChanged={props.onSelectedDateChanged}
-                helperText={props.helperText}
+                color={color}
+                value={value}
+                onSelectedDateChanged={onSelectedDateChanged}
+                helperText={helperText}
+                {...props}
             />
         </div>
     );

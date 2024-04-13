@@ -1,6 +1,6 @@
 import PageTitle from "@/Components/PageHeader";
-import AdminLayout from "@/Layouts/AdminLayout";
-import { useForm, usePage } from "@inertiajs/react";
+import AdminLayout from "@/Layouts/Admin/Layout";
+import { useForm } from "@inertiajs/react";
 import { Button, Card, Label, TextInput } from "flowbite-react";
 import { CircleX, FilePenLine } from "lucide-react";
 

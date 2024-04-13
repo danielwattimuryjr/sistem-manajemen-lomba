@@ -1,10 +1,9 @@
-import "./bootstrap";
 import "../css/app.css";
+import "./bootstrap";
 
-import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { DarkThemeToggle, Flowbite } from "flowbite-react";
+import { createRoot } from "react-dom/client";
 
 createInertiaApp({
     title: (title) => `Bajra Sandhi | ${title}`,

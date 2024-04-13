@@ -84,7 +84,7 @@ class ContestController extends Controller
     public function edit(Contest $contest)
     {
         return Inertia::render('Private/ContestManagement/Edit', [
-            'contest' => new ContestResource($contest)
+            'contest' => $contest
         ]);
     }
 

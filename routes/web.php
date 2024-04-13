@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\CancelParticipationQueueController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
@@ -28,7 +29,7 @@ Route::prefix('/perlombaan/')->controller(GuestController::class)
         Route::get('/', 'getActivePerlombaan')->name('all');
         Route::get('/{contest:slug}', 'getPerlombaanDetail')->name('detail');
         Route::middleware(['auth'])->group(function () {
-            Route::get('/{contest:slug}/pendaftaran', 'openFormPendaftaran')->name('form-daftar');
+            Route::post('/{contest:slug}', 'assignUserToContest')->name('participate');
         });
     });
 
@@ -46,35 +47,31 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
             return Inertia::render('Private/AdminDashboard');
         })->name('admin.dashboard');
 
-        // Routes untuk manajemen lomba
-        Route::controller(ContestController::class)->prefix('/contest')
-            ->name('perlombaan.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/edit/{contest:slug}', 'edit')->name('edit');
-                Route::get('/create', 'create')->name('create');
-                Route::get('/detail/{contest:slug}', 'show')->name('show');
-                Route::post('/create', 'store')->name('store');
-                Route::patch('/update/{contest:slug}', 'update')->name('update');
-                Route::delete('/delete/{contest:slug}', 'destroy')->name('destroy');
-            });
+        Route::resources([
+            // Routes untuk manajemen lomba
+            'perlombaan' => ContestController::class,
+        ], [
+            'parameters' => [
+                'perlombaan' => 'contest:slug',
+            ]
+        ]);
     });
 
     // Only SUPERADMIN
     Route::middleware('role:SUPERADMIN')->group(function () {
-        // Routes untuk manajemen Admin
-        Route::controller(AdminManagementController::class)->prefix('/manage-admin')
-            ->name('admin-management.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/edit/{user:uuid}', 'edit')->name('edit');
-                Route::get('/create', 'create')->name('create');
-                // Route::get('/detail/{user:uuid}', 'show')->name('show');
-                Route::post('/create/', 'store')->name('store');
-                Route::patch('/update/{user:uuid}', 'update')->name('update');
-                Route::delete('/delete/{user:uuid}', 'destroy')->name('destroy');
-            });
-
+        Route::resources([
+            // Routes untuk manajemen Admin
+            'admin-management' => AdminManagementController::class
+        ], [
+            'parameters' => [
+                'admin-management' => 'user:uuid'
+            ],
+            'except' => [
+                'admin-management' => 'show'
+            ]
+        ]);
     });
-
 });
+
 
 require __DIR__ . '/auth.php';

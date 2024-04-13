@@ -1,6 +1,5 @@
 import PageTitle from "@/Components/PageHeader";
-import AdminLayout from "@/Layouts/AdminLayout";
-import { Head } from "@inertiajs/react";
+import AdminLayout from "@/Layouts/Admin/Layout";
 
 export default function AdminDashboard({ auth }) {
     return (

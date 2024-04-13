@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import NavLink from "./NavLink";
+import { Link, usePage } from "@inertiajs/react";
 import { Button, Tooltip } from "flowbite-react";
 import { LogIn, Power } from "lucide-react";
-import { Link, usePage } from "@inertiajs/react";
+import { useState } from "react";
+import NavLink from "./NavLink";
 
-const PublicNavbar = () => {
+const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     const {
@@ -13,7 +13,7 @@ const PublicNavbar = () => {
     } = usePage().props;
 
     return (
-        <nav className="relative bg-white shadow dark:bg-gray-800">
+        <nav className="sticky top-0 z-10  bg-white shadow dark:bg-gray-800">
             <div className="container mx-auto px-6 py-4">
                 <div className="lg:flex lg:items-center lg:justify-between">
                     <div className="flex items-center justify-between">
@@ -158,4 +158,4 @@ const PublicNavbar = () => {
     );
 };
 
-export default PublicNavbar;
+export default Navbar;

@@ -1,7 +1,7 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import Underline from "@tiptap/extension-underline";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import Underline from "@tiptap/extension-underline";
 
 const Tiptap = ({ content, onChange, error }) => {
     const editor = useEditor({
@@ -33,7 +33,7 @@ const Tiptap = ({ content, onChange, error }) => {
         content,
         editorProps: {
             attributes: {
-                class: "focus:ring-2 focus:ring-violet-600 mt-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-700 leading-normal",
+                class: " mt-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-700 leading-normal",
             },
         },
         onUpdate: ({ editor }) => {

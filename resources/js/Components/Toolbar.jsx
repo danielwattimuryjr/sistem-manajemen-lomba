@@ -1,16 +1,15 @@
+import { Button } from "flowbite-react";
 import {
     Bold,
-    Strikethrough,
+    Heading,
     Italic,
     List,
     ListOrdered,
-    Heading,
-    Underline,
-    Quote,
-    Undo,
     Redo,
+    Strikethrough,
+    Underline,
+    Undo,
 } from "lucide-react";
-import { Button } from "flowbite-react";
 
 const Toolbar = ({ editor, content }) => {
     if (!editor) {
@@ -30,7 +29,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleHeading({ level: 1 }).run();
                 }}
             >
-                <Heading className="w-4 h-4" />
+                <Heading className="h-4 w-4" />
             </Button>
 
             {/* Bold Toggle Button */}
@@ -42,7 +41,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleBold().run();
                 }}
             >
-                <Bold className="w-4 h-4" />
+                <Bold className="h-4 w-4" />
             </Button>
 
             {/* Italic Toggle Button */}
@@ -54,7 +53,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleItalic().run();
                 }}
             >
-                <Italic className="w-4 h-4" />
+                <Italic className="h-4 w-4" />
             </Button>
 
             {/* Underline Toggle Button */}
@@ -66,7 +65,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleUnderline().run();
                 }}
             >
-                <Underline className="w-4 h-4" />
+                <Underline className="h-4 w-4" />
             </Button>
 
             {/* Striketrough Toggle Button */}
@@ -78,7 +77,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleStrike().run();
                 }}
             >
-                <Strikethrough className="w-4 h-4" />
+                <Strikethrough className="h-4 w-4" />
             </Button>
 
             {/* Bullet List Toggle Button */}
@@ -90,7 +89,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleBulletList().run();
                 }}
             >
-                <List className="w-4 h-4" />
+                <List className="h-4 w-4" />
             </Button>
 
             {/* Numbered List Toggle Button */}
@@ -102,7 +101,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().toggleOrderedList().run();
                 }}
             >
-                <ListOrdered className="w-4 h-4" />
+                <ListOrdered className="h-4 w-4" />
             </Button>
 
             {/* Undo Button */}
@@ -114,7 +113,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().undo().run();
                 }}
             >
-                <Undo className="w-4 h-4" />
+                <Undo className="h-4 w-4" />
             </Button>
 
             {/* Redo Button */}
@@ -126,7 +125,7 @@ const Toolbar = ({ editor, content }) => {
                     editor.chain().focus().redo().run();
                 }}
             >
-                <Redo className="w-4 h-4" />
+                <Redo className="h-4 w-4" />
             </Button>
         </Button.Group>
     );

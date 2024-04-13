@@ -1,5 +1,5 @@
 import PageTitle from "@/Components/PageHeader";
-import AdminLayout from "@/Layouts/AdminLayout";
+import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link } from "@inertiajs/react";
 import { Button, Card, Tooltip } from "flowbite-react";
 import { ChevronDown, ChevronUp, FilePenLine } from "lucide-react";
@@ -18,7 +18,7 @@ const ContestDetailPage = ({ contest: { data } }) => {
                 <Button
                     color={"warning"}
                     as={Link}
-                    href={route("perlombaan.edit", data.slug)}
+                    // href={route("perlombaan.edit", data.slug)}
                 >
                     <FilePenLine className="mr-2 h-5 w-5" />
                     Ubah Data

@@ -1,7 +1,7 @@
-import ContestCard from "@/Components/PublicComponents/ContestCard";
-import Searchbar from "@/Components/PublicComponents/Searchbar";
-import PublicLayout from "@/Layouts/PublicLayout";
+import PublicLayout from "@/Layouts/Public/Layout";
 import { Head, router } from "@inertiajs/react";
+import ContestCard from "./partials/ContestCard";
+import Searchbar from "./partials/Searchbar";
 
 const PerlombaanAll = ({ contests: { data }, queryParams = null }) => {
     queryParams = queryParams || {};

@@ -1,7 +1,7 @@
 import PageTitle from "@/Components/PageHeader";
-import AdminLayout from "@/Layouts/AdminLayout";
+import AdminLayout from "@/Layouts/Admin/Layout";
 import { useForm } from "@inertiajs/react";
-import { Button, Card, Label, TextInput, Checkbox } from "flowbite-react";
+import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import { useState } from "react";
 

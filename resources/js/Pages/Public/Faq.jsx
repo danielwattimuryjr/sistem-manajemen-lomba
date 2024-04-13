@@ -1,4 +1,4 @@
-import PublicLayout from "@/Layouts/PublicLayout";
+import PublicLayout from "@/Layouts/Public/Layout";
 import { Head } from "@inertiajs/react";
 import { Card } from "flowbite-react";
 
@@ -7,7 +7,7 @@ const Faq = () => {
         <PublicLayout>
             <Head title="FAQ" />
 
-            <Card>
+            <Card className="shadow-lg">
                 <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
                     <h2 className="mb-8 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                         Frequently asked questions

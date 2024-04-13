@@ -1,4 +1,4 @@
-import PublicLayout from "@/Layouts/PublicLayout";
+import PublicLayout from "@/Layouts/Public/Layout";
 import { Head } from "@inertiajs/react";
 import { Card } from "flowbite-react";
 

@@ -1,6 +1,6 @@
 const PageTitle = ({ title, description, children }) => {
     return (
-        <header>
+        <header className="mb-6">
             <div className="mx-auto max-w-screen-xl">
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <div className="text-center sm:text-left">

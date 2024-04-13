@@ -2,7 +2,7 @@ import DateInput from "@/Components/DateInput";
 import PageTitle from "@/Components/PageHeader";
 import InputText from "@/Components/Textinput";
 import Tiptap from "@/Components/Tiptap";
-import AdminLayout from "@/Layouts/AdminLayout";
+import AdminLayout from "@/Layouts/Admin/Layout";
 import { formatDate } from "@/lib/utils";
 import { useForm } from "@inertiajs/react";
 import { Button, Card, Label } from "flowbite-react";

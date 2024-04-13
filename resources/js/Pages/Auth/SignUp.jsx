@@ -1,12 +1,12 @@
-import AuthLayout from "@/Layouts/AuthLayout";
-import { useEffect, useState } from "react";
-import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
-import { Head, Link, useForm } from "@inertiajs/react";
-import InputText from "@/Components/Textinput";
 import DateInput from "@/Components/DateInput";
-import { formatDate } from "@/lib/utils";
 import TextareaInput from "@/Components/Textarea";
-import { CircleArrowRight, CircleArrowLeft } from "lucide-react";
+import InputText from "@/Components/Textinput";
+import AuthLayout from "@/Layouts/AuthLayout";
+import { formatDate } from "@/lib/utils";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
+import { CircleArrowLeft, CircleArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const SignUp = ({ availableGenders: genders }) => {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -294,7 +294,7 @@ const SignUp = ({ availableGenders: genders }) => {
                                 Sudah punya akun?{" "}
                                 <Link
                                     href={route("login")}
-                                    className="text-primary-600 font-medium text-blue-500 hover:underline"
+                                    className=" font-medium text-blue-500 hover:underline"
                                 >
                                     Masuk sekarang.
                                 </Link>

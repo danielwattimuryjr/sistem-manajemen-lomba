@@ -1,12 +1,12 @@
-import PageTitle from "@/Components/PageHeader";
-import PublicLayout from "@/Layouts/PublicLayout";
-import { formatDate } from "@/lib/utils";
-import InputText from "@/Components/Textinput";
 import DateInput from "@/Components/DateInput";
-import { Head, useForm } from "@inertiajs/react";
-import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
-import { useEffect, useState } from "react";
+import PageTitle from "@/Components/PageHeader";
 import TextareaInput from "@/Components/Textarea";
+import InputText from "@/Components/Textinput";
+import PublicLayout from "@/Layouts/Public/Layout";
+import { formatDate } from "@/lib/utils";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { Card, Label, Radio } from "flowbite-react";
+import { useState } from "react";
 
 const FormPendaftaran = ({
     contest: { data: contestData },
@@ -48,28 +48,28 @@ const FormPendaftaran = ({
             <PageTitle title={`Form Pendaftaran ${contestData.title}`} />
 
             <Card className="mt-4">
+                <p>
+                    Seluruh informasi di bawah <b>diambil dari profil kamu.</b>
+                    <br />
+                    Jika informasi pribadi mu tidak sesuai,{" "}
+                    <Link
+                        href={route("profile.index")}
+                        className="text-blue-500 hover:underline"
+                    >
+                        Klik di sini
+                    </Link>{" "}
+                    untuk mengubah profil.
+                </p>
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                         {/* NIK */}
-                        <InputText
-                            label={"NIK"}
-                            value={data.nik}
-                            placeholder={"Nomor Induk Kependudukan"}
-                            onChange={(e) => setData("nik", e.target.value)}
-                            color={errors?.nik && "failure"}
-                            helperText={errors?.nik && errors.nik}
-                        />
+                        <InputText label={"NIK"} value={data.nik} disabled />
 
                         {/* Nama Lengkap */}
                         <InputText
                             label={"Nama Lengkap"}
                             value={data.full_name}
-                            placeholder={"John Doe"}
-                            onChange={(e) =>
-                                setData("full_name", e.target.value)
-                            }
-                            color={errors?.full_name && "failure"}
-                            helperText={errors?.full_name && errors.full_name}
+                            disabled
                         />
 
                         {/* Jenis kelamin */}
@@ -82,21 +82,17 @@ const FormPendaftaran = ({
                             <div className="flex flex-row gap-x-5">
                                 <div className="flex items-center gap-2">
                                     <Radio
-                                        id={genders.male}
                                         value={genders.male}
-                                        name="gender"
                                         checked={data.gender === genders.male}
-                                        onChange={handleGenderChange}
+                                        disabled
                                     />
                                     <Label>{genders.male}</Label>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Radio
-                                        id={genders.female}
                                         value={genders.female}
-                                        name="gender"
                                         checked={data.gender === genders.female}
-                                        onChange={handleGenderChange}
+                                        disabled
                                     />
                                     <Label>{genders.female}</Label>
                                 </div>
@@ -106,12 +102,8 @@ const FormPendaftaran = ({
                         {/* Tanggal Lahir */}
                         <DateInput
                             label={"Tanggal Lahir"}
-                            color={errors?.d_o_b && "failure"}
                             value={data.d_o_b}
-                            onSelectedDateChanged={(e) =>
-                                setData("d_o_b", formatDate(e))
-                            }
-                            helperText={errors?.d_o_b && errors.d_o_b}
+                            disabled
                         />
 
                         {/* Nomor Telepon */}
@@ -119,24 +111,14 @@ const FormPendaftaran = ({
                             label={"Nomor Telepon"}
                             type={"tel"}
                             value={data.phone_number}
-                            placeholder={"081234567890"}
-                            onChange={(e) =>
-                                setData("phone_number", e.target.value)
-                            }
-                            color={errors?.phone_number && "failure"}
-                            helperText={
-                                errors?.phone_number && errors.phone_number
-                            }
+                            disabled
                         />
 
                         {/* Alamat */}
                         <TextareaInput
                             label={"Alamat"}
                             value={data.address}
-                            placeholder={"Ketikkan alamat mu"}
-                            onChange={(e) => setData("address", e.target.value)}
-                            color={errors?.address && "failure"}
-                            helperText={errors?.address && errors.address}
+                            disabled
                         />
                     </div>
                 </form>

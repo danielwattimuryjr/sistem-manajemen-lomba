@@ -9,28 +9,38 @@ use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
-    public function index () {
+    public function index()
+    {
+        $user = auth()->user();
+
         $genders = [
             'male' => GenderEnum::MALE,
             'female' => GenderEnum::FEMALE,
         ];
 
-        return inertia()->render('Private/ProfilePage', [
+        $contests = $user->contests;
+
+        return inertia()->render('Private/ProfilePage/Page', [
             'availableGenders' => $genders,
-            'queryParams' => request()->query() ?: null
+            'queryParams' => request()->query() ?: null,
+            'contests' => $contests,
         ]);
     }
 
-    public function saveData(UpdateUserProfileRequest $request) {
+    public function saveData(UpdateUserProfileRequest $request)
+    {
         $user = auth()->user();
         DB::beginTransaction();
-        try{
+        try {
             $user->update($request->validated());
 
             DB::commit();
 
-            return to_route('profile.index')->with('success', "Berhasil mengubah profile.");
-        } catch(\Throwable $th) {
+            return to_route('profile.index')->with('message', [
+                'type' => 'success',
+                'text' => 'Berhasil memperbaharui profil kamu.'
+            ]);
+        } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Exception caught: ' . $th->getMessage(), [
                 'file' => $th->getFile(),
@@ -38,7 +48,10 @@ class ProfileController extends Controller
                 'trace' => $th->getTraceAsString(),
             ]);
 
-            return back()->with('error', "Gagal mengupdate data profil.");
+            return back()->with("message", [
+                'type' => 'error',
+                'text' => 'Terjadi kesalahan saat memperbaharui profil kamu.'
+            ]);
         }
     }
 }

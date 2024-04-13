@@ -42,7 +42,7 @@ class User extends Authenticatable implements LaratrustUser
     protected $hidden = [
         'password',
         'remember_token',
-        'nik'
+        'nik',
     ];
 
     /**
@@ -65,6 +65,6 @@ class User extends Authenticatable implements LaratrustUser
      */
     public function contests()
     {
-        return $this->belongsToMany(Contest::class);
+        return $this->belongsToMany(Contest::class)->withTimestamps();
     }
 }

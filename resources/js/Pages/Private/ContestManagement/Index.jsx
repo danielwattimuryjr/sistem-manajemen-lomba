@@ -1,18 +1,10 @@
 import FilterComponent from "@/Components/FilterComponent";
 import PageTitle from "@/Components/PageHeader";
-import AdminLayout from "@/Layouts/AdminLayout";
+import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link, useForm } from "@inertiajs/react";
-import { Button, Tooltip, Modal, Badge, Toast } from "flowbite-react";
-import {
-    BadgeCheck,
-    Eye,
-    FilePenLine,
-    OctagonAlert,
-    Plus,
-    Trash2,
-} from "lucide-react";
+import { Badge, Button, Card, Modal, Tooltip } from "flowbite-react";
+import { Eye, FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
-
 import DataTable from "react-data-table-component";
 
 const ContestIndexPage = ({ contests: { data } }) => {
@@ -79,6 +71,7 @@ const ContestIndexPage = ({ contests: { data } }) => {
         {
             name: "Status",
             sortable: true,
+            selector: (row) => row.isActive,
             cell: (row) => {
                 if (row.isActive) {
                     return (
@@ -195,14 +188,16 @@ const ContestIndexPage = ({ contests: { data } }) => {
                 </Button>
             </PageTitle>
 
-            <DataTable
-                columns={ContestTableColumn}
-                data={filteredItems}
-                subHeader
-                subHeaderComponent={subHeaderComponentMemo}
-                pagination
-                paginationResetDefaultPage={resetPaginationToggle}
-            />
+            <Card>
+                <DataTable
+                    columns={ContestTableColumn}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                />
+            </Card>
         </AdminLayout>
     );
 };

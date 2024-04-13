@@ -1,9 +1,9 @@
 import FilterComponent from "@/Components/FilterComponent";
 import PageTitle from "@/Components/PageHeader";
-import AdminLayout from "@/Layouts/AdminLayout";
+import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link, useForm } from "@inertiajs/react";
-import { Button, Modal, Tooltip } from "flowbite-react";
-import { Eye, FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
+import { Button, Card, Modal, Tooltip } from "flowbite-react";
+import { FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
@@ -149,14 +149,16 @@ const ManageAdminPage = ({ users: { data } }) => {
                 </Button>
             </PageTitle>
 
-            <DataTable
-                columns={AdminTableColumn}
-                data={filteredItems}
-                subHeaderComponent={subHeaderComponentMemo}
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                pagination
-            />
+            <Card>
+                <DataTable
+                    columns={AdminTableColumn}
+                    data={filteredItems}
+                    subHeaderComponent={subHeaderComponentMemo}
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    subHeader
+                    pagination
+                />
+            </Card>
         </AdminLayout>
     );
 };
