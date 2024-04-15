@@ -1,8 +1,12 @@
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { Eye, LogOut } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const DropdownUser = () => {
+    const {
+        auth: { user },
+    } = usePage().props;
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const trigger = useRef(null);
@@ -43,9 +47,9 @@ const DropdownUser = () => {
             >
                 <span className="text-right">
                     <span className="block text-sm font-medium text-black dark:text-white">
-                        Thomas Anree
+                        {user.full_name}
                     </span>
-                    <span className="block text-xs">UX Designer</span>
+                    <span className="block text-xs">{user.role}</span>
                 </span>
 
                 <svg
@@ -70,14 +74,14 @@ const DropdownUser = () => {
                 ref={dropdown}
                 onFocus={() => setDropdownOpen(true)}
                 onBlur={() => setDropdownOpen(false)}
-                className={`w-62.5 border-stroke shadow-default dark:border-strokedark dark:bg-boxdark absolute right-0 mt-4 flex flex-col rounded-sm border bg-white ${
+                className={`border-stroke dark:border-strokedark absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border bg-white shadow-default dark:bg-boxdark ${
                     dropdownOpen === true ? "block" : "hidden"
                 }`}
             >
                 <ul className="border-stroke dark:border-strokedark flex flex-col gap-5 border-b px-6 py-5">
                     <li>
                         <Link
-                            to="/"
+                            href={route("welcome")}
                             className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-[#3C50E0] lg:text-base"
                         >
                             <Eye className="h-6 w-6" />

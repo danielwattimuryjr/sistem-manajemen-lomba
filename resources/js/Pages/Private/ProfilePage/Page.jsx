@@ -1,6 +1,7 @@
 import TabLink from "@/Components/TabLink";
 import PublicLayout from "@/Layouts/Public/Layout";
 import { Head, router } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 import MyContest from "./partials/MyContest";
 import MyProfile from "./partials/MyProfile";
 
@@ -11,6 +12,9 @@ const ProfilePage = ({
     contests: participatedContests,
     fragment,
 }) => {
+    const [section, setSection] = useState("profile-section");
+    const handleChangeSection = (section) => setSection(section);
+
     queryParams = queryParams || {};
 
     const toggleEditMode = (value) => {
@@ -23,9 +27,11 @@ const ProfilePage = ({
         router.get(route("profile.index", queryParams));
     };
 
-    if (fragment) {
-        window.location.hash = `#${fragment}`;
-    }
+    useEffect(() => {
+        if (fragment) {
+            handleChangeSection(fragment);
+        }
+    }, [fragment]);
 
     return (
         <PublicLayout>
@@ -37,23 +43,28 @@ const ProfilePage = ({
                     <TabLink
                         link={"#profile-section"}
                         label={"Profil Saya"}
-                        active
+                        active={section === "profile-section"}
+                        onClick={() => handleChangeSection("profile-section")}
                     />
                     <TabLink
                         link={"#contest-section"}
                         label={"Perlombaan Saya"}
+                        active={section === "contest-section"}
+                        onClick={() => handleChangeSection("contest-section")}
                     />
                 </ul>
 
-                <div className="flex w-full flex-col gap-10">
-                    <MyProfile
-                        genders={availableGenders}
-                        queryParams={queryParams}
-                        toggleEditMode={toggleEditMode}
-                        user={user}
-                    />
-
-                    <MyContest contests={participatedContests} />
+                <div className=" w-full">
+                    {section === "contest-section" ? (
+                        <MyContest contests={participatedContests} />
+                    ) : (
+                        <MyProfile
+                            genders={availableGenders}
+                            queryParams={queryParams}
+                            toggleEditMode={toggleEditMode}
+                            user={user}
+                        />
+                    )}
                 </div>
             </div>
 

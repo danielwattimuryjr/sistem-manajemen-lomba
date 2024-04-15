@@ -14,13 +14,8 @@ const ContestIndexPage = ({ contests: { data } }) => {
 
     // State untuk data table
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-    const { delete: destroy, processing, errors } = useForm();
+    const { delete: destroy } = useForm();
 
-    // Function untuk execute delete data admin
-    const deleteAdmin = (id) => {
-        destroy(route("admin-management.destroy", id));
-        setOpenModal(false);
-    };
     // Funciton untuk handle filter by title
     const filteredItems = data.filter(
         (item) =>

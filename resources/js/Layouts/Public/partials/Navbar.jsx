@@ -84,14 +84,23 @@ const Navbar = () => {
 
                             <NavLink href={route("faq")}>FAQ</NavLink>
 
-                            <NavLink href={route("contact-us")}>Kontak</NavLink>
+                            <NavLink href={route("contact.index")}>
+                                Kontak
+                            </NavLink>
+
+                            {(user?.role === "ADMIN" ||
+                                user?.role === "SUPERADMIN") && (
+                                <NavLink href={route("dashboard")}>
+                                    Admin
+                                </NavLink>
+                            )}
 
                             {user && (
                                 <div className="lg:hidden">
                                     <NavLink
                                         href={route("logout")}
                                         method="post"
-                                        // as="button"
+                                        as="button"
                                         type="button"
                                     >
                                         Logout

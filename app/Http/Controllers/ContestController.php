@@ -73,8 +73,8 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        return Inertia::render('Private/ContestManagement/Detail', [
-            'contest' => new ContestResource($contest)
+        return Inertia::render('Private/ContestManagement/Detail/Page', [
+            'contest' => new ContestResource($contest->load('users'))
         ]);
     }
 
@@ -84,7 +84,7 @@ class ContestController extends Controller
     public function edit(Contest $contest)
     {
         return Inertia::render('Private/ContestManagement/Edit', [
-            'contest' => $contest
+            'contest' => new ContestResource($contest)
         ]);
     }
 

@@ -1,9 +1,13 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { CircleGauge, Medal, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import NavLink from "./NavLink";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+    const {
+        auth: { user },
+    } = usePage().props;
+
     const trigger = useRef(null);
     const sidebar = useRef(null);
 
@@ -54,12 +58,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     return (
         <aside
             ref={sidebar}
-            className={`z-9999 w-72.5 absolute left-0 top-0 flex h-screen flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear lg:static lg:translate-x-0 ${
+            className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear lg:static lg:translate-x-0 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >
             {/* <!-- SIDEBAR HEADER --> */}
-            <div className="py-5.5 lg:py-6.5 flex items-center justify-between gap-2 px-6">
+            <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
                 <Link href="/">Main Menu</Link>
 
                 <button
@@ -116,18 +120,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             </li>
                             {/* <!-- Menu Contest Management --> */}
 
-                            {/* <!-- Menu Admin Management --> */}
-                            <li>
-                                <NavLink
-                                    href={route("admin-management.index")}
-                                    Icon={Users}
-                                    label={"Manage Admin"}
-                                    isActive={route().current(
-                                        "*admin-management*",
-                                    )}
-                                />
-                            </li>
-                            {/* <!-- Menu Admin Management --> */}
+                            {user?.role === "SUPERADMIN" && (
+                                /* <!-- Menu Admin Management --> */
+                                <li>
+                                    <NavLink
+                                        href={route("admin-management.index")}
+                                        Icon={Users}
+                                        label={"Manage Admin"}
+                                        isActive={route().current(
+                                            "*admin-management*",
+                                        )}
+                                    />
+                                </li>
+                                /* <!-- Menu Admin Management --> */
+                            )}
                         </ul>
                     </div>
                 </nav>

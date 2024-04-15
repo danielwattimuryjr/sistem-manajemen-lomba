@@ -14,7 +14,7 @@ class ContestResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $contest = [
             'title' => $this->title,
             'description' => $this->description,
             'start_date' => $this->start_date,
@@ -23,5 +23,13 @@ class ContestResource extends JsonResource
             'quota' => $this->quota,
             'slug' => $this->slug,
         ];
+
+        if ($this->users) {
+            $contest['participants'] = [
+                "current" => $this->users->count(),
+                "users" => ParticipantResource::collection($this->users)
+            ];
+        }
+        return $contest;
     }
 }

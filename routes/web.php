@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\CancelParticipationQueueController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
@@ -19,9 +20,15 @@ Route::get('/frequently-ask-question', function () {
     return Inertia::render('Public/Faq');
 })->name('faq');
 
+Route::prefix('/contact-us')->controller(ContactController::class)->name('contact.')
+    ->group(function () {
+        Route::get('/contact-us', 'index')->name('index');
+        Route::post('/contact-us', 'sendMail')->name('send-mail');
+    });
+
 Route::get('/contact-us', function () {
     return Inertia::render('Public/Contact');
-})->name('contact-us');
+})->name('send-mail');
 
 Route::prefix('/perlombaan/')->controller(GuestController::class)
     ->name('public.perlombaan.')->group(function () {

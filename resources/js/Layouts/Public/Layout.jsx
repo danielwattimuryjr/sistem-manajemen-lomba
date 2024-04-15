@@ -1,8 +1,11 @@
 import ErrorToast from "@/Components/ErrorToast";
 import SuccessToast from "@/Components/SuccessToast";
+import { usePage } from "@inertiajs/react";
 import Navbar from "./partials/Navbar";
 
-const PublicLayout = ({ children, flash }) => {
+const PublicLayout = ({ children }) => {
+    const { flash } = usePage().props;
+
     return (
         <div className="relative">
             <Navbar />

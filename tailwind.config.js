@@ -132,6 +132,13 @@ export default {
                     "50%": { transform: "rotate(0deg)" },
                 },
             },
+            width: {
+                "1/5": "20%",
+                "4/5": "80%",
+            },
+            margin: {
+                "ms-4": "1rem",
+            },
             maxWidth: {
                 2.5: "0.625rem",
                 3: "0.75rem",

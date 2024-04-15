@@ -263,7 +263,7 @@ const SignUp = ({ availableGenders: genders }) => {
                             <div className="flex  items-center justify-end gap-2">
                                 <Button
                                     type="button"
-                                    disabled={formStep == 1}
+                                    disabled={formStep == 1 || processing}
                                     onClick={prevStep}
                                 >
                                     <CircleArrowLeft className="h-6 w-6 md:mr-2" />{" "}
@@ -272,7 +272,11 @@ const SignUp = ({ availableGenders: genders }) => {
                                     </span>
                                 </Button>
                                 {formStep == 1 ? (
-                                    <Button type="button" onClick={nextStep}>
+                                    <Button
+                                        type="button"
+                                        onClick={nextStep}
+                                        disabled={processing}
+                                    >
                                         <span className="hidden md:inline">
                                             Lanjut
                                         </span>

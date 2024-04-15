@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ContestResource;
 use App\Models\Contest;
+use App\Notifications\ContestRegistrationNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -12,13 +13,25 @@ class GuestController extends Controller
 {
     public function getActivePerlombaan()
     {
-        $query = Contest::query();
-        $query->where('isActive', true);
-        $query->orderByDesc('created_at');
+        $user = auth()->user();
 
+        // Mulai dengan semua kontes yang aktif
+        $query = Contest::where('isActive', true);
+
+        // Jika pengguna terautentikasi, cari kontes yang tidak berhubungan dengan pengguna
+        if ($user) {
+            $query->whereDoesntHave('users', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        // Tambahkan kriteria pencarian jika ada
         if (request("title")) {
             $query->where("title", "like", "%" . request("title") . "%");
         }
+
+        // Urutkan hasil berdasarkan waktu pembuatan
+        $query->orderByDesc('created_at');
 
         return Inertia::render('Public/PerlombaanAllPage/Page', [
             'contests' => ContestResource::collection($query->get()),
@@ -52,15 +65,18 @@ class GuestController extends Controller
 
     public function assignUserToContest(Contest $contest)
     {
+        $user = auth()->user();
         DB::beginTransaction();
 
-        $hasParticipated = $contest->users()->where('user_id', auth()->user()->id)->exists();
+        $hasParticipated = $contest->users()->where('user_id', $user->id)->exists();
 
         if (!$hasParticipated) {
             try {
                 $contest->users()->attach(auth()->user()->id);
 
                 DB::commit();
+
+                $user->notify(new ContestRegistrationNotification($contest));
 
                 return to_route('profile.index')->with([
                     'fragment' => 'contest-section',

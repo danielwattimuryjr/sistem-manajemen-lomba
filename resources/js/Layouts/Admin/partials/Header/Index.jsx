@@ -4,8 +4,8 @@ import DropdownUser from "./DropwdownUser";
 
 const Header = (props) => {
     return (
-        <header className="z-999 drop-shadow-1  sticky top-0 flex w-full bg-white">
-            <div className="shadow-2 flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
+        <header className="sticky top-0  z-999 flex w-full bg-white drop-shadow-1">
+            <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                 <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
                     {/* <!-- Hamburger Toggle BTN --> */}
                     <button
@@ -14,9 +14,9 @@ const Header = (props) => {
                             e.stopPropagation();
                             props.setSidebarOpen(!props.sidebarOpen);
                         }}
-                        className="z-99999 border-stroke  block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
+                        className="border-stroke z-99999  block rounded-sm border bg-white p-1.5 shadow-sm lg:hidden"
                     >
-                        <span className="h-5.5 w-5.5 relative block cursor-pointer">
+                        <span className="relative block h-5.5 w-5.5 cursor-pointer">
                             <span className="du-block absolute right-0 h-full w-full">
                                 <span
                                     className={cn(
@@ -58,12 +58,15 @@ const Header = (props) => {
                     </button>
                     {/* <!-- Hamburger Toggle BTN --> */}
 
-                    <Link className="block flex-shrink-0 lg:hidden" href="/">
+                    <Link
+                        className="block flex-shrink-0 lg:hidden"
+                        href={route("admin.dashboard")}
+                    >
                         AdminPanel
                     </Link>
                 </div>
 
-                <div className="2xsm:gap-7 flex w-full items-center justify-end gap-3">
+                <div className="flex w-full items-center justify-end gap-3 2xsm:gap-7">
                     {/* <!-- User Area --> */}
                     <DropdownUser />
                     {/* <!-- User Area --> */}

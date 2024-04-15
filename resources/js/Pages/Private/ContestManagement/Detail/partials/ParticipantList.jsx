@@ -1,20 +1,19 @@
 import FilterComponent from "@/Components/FilterComponent";
-import PageTitle from "@/Components/PageHeader";
 import { formatDate } from "@/lib/utils";
 import { Card } from "flowbite-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const MyContest = ({ contests }) => {
+const ParticipantList = ({ data }) => {
     const [filterText, setFilterText] = useState("");
 
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-    // Funciton untuk handle filter by title
-    const filteredItems = contests.filter(
+    // Funciton untuk handle filter by full_name
+    const filteredItems = data.users.filter(
         (item) =>
-            item.title &&
-            item.title.toLowerCase().includes(filterText.toLowerCase()),
+            item.full_name &&
+            item.full_name.toLowerCase().includes(filterText.toLowerCase()),
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -36,41 +35,44 @@ const MyContest = ({ contests }) => {
 
     const columns = [
         {
-            name: "Perlombaan",
+            name: "Nama",
             sortable: true,
-            selector: (row) => row.title,
+            selector: (row) => row.full_name,
         },
         {
-            name: "Tgl. Mulai",
+            name: "Email",
             sortable: true,
-            selector: (row) => row.start_date,
-        },
-        {
-            name: "Tgl. Selesai",
-            sortable: true,
-            selector: (row) => row.end_date,
+            selector: (row) => row.email,
+            cell: (row) => (
+                <a href={"mailto:" + row.email} target="_blank">
+                    {row.email}
+                </a>
+            ),
         },
         {
             name: "Tgl. Daftar",
             sortable: true,
-            selector: (row) => formatDate(row.pivot.created_at),
+            selector: (row) => formatDate(row.participated_at),
         },
     ];
 
     return (
-        <div className="w-full space-y-5" id="contest-section">
-            <PageTitle title={"Perlombaan yang saya ikuti"} />
-            <Card>
-                <DataTable
-                    data={filteredItems}
-                    columns={columns}
-                    pagination
-                    subHeader
-                    subHeaderComponent={subHeaderComponentMemo}
-                />
-            </Card>
-        </div>
+        <Card>
+            <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white ">
+                Daftar Peserta
+            </h5>
+
+            <p>Total Peserta: {data.current}</p>
+
+            <DataTable
+                data={filteredItems}
+                columns={columns}
+                pagination
+                subHeader
+                subHeaderComponent={subHeaderComponentMemo}
+            />
+        </Card>
     );
 };
 
-export default MyContest;
+export default ParticipantList;
