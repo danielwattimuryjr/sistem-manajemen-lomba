@@ -25,7 +25,7 @@ const ContestDetailPage = ({ contest: { data } }) => {
                 {/* Card Jadwal */}
                 <Schedule
                     start_date={data.start_date}
-                    end_date={data.end_data}
+                    end_date={data.end_date}
                 />
 
                 {/* Card Deskripsi */}

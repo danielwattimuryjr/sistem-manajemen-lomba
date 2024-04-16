@@ -1,10 +1,13 @@
-import { Head } from "@inertiajs/react";
+import ErrorToast from "@/Components/ErrorToast";
+import SuccessToast from "@/Components/SuccessToast";
+import { Head, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import Header from "./partials/Header/Index";
 import Sidebar from "./partials/Sidebar/Index";
 
 const AdminLayout = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { flash } = usePage().props;
 
     return (
         <>
@@ -39,6 +42,13 @@ const AdminLayout = ({ children }) => {
                     {/* <!-- ===== Content Area End ===== --> */}
                 </div>
                 {/* <!-- ===== Page Wrapper End ===== --> */}
+
+                {flash?.message?.type == "success" && (
+                    <SuccessToast message={flash.message.text} />
+                )}
+                {flash?.message?.type == "error" && (
+                    <ErrorToast message={flash.message.text} />
+                )}
             </div>
         </>
     );

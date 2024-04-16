@@ -75,7 +75,7 @@ const ManageAdminPage = ({ users: { data } }) => {
                                         row.uuid,
                                     )}
                                 >
-                                    <FilePenLine className="h-5" />
+                                    <FilePenLine className="h-4 w-4" />
                                 </Button>
                             </Tooltip>
                             <Tooltip content="Hapus Data admin">
@@ -84,7 +84,7 @@ const ManageAdminPage = ({ users: { data } }) => {
                                     size="sm"
                                     onClick={() => setOpenModal(true)}
                                 >
-                                    <Trash2 className="h-5" />
+                                    <Trash2 className="h-4 w-4" />
                                 </Button>
                             </Tooltip>
                         </div>
@@ -134,7 +134,7 @@ const ManageAdminPage = ({ users: { data } }) => {
     return (
         <AdminLayout>
             <PageTitle
-                title={"All Admin"}
+                title={"All Admins"}
                 description={
                     "Di halaman ini kamu dapat melihat seluruh data user admin yang ada"
                 }

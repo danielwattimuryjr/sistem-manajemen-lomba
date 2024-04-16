@@ -22,8 +22,8 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         $genders = [
-            'male' => GenderEnum::MALE,
-            'female' => GenderEnum::FEMALE,
+            GenderEnum::MALE,
+            GenderEnum::FEMALE,
         ];
 
         return Inertia::render('Auth/SignUp', [

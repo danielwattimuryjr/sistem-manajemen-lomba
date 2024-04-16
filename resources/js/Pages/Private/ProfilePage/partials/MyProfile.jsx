@@ -87,31 +87,22 @@ const MyProfile = ({ user, genders, queryParams, toggleEditMode }) => {
                                         </Label>
                                     </div>
                                     <div className="flex flex-row gap-x-5">
-                                        <div className="flex items-center gap-2">
-                                            <Radio
-                                                id={genders.male}
-                                                value={genders.male}
-                                                name="gender"
-                                                checked={
-                                                    data.gender === genders.male
-                                                }
-                                                onChange={handleGenderChange}
-                                            />
-                                            <Label>{genders.male}</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Radio
-                                                id={genders.female}
-                                                value={genders.female}
-                                                name="gender"
-                                                checked={
-                                                    data.gender ===
-                                                    genders.female
-                                                }
-                                                onChange={handleGenderChange}
-                                            />
-                                            <Label>{genders.female}</Label>
-                                        </div>
+                                        {genders.map((gender) => (
+                                            <div className="flex items-center gap-2">
+                                                <Radio
+                                                    id={gender}
+                                                    value={gender}
+                                                    name="gender"
+                                                    checked={
+                                                        data.gender === gender
+                                                    }
+                                                    onChange={
+                                                        handleGenderChange
+                                                    }
+                                                />
+                                                <Label>{gender}</Label>
+                                            </div>
+                                        ))}
                                     </div>
                                 </>
                             ) : (

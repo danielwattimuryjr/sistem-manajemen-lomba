@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAdminManagementRequest;
 use App\Http\Requests\UpdateAdminManagementRequest;
-use App\Http\Resources\AdminResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +18,7 @@ class AdminManagementController extends Controller
         $query->whereHasRole('ADMIN')->orderByDesc('created_at');
 
         return Inertia::render('Private/AdminManagement/Index', [
-            'users' => AdminResource::collection($query->get()),
+            'users' => UserResource::collection($query->get()),
         ]);
     }
 
@@ -35,7 +35,13 @@ class AdminManagementController extends Controller
 
             DB::commit();
 
-            return to_route('admin-management.index')->with('success', 'Berhasil menambahkan Admin baru');
+            return to_route('admin-management.index')->with(
+                'message',
+                [
+                    'type' => 'success',
+                    'text' => 'Berhasil menambahkan Admin baru'
+                ]
+            );
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Exception caught: ' . $th->getMessage(), [
@@ -44,14 +50,17 @@ class AdminManagementController extends Controller
                 'trace' => $th->getTraceAsString(),
             ]);
 
-            return back()->with('error', "Gagal menambahkan data Admin baru.");
+            return back()->with('message', [
+                'type' => 'error',
+                "text" => "Gagal menambahkan data Admin baru."
+            ]);
         }
     }
 
     public function edit(User $user)
     {
         return Inertia::render('Private/AdminManagement/Edit', [
-            'user' => new AdminResource($user)
+            'user' => new UserResource($user)
         ]);
     }
 
@@ -64,7 +73,10 @@ class AdminManagementController extends Controller
 
             DB::commit();
 
-            return to_route('admin-management.index')->with('success', 'Berhasil mengupdate Admin');
+            return to_route('admin-management.index')->with('message', [
+                "type" => "success",
+                "text" => 'Berhasil mengupdate Admin'
+            ]);
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Exception caught: ' . $th->getMessage(), [
@@ -73,7 +85,10 @@ class AdminManagementController extends Controller
                 'trace' => $th->getTraceAsString(),
             ]);
 
-            return back()->with('error', "Gagal mengupdate data ADMIN.");
+            return back()->with('message', [
+                "type" => "error",
+                "text" => "Gagal mengupdate data ADMIN."
+            ]);
         }
     }
 
@@ -85,7 +100,10 @@ class AdminManagementController extends Controller
 
             DB::commit();
 
-            return to_route('admin-management.index')->with('success', 'Admin berhasil dihapus!');
+            return to_route('admin-management.index')->with('message', [
+                "type" => "success",
+                "text" => 'Admin berhasil dihapus!'
+            ]);
         } catch (\Throwable $th) {
             Log::error('Exception caught: ' . $th->getMessage(), [
                 'file' => $th->getFile(),
@@ -95,7 +113,10 @@ class AdminManagementController extends Controller
 
             DB::rollBack();
 
-            return back()->with('error', "Gagal menghapus data Admin");
+            return back()->with('message', [
+                "type" => "error",
+                "message" => "Gagal menghapus data Admin"
+            ]);
         }
     }
 }

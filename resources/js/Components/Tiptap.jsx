@@ -33,7 +33,9 @@ const Tiptap = ({ content, onChange, error }) => {
         content,
         editorProps: {
             attributes: {
-                class: " mt-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-700 leading-normal",
+                class: `mt-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-700 leading-normal h-50 overflow-auto ${
+                    error && "border-red-500"
+                }`,
             },
         },
         onUpdate: ({ editor }) => {

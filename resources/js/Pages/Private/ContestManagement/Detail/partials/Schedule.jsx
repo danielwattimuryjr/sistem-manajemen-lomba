@@ -12,7 +12,7 @@ const Schedule = ({ start_date, end_date }) => {
                         <span className=" hidden lg:inline">Tanggal</span>
                         <span className="">Mulai</span>
                     </div>
-                    <p>{start_date}</p>
+                    <p>{start_date || "-"}</p>
                 </div>
 
                 <div className="w-1/3 flex-1 text-center">
@@ -20,7 +20,7 @@ const Schedule = ({ start_date, end_date }) => {
                         <span className=" hidden lg:inline">Tanggal</span>
                         <span className="">Selesai</span>
                     </div>
-                    <p>{end_date}</p>
+                    <p>{end_date || "-"}</p>
                 </div>
             </div>
         </Card>

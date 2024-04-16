@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/utils";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
 import { CircleArrowLeft, CircleArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const SignUp = ({ availableGenders: genders }) => {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -48,12 +48,6 @@ const SignUp = ({ availableGenders: genders }) => {
     const handleGenderChange = (e) => {
         setData("gender", e.target.value);
     };
-
-    useEffect(() => {
-        return () => {
-            reset("password", "password_confirmation");
-        };
-    }, []);
 
     // Function untuk toggle password visibility
     const togglePasswordVisibility = () => {
@@ -144,7 +138,7 @@ const SignUp = ({ availableGenders: genders }) => {
                                         </div>
                                         <div className="ml-3 text-sm">
                                             <Label className="text-gray-500">
-                                                Lihat Password
+                                                Perlihatkan Password
                                             </Label>
                                         </div>
                                     </div>
@@ -188,31 +182,22 @@ const SignUp = ({ availableGenders: genders }) => {
                                         </Label>
                                     </div>
                                     <div className="flex flex-row gap-x-5">
-                                        <div className="flex items-center gap-2">
-                                            <Radio
-                                                id={genders.male}
-                                                value={genders.male}
-                                                name="gender"
-                                                checked={
-                                                    data.gender === genders.male
-                                                }
-                                                onChange={handleGenderChange}
-                                            />
-                                            <Label>{genders.male}</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Radio
-                                                id={genders.female}
-                                                value={genders.female}
-                                                name="gender"
-                                                checked={
-                                                    data.gender ===
-                                                    genders.female
-                                                }
-                                                onChange={handleGenderChange}
-                                            />
-                                            <Label>{genders.female}</Label>
-                                        </div>
+                                        {genders.map((gender) => (
+                                            <div className="flex items-center gap-2">
+                                                <Radio
+                                                    id={gender}
+                                                    value={gender}
+                                                    name="gender"
+                                                    checked={
+                                                        data.gender === gender
+                                                    }
+                                                    onChange={
+                                                        handleGenderChange
+                                                    }
+                                                />
+                                                <Label>{gender}</Label>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 

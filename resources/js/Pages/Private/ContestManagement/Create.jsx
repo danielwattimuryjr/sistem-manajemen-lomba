@@ -119,26 +119,26 @@ const ContestCreatePage = () => {
                         </div>
                     </div>
 
-                    <Button
-                        type="submit"
-                        color="blue"
-                        className="w-full"
-                        disabled={processing}
-                        isProcessing={processing}
-                    >
-                        <Save className="mr-2 h-5 w-5" />
-                        Simpan
-                    </Button>
+                    <div className="mt-4 flex flex-row-reverse gap-2">
+                        <Button
+                            type="submit"
+                            color="blue"
+                            disabled={processing}
+                            isProcessing={processing}
+                        >
+                            <Save className="mr-2 h-5 w-5" />
+                            Simpan
+                        </Button>
 
-                    <Button
-                        type="reset"
-                        color="failure"
-                        className="w-full"
-                        disabled={processing}
-                    >
-                        <CircleX className="mr-2 h-5 w-5" />
-                        Clear
-                    </Button>
+                        <Button
+                            type="reset"
+                            color="failure"
+                            disabled={processing}
+                        >
+                            <CircleX className="mr-2 h-5 w-5" />
+                            Clear
+                        </Button>
+                    </div>
                 </form>
             </Card>
         </AdminLayout>

@@ -120,13 +120,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             </li>
                             {/* <!-- Menu Contest Management --> */}
 
+                            {/* <!-- Menu Guest Management --> */}
+                            <li>
+                                <NavLink
+                                    href={route("guest-management.index")}
+                                    Icon={Users}
+                                    label={"Manage Guests"}
+                                    isActive={route().current(
+                                        "*guest-management*",
+                                    )}
+                                />
+                            </li>
+                            {/* <!-- Menu Guest Management --> */}
+
                             {user?.role === "SUPERADMIN" && (
                                 /* <!-- Menu Admin Management --> */
                                 <li>
                                     <NavLink
                                         href={route("admin-management.index")}
                                         Icon={Users}
-                                        label={"Manage Admin"}
+                                        label={"Manage Admins"}
                                         isActive={route().current(
                                             "*admin-management*",
                                         )}

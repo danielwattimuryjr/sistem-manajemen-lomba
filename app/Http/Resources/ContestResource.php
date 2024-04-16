@@ -14,6 +14,7 @@ class ContestResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($this);
         $contest = [
             'title' => $this->title,
             'description' => $this->description,

@@ -14,8 +14,8 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         $genders = [
-            'male' => GenderEnum::MALE,
-            'female' => GenderEnum::FEMALE,
+            GenderEnum::MALE,
+            GenderEnum::FEMALE,
         ];
 
         $contests = $user->contests;

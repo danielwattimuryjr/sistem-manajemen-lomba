@@ -65,29 +65,29 @@ const EditAdminPage = ({ user: { data: userData } }) => {
                         />
                     </div>
 
-                    {/* Submit Button */}
-                    <Button
-                        type="submit"
-                        color="warning"
-                        className="w-full"
-                        disabled={processing}
-                        isProcessing={processing}
-                    >
-                        <FilePenLine className="mr-2 h-5 w-5" />
-                        Update
-                    </Button>
+                    <div className="mt-4 flex flex-row-reverse gap-2">
+                        {/* Submit Button */}
+                        <Button
+                            type="submit"
+                            color="warning"
+                            disabled={processing}
+                            isProcessing={processing}
+                        >
+                            <FilePenLine className="mr-2 h-5 w-5" />
+                            Update
+                        </Button>
 
-                    {/* Clear Button */}
-                    <Button
-                        type="reset"
-                        color="failure"
-                        className="w-full"
-                        disabled={processing}
-                        isProcessing={processing}
-                    >
-                        <CircleX className="mr-2 h-5 w-5" />
-                        Clear
-                    </Button>
+                        {/* Clear Button */}
+                        <Button
+                            type="reset"
+                            color="failure"
+                            disabled={processing}
+                            isProcessing={processing}
+                        >
+                            <CircleX className="mr-2 h-5 w-5" />
+                            Clear
+                        </Button>
+                    </div>
                 </form>
             </Card>
         </AdminLayout>

@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\GuestManagementController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,9 +58,11 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
         Route::resources([
             // Routes untuk manajemen lomba
             'perlombaan' => ContestController::class,
+            'guest-management' => GuestManagementController::class
         ], [
             'parameters' => [
                 'perlombaan' => 'contest:slug',
+                'guest-management' => 'user:uuid'
             ]
         ]);
     });
