@@ -7,8 +7,9 @@ import { SendHorizonal } from "lucide-react";
 
 const ContactPage = () => {
     const { data, setData, post, processing, errors, reset } = useForm({
+        name: "",
         sender_mail: "",
-        subject: "",
+        title: "",
         description: "",
     });
 
@@ -35,46 +36,47 @@ const ContactPage = () => {
             <Card>
                 <div className="mx-auto w-full max-w-screen-md px-2 py-4 lg:py-8">
                     <form onSubmit={submit} className="space-y-8">
-                        <div>
-                            <InputText
-                                type={"email"}
-                                value={data.sender_mail}
-                                placeholder={"john.doe@mail.com"}
-                                label={"Email mu"}
-                                color={errors.sender_mail && "failure"}
-                                helperText={errors.sender_mail}
-                                onChange={(e) =>
-                                    setData("sender_mail", e.target.value)
-                                }
-                            />
-                        </div>
-                        <div>
-                            <InputText
-                                placeholder={
-                                    "Beritahukan kami apa yang bisa kami bantu"
-                                }
-                                value={data.subject}
-                                label={"Subyek"}
-                                color={errors.subject && "failure"}
-                                helperText={errors.subject}
-                                onChange={(e) =>
-                                    setData("subject", e.target.value)
-                                }
-                            />
-                        </div>
-                        <div className="sm:col-span-2">
-                            <TextareaInput
-                                rows={6}
-                                label={"Deskripsi"}
-                                placeholder={"Deskripsikan lebih detail..."}
-                                value={data.description}
-                                color={errors.description && "failure"}
-                                helperText={errors.description}
-                                onChange={(e) =>
-                                    setData("description", e.target.value)
-                                }
-                            />
-                        </div>
+                        <InputText
+                            value={data.name}
+                            placeholder={"john.doe@mail.com"}
+                            label={"Nama"}
+                            color={errors.name && "failure"}
+                            helperText={errors.name}
+                            onChange={(e) => setData("name", e.target.value)}
+                        />
+
+                        <InputText
+                            type={"email"}
+                            value={data.sender_mail}
+                            placeholder={"john.doe@mail.com"}
+                            label={"Email"}
+                            color={errors.sender_mail && "failure"}
+                            helperText={errors.sender_mail}
+                            onChange={(e) =>
+                                setData("sender_mail", e.target.value)
+                            }
+                        />
+
+                        <InputText
+                            value={data.title}
+                            label={"Apa yang bisa kami bantu?"}
+                            color={errors.title && "failure"}
+                            helperText={errors.title}
+                            onChange={(e) => setData("title", e.target.value)}
+                        />
+
+                        <TextareaInput
+                            rows={6}
+                            label={"Deskripsi"}
+                            placeholder={"Deskripsikan lebih detail..."}
+                            value={data.description}
+                            color={errors.description && "failure"}
+                            helperText={errors.description}
+                            onChange={(e) =>
+                                setData("description", e.target.value)
+                            }
+                        />
+
                         <Button
                             isProcessing={processing}
                             disabled={processing}

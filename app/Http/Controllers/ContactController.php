@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactFormRequest;
+use App\Mail\ContactMail;
 use App\Notifications\ContactSubmittedNotification;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class ContactController extends Controller
@@ -15,11 +17,19 @@ class ContactController extends Controller
 
     public function sendMail(ContactFormRequest $request)
     {
-        // Mengirim notifikasi ke user
         $user = auth()->user();
-        $user->notify(new ContactSubmittedNotification());
+        if ($user) {
+            $user->notify(new ContactSubmittedNotification());
+        }
 
-        // TODO: KIRIM EMAIL KE TIM SUPPORT 
+        Mail::to(env("MAIL_FROM_ADDRESS", "daniel032902@gmail.com"))->send(
+            new ContactMail(
+                $request->sender_mail,
+                $request->name,
+                $request->title,
+                $request->description
+            )
+        );
 
         return back()->with('message', [
             'type' => 'success',
