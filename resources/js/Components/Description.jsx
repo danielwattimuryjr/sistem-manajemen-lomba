@@ -3,7 +3,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
 const Description = ({ description }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     const toggleOpen = () => {
         setOpen(!open);

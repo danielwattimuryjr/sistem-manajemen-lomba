@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Enum\GenderEnum;
 use App\Http\Requests\StoreGuestManagementRequest;
 use App\Http\Requests\UpdateGuestManagementRequest;
-use App\Http\Resources\ContestResource;
-use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Log;
@@ -20,11 +17,19 @@ class GuestManagementController extends Controller
      */
     public function index()
     {
+        $data = User::whereHasRole('GUEST')
+            ->orderByDesc('created_at')
+            ->get([
+                'full_name',
+                'email',
+                'uuid'
+            ]);
         $users = User::whereHasRole("GUEST")->orderByDesc('created_at');
 
-        return inertia()->render('Private/GuestManagement/Index', [
-            'guests' => UserResource::collection($users->get())
-        ]);
+        return inertia()->render(
+            'Private/GuestManagement/Index',
+            compact('data')
+        );
     }
 
     /**
@@ -37,9 +42,10 @@ class GuestManagementController extends Controller
             GenderEnum::FEMALE,
         ];
 
-        return inertia()->render('Private/GuestManagement/Create', [
-            'availableGenders' => $genders,
-        ]);
+        return inertia()->render(
+            'Private/GuestManagement/Create',
+            compact('genders')
+        );
     }
 
     /**
@@ -84,10 +90,31 @@ class GuestManagementController extends Controller
     public function show(User $user)
     {
         $user->load('contests');
-
-        return inertia()->render('Private/GuestManagement/Show/Page', [
-            'user' => $user->only(['uuid', 'full_name', 'd_o_b', 'phone_number', 'address', 'gender', 'contests']),
+        
+        $data = $user->only([
+            'nik',
+            'uuid', 
+            'full_name', 
+            'd_o_b', 
+            'phone_number', 
+            'address', 
+            'gender', 
+            'contests'
         ]);
+
+        $contests = $user->contests->map(function ($contest) use ($user) {
+            $pivot = $contest->pivot->only('created_at');
+            return array_merge($contest->only([
+                'title',
+                'start_date',
+                'end_date'
+            ]), $pivot);
+        });
+
+        return inertia()->render(
+            'Private/GuestManagement/Show',
+            compact('data', 'contests')
+        );
     }
 
     /**
@@ -95,15 +122,27 @@ class GuestManagementController extends Controller
      */
     public function edit(User $user)
     {
+        $data = $user->only([
+            'nik',
+            'email',
+            'uuid', 
+            'full_name', 
+            'd_o_b', 
+            'phone_number', 
+            'address', 
+            'gender', 
+            'contests'
+        ]);
+
         $genders = [
             GenderEnum::MALE,
             GenderEnum::FEMALE,
         ];
 
-        return inertia()->render('Private/GuestManagement/Edit', [
-            'user' => new UserResource($user),
-            'availableGenders' => $genders,
-        ]);
+        return inertia()->render(
+            'Private/GuestManagement/Edit',
+            compact('data', 'genders')
+        );
     }
 
     /**

@@ -1,13 +1,13 @@
+import Description from "@/Components/Description";
 import PageTitle from "@/Components/PageHeader";
+import ParticipantList from "@/Components/ParticipantList";
+import Schedule from "@/Components/Schedule";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link } from "@inertiajs/react";
 import { Button } from "flowbite-react";
 import { FilePenLine } from "lucide-react";
-import Description from "./partials/Description";
-import ParticipantList from "./partials/ParticipantList";
-import Schedule from "./partials/Schedule";
 
-const ContestDetailPage = ({ contest: { data } }) => {
+const ContestDetailPage = ({ data, participants }) => {
     return (
         <AdminLayout>
             <PageTitle title={data.title}>
@@ -32,7 +32,7 @@ const ContestDetailPage = ({ contest: { data } }) => {
                 <Description description={data.description} />
 
                 {/* Card  Peserta */}
-                <ParticipantList data={data.participants} />
+                <ParticipantList data={participants} />
             </section>
         </AdminLayout>
     );

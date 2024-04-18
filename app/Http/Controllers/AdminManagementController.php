@@ -14,12 +14,18 @@ class AdminManagementController extends Controller
 {
     public function index()
     {
-        $query = User::query();
-        $query->whereHasRole('ADMIN')->orderByDesc('created_at');
-
-        return Inertia::render('Private/AdminManagement/Index', [
-            'users' => UserResource::collection($query->get()),
-        ]);
+        $data = User::whereHasRole('ADMIN')
+            ->orderByDesc('created_at')
+            ->get([
+                'full_name',
+                'email',
+                'uuid'
+            ]);
+        
+        return Inertia::render(
+            'Private/AdminManagement/Index', 
+            compact('data')
+        );
     }
 
     public function create()
@@ -59,9 +65,16 @@ class AdminManagementController extends Controller
 
     public function edit(User $user)
     {
-        return Inertia::render('Private/AdminManagement/Edit', [
-            'user' => new UserResource($user)
+        $data = $user->only([
+            'full_name',
+            'email',
+            'uuid'
         ]);
+
+        return Inertia::render(
+            'Private/AdminManagement/Edit',
+            compact('data')
+        );
     }
 
     public function update(User $user, UpdateAdminManagementRequest $request)
@@ -69,7 +82,14 @@ class AdminManagementController extends Controller
         DB::beginTransaction();
 
         try {
-            $user->update($request->validated());
+            $validatedData = $request->validated();
+
+            // Remove password field if it's null
+            if (!$request->filled('password')) {
+                unset($validatedData['password']);
+            }
+
+            $user->update($validatedData);
 
             DB::commit();
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ContestResource;
 use App\Models\Contest;
 use App\Notifications\ContestRegistrationNotification;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +13,6 @@ class GuestController extends Controller
     public function getActivePerlombaan()
     {
         $user = auth()->user();
-
         // Mulai dengan semua kontes yang aktif
         $query = Contest::where('isActive', true);
 
@@ -32,9 +30,22 @@ class GuestController extends Controller
 
         // Urutkan hasil berdasarkan waktu pembuatan
         $query->orderByDesc('created_at');
+        $query->get([
+            'title',
+            'start_date',
+            'end_date',
+            'slug',
+            'quota'
+        ]);
 
         return Inertia::render('Public/PerlombaanAllPage/Page', [
-            'contests' => ContestResource::collection($query->get()),
+            'data' =>  $query->get([
+                'title',
+                'start_date',
+                'end_date',
+                'slug',
+                'quota'
+            ]),
             'queryParams' => request()->query() ?: null,
         ]);
     }
@@ -55,8 +66,16 @@ class GuestController extends Controller
             $available = $participant < $contest->quota;
         }
 
+        $data = $contest->only([
+            'title',
+            'start_date',
+            'end_date',
+            'slug',
+            'description'
+        ]);
+
         return Inertia::render('Public/PerlombaanDetail', [
-            'contest' => new ContestResource($contest),
+            'contest' => $data,
             'available' => $available,
             'hasParticipated' => $hasParticipated
         ]);

@@ -38,6 +38,10 @@ class UpdateAdminManagementRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($this->user->id),
             ],
+            'password' => [
+                'sometimes',
+                'confirmed',
+            ],
         ];
     }
 

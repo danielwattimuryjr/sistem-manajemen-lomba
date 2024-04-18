@@ -7,10 +7,10 @@ import { Eye, FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const Index = ({ guests: { data } }) => {
+const Index = ({ data }) => {
     // State untuk modal dan form
     const [openModal, setOpenModal] = useState(false);
-    const { delete: destroy, processing, errors } = useForm();
+    const { delete: destroy } = useForm();
 
     // State untuk data table
     const [filterText, setFilterText] = useState("");

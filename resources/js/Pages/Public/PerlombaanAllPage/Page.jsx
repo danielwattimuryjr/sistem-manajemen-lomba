@@ -3,7 +3,7 @@ import { Head, router } from "@inertiajs/react";
 import ContestCard from "./partials/ContestCard";
 import Searchbar from "./partials/Searchbar";
 
-const PerlombaanAll = ({ contests: { data }, queryParams = null }) => {
+const PerlombaanAll = ({ data, queryParams = null }) => {
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
         if (value) {

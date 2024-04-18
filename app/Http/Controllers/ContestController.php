@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContestRequest;
 use App\Http\Requests\UpdateContestRequest;
-use App\Http\Resources\ContestResource;
 use App\Models\Contest;
 use Illuminate\Support\Facades\{
     DB,
@@ -19,12 +18,18 @@ class ContestController extends Controller
      */
     public function index()
     {
-        $query = Contest::query();
-        $query->orderByDesc("created_at");
-
-        return Inertia::render('Private/ContestManagement/Index', [
-            'contests' => ContestResource::collection($query->get()),
+        $contests = Contest::orderByDesc("created_at")->get([
+            'title',
+            'slug',
+            'start_date',
+            'end_date',
+            'isActive'
         ]);
+
+        return Inertia::render(
+            'Private/ContestManagement/Index', 
+            compact('contests')
+        );
     }
 
     /**
@@ -73,9 +78,28 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        return Inertia::render('Private/ContestManagement/Detail/Page', [
-            'contest' => new ContestResource($contest->load('users'))
+        $contest->load('users');
+
+        $data = $contest->only([
+            'title',
+            'slug',
+            'start_date',
+            'end_date',
+            'description'
         ]);
+
+        $participants = $contest->users->map(function ($user) use ($contest) {
+            $pivot = $user->pivot->only('created_at');
+            return array_merge($user->only([
+                'full_name',
+                'email',
+            ]), $pivot);
+        });
+
+        return Inertia::render(
+            'Private/ContestManagement/Detail', 
+            compact('data', 'participants')
+        );
     }
 
     /**
@@ -83,9 +107,20 @@ class ContestController extends Controller
      */
     public function edit(Contest $contest)
     {
-        return Inertia::render('Private/ContestManagement/Edit', [
-            'contest' => new ContestResource($contest)
+        $data = $contest->only([
+            'title',
+            'quota',
+            'description',
+            'slug',
+            'isActive',
+            'end_date',
+            'start_date'
         ]);
+
+        return Inertia::render(
+            'Private/ContestManagement/Edit', 
+            compact('data')
+        );
     }
 
     /**

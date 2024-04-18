@@ -1,10 +1,14 @@
 import { Card } from "flowbite-react";
+import PageTitle from "./PageHeader";
 
-const ProfileCard = ({ data }) => {
+const UserProfileCard = ({ data, title, footer, ...props }) => {
     return (
         <div className="space-y-5" id="profile-section">
             <Card>
+                {title && <PageTitle title={title} />}
+
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+                    {/* NIK */}
                     <div>
                         <div className="mb-2 block">
                             <p className="font-bold">NIK : </p>
@@ -13,7 +17,6 @@ const ProfileCard = ({ data }) => {
                     </div>
 
                     {/* Nama Lengkap */}
-
                     <div>
                         <div className="mb-2 block">
                             <p className="font-bold">Nama Lengkap : </p>
@@ -29,6 +32,7 @@ const ProfileCard = ({ data }) => {
                         <p>{data.gender || "-"}</p>
                     </div>
 
+                    {/* Tanggal Lahir */}
                     <div>
                         <div className="mb-2 block">
                             <p className="font-bold">Tanggal Lahir : </p>
@@ -36,6 +40,7 @@ const ProfileCard = ({ data }) => {
                         <p>{data.d_o_b || "-"}</p>
                     </div>
 
+                    {/* Nomor Telepon */}
                     <div>
                         <div className="mb-2 block">
                             <p className="font-bold">Nomor Telepon : </p>
@@ -44,7 +49,6 @@ const ProfileCard = ({ data }) => {
                     </div>
 
                     {/* Alamat */}
-
                     <div>
                         <div className="mb-2 block">
                             <p className="font-bold">Alamat : </p>
@@ -52,9 +56,11 @@ const ProfileCard = ({ data }) => {
                         <p>{data.address || "-"}</p>
                     </div>
                 </div>
+
+                {footer && <div className="mt-4">{footer}</div>}
             </Card>
         </div>
     );
 };
 
-export default ProfileCard;
+export default UserProfileCard;

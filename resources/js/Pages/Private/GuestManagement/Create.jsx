@@ -9,7 +9,7 @@ import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import { useState } from "react";
 
-const Create = ({ availableGenders: genders }) => {
+const Create = ({ genders }) => {
     // State untuk visibility password
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 

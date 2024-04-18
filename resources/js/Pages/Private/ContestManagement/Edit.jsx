@@ -9,20 +9,20 @@ import { Button, Card, Label } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import slugify from "react-slugify";
 
-const ContestEditPage = ({ contest: { data: contestData } }) => {
+const ContestEditPage = ({ data: contest }) => {
     const { data, setData, patch, processing, errors } = useForm({
-        title: contestData.title,
-        quota: contestData.quota,
-        description: contestData.description,
-        slug: contestData.slug,
-        isActive: contestData.isActive,
-        end_date: formatDate(contestData.end_date),
-        start_date: formatDate(contestData.start_date),
+        title: contest.title,
+        quota: contest.quota,
+        description: contest.description,
+        slug: contest.slug,
+        isActive: contest.isActive,
+        end_date: formatDate(contest.end_date),
+        start_date: formatDate(contest.start_date),
     });
 
     const updateData = (e) => {
         e.preventDefault();
-        patch(route("perlombaan.update", contestData.slug));
+        patch(route("perlombaan.update", contest.slug));
     };
 
     return (

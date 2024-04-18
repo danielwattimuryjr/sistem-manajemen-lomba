@@ -5,7 +5,7 @@ import { Card } from "flowbite-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const MyContest = ({ contests }) => {
+const UserContestCard = ({ contests, title, footer }) => {
     const [filterText, setFilterText] = useState("");
 
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -53,14 +53,14 @@ const MyContest = ({ contests }) => {
         {
             name: "Tgl. Daftar",
             sortable: true,
-            selector: (row) => formatDate(row.pivot.created_at),
+            selector: (row) => formatDate(row.created_at),
         },
     ];
 
     return (
         <div className="w-full space-y-5" id="contest-section">
-            <PageTitle title={"Perlombaan yang saya ikuti"} />
             <Card>
+                {title && <PageTitle title={title} />}
                 <DataTable
                     data={filteredItems}
                     columns={columns}
@@ -68,9 +68,11 @@ const MyContest = ({ contests }) => {
                     subHeader
                     subHeaderComponent={subHeaderComponentMemo}
                 />
+
+                {footer && <div className="mt-4">{footer}</div>}
             </Card>
         </div>
     );
 };
 
-export default MyContest;
+export default UserContestCard;

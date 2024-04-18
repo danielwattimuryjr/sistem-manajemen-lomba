@@ -7,7 +7,7 @@ import { FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const ManageAdminPage = ({ users: { data } }) => {
+const ManageAdminPage = ({ data }) => {
     // State untuk modal dan form
     const [openModal, setOpenModal] = useState(false);
     const { delete: destroy, processing, errors } = useForm();

@@ -1,20 +1,23 @@
 import PageTitle from "@/Components/PageHeader";
+import InputText from "@/Components/Textinput";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { useForm } from "@inertiajs/react";
-import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Card, Checkbox, Label } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import { useState } from "react";
 
 const CreateAdminPage = () => {
-    const [visible, setVisible] = useState(false);
+    // State untuk visibility password
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         full_name: "",
         email: "",
         password: "",
     });
 
-    const togglePassword = () => {
-        setVisible(!visible);
+    // Function untuk toggle password visibility
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
     };
 
     const storeData = (e) => {
@@ -29,84 +32,70 @@ const CreateAdminPage = () => {
             <Card>
                 <form className="flex flex-col gap-4" onSubmit={storeData}>
                     {/* Nama Admin / Username / Nickname */}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="name-admin"
-                                color={errors?.full_name && "failure"}
-                                value="Name"
-                            />
-                        </div>
-                        <TextInput
-                            className="w-full"
-                            id="name-admin"
-                            type="text"
-                            placeholder="Cth. Admin A"
-                            value={data.full?.full_name}
-                            onChange={(e) =>
-                                setData("full_name", e.target.value)
-                            }
-                            color={errors?.full_name && "failure"}
-                            helperText={
-                                errors?.full_name && errors.full?.full_name
-                            }
-                        />
-                    </div>
+                    <InputText
+                        label={"Nama"}
+                        value={data.full_name}
+                        placeholder="Cth. Admin A"
+                        onChange={(e) => setData("full_name", e.target.value)}
+                        color={errors?.full_name && "failure"}
+                        helperText={errors?.full_name}
+                    />
 
                     {/* Email Untuk Admin */}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="email-admin"
-                                color={errors?.email && "failure"}
-                                value="Email Admin"
-                            />
-                        </div>
-                        <TextInput
-                            className="w-full"
-                            id="email-admin"
-                            type="email"
-                            placeholder="Cth. admin-test@mail.com"
-                            value={data.email}
-                            onChange={(e) => setData("email", e.target.value)}
-                            color={errors?.email && "failure"}
-                            helperText={errors?.email && errors.email}
-                        />
-                    </div>
+                    <InputText
+                        label={"Email"}
+                        value={data.email}
+                        type={"email"}
+                        placeholder="Cth. admin-test@mail.com"
+                        onChange={(e) => setData("email", e.target.value)}
+                        color={errors?.email && "failure"}
+                        helperText={errors?.email}
+                    />
 
-                    {/* Password Untuk Admin */}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="password-admin"
-                                color={errors?.password && "failure"}
-                                value="Password Admin"
-                            />
-                        </div>
-                        <TextInput
-                            className="w-full"
-                            id="password-admin"
-                            type={visible ? "text" : "password"}
-                            placeholder="Kata Sandi"
-                            value={data.password}
-                            onChange={(e) =>
-                                setData("password", e.target.value)
-                            }
-                            color={errors?.password && "failure"}
-                            helperText={errors?.password && errors.password}
-                        />
-                    </div>
+                    {/* Password */}
+                    <InputText
+                        label={"Password"}
+                        value={data.password}
+                        type={isPasswordVisible ? "text" : "password"}
+                        placeholder="Kata sandi"
+                        onChange={(e) => setData("password", e.target.value)}
+                        color={errors?.password && "failure"}
+                        helperText={
+                            errors?.password ||
+                            "Kosongkan jika password tidak diubah"
+                        }
+                    />
 
-                    {/* Toggle password checkbox */}
-                    <div className="flex items-center gap-2">
-                        <Checkbox
-                            id="password-visibility"
-                            checked={visible}
-                            onChange={togglePassword}
-                        />
-                        <Label htmlFor="password-visibility" className="flex">
-                            Perlihatkan password
-                        </Label>
+                    {/* Password Confirm */}
+                    <InputText
+                        label={"Konfirmasi Password"}
+                        value={data.password_confirmation}
+                        type={isPasswordVisible ? "text" : "password"}
+                        placeholder="Ketik ulang kata sandi nya"
+                        onChange={(e) =>
+                            setData("password_confirmation", e.target.value)
+                        }
+                        color={errors?.password_confirmation && "failure"}
+                        helperText={
+                            errors?.password_confirmation ||
+                            "Kosongkan jika password tidak diubah"
+                        }
+                    />
+
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-start">
+                            <div className="flex h-5 items-center">
+                                <Checkbox
+                                    checked={isPasswordVisible}
+                                    onChange={togglePasswordVisibility}
+                                />
+                            </div>
+                            <div className="ml-3 text-sm">
+                                <Label className="text-gray-500">
+                                    Perlihatkan Password
+                                </Label>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="mt-4 flex flex-row-reverse gap-2">

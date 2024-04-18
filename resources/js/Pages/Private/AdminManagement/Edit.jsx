@@ -1,19 +1,32 @@
 import PageTitle from "@/Components/PageHeader";
+import InputText from "@/Components/Textinput";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { useForm } from "@inertiajs/react";
-import { Button, Card, Label, TextInput } from "flowbite-react";
+import { Button, Card, Checkbox, Label } from "flowbite-react";
 import { CircleX, FilePenLine } from "lucide-react";
+import { useState } from "react";
 
-const EditAdminPage = ({ user: { data: userData } }) => {
+const EditAdminPage = ({ data: user }) => {
+    // State untuk visibility password
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
     const { data, setData, patch, processing, errors } = useForm({
-        full_name: userData.full_name,
-        email: userData.email,
+        full_name: user.full_name,
+        email: user.email,
+        password: "",
     });
 
     const updateData = (e) => {
         e.preventDefault();
-        patch(route("admin-management.update", userData.uuid));
+        patch(route("admin-management.update", user.uuid));
     };
+
+    // Function untuk toggle password visibility
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    };
+
+    console.log(data);
 
     return (
         <AdminLayout>
@@ -22,47 +35,70 @@ const EditAdminPage = ({ user: { data: userData } }) => {
             <Card>
                 <form className="flex flex-col gap-4" onSubmit={updateData}>
                     {/* Nama Admin / Username / Nickname */}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="name-admin"
-                                color={errors?.full_name && "failure"}
-                                value="Name"
-                            />
-                        </div>
-                        <TextInput
-                            className="w-full"
-                            id="name-admin"
-                            type="text"
-                            placeholder="Cth. Admin A"
-                            value={data.full_name}
-                            onChange={(e) =>
-                                setData("full_name", e.target.value)
-                            }
-                            color={errors?.full_name && "failure"}
-                            helperText={errors?.full_name && errors.full_name}
-                        />
-                    </div>
+                    <InputText
+                        label={"Nama"}
+                        value={data.full_name}
+                        placeholder="Cth. Admin A"
+                        onChange={(e) => setData("full_name", e.target.value)}
+                        color={errors?.full_name && "failure"}
+                        helperText={errors?.full_name}
+                    />
 
                     {/* Email Untuk Admin */}
-                    <div>
-                        <div className="mb-2 block">
-                            <Label
-                                htmlFor="email-admin"
-                                color={errors?.email && "failure"}
-                                value="Email Admin"
-                            />
+                    <InputText
+                        label={"Email"}
+                        value={data.email}
+                        type={"email"}
+                        placeholder="Cth. admin-test@mail.com"
+                        onChange={(e) => setData("email", e.target.value)}
+                        color={errors?.email && "failure"}
+                        helperText={errors?.email}
+                    />
+
+                    {/* Password */}
+                    <InputText
+                        label={"Password"}
+                        value={data.password}
+                        type={isPasswordVisible ? "text" : "password"}
+                        placeholder="Kata sandi"
+                        onChange={(e) => setData("password", e.target.value)}
+                        color={errors?.password && "failure"}
+                        helperText={
+                            errors?.password ||
+                            "Kosongkan jika password tidak diubah"
+                        }
+                    />
+
+                    {/* Password Confirm */}
+                    <InputText
+                        label={"Konfirmasi Password"}
+                        value={data.password_confirmation}
+                        type={isPasswordVisible ? "text" : "password"}
+                        placeholder="Ketik ulang kata sandi nya"
+                        onChange={(e) =>
+                            setData("password_confirmation", e.target.value)
+                        }
+                        color={errors?.password_confirmation && "failure"}
+                        helperText={
+                            errors?.password_confirmation ||
+                            "Kosongkan jika password tidak diubah"
+                        }
+                    />
+
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-start">
+                            <div className="flex h-5 items-center">
+                                <Checkbox
+                                    checked={isPasswordVisible}
+                                    onChange={togglePasswordVisibility}
+                                />
+                            </div>
+                            <div className="ml-3 text-sm">
+                                <Label className="text-gray-500">
+                                    Perlihatkan Password
+                                </Label>
+                            </div>
                         </div>
-                        <TextInput
-                            className="w-full"
-                            id="email-admin"
-                            type="email"
-                            placeholder="Cth. admin-test@mail.com"
-                            value={data.email}
-                            onChange={(e) => setData("email", e.target.value)}
-                            color={errors?.email && "failure"}
-                            helperText={errors?.email && errors.email}
-                        />
                     </div>
 
                     <div className="mt-4 flex flex-row-reverse gap-2">

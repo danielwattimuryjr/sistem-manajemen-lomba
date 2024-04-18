@@ -32,7 +32,7 @@ class StoreAdminManagementRequest extends FormRequest
         return [
             'full_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:' . User::class,
-            'password' => ['required', Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 

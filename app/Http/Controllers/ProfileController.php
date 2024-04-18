@@ -18,10 +18,19 @@ class ProfileController extends Controller
             GenderEnum::FEMALE,
         ];
 
-        $contests = $user->contests;
+        $user->load('contests');
 
-        return inertia()->render('Private/ProfilePage/Page', [
-            'availableGenders' => $genders,
+        $contests = $user->contests->map(function ($contest) use ($user) {
+            $pivot = $contest->pivot->only('created_at');
+            return array_merge($contest->only([
+                'title',
+                'start_date',
+                'end_date'
+            ]), $pivot);
+        });
+
+        return inertia()->render('Private/ProfilePage', [
+            'genders' => $genders,
             'queryParams' => request()->query() ?: null,
             'contests' => $contests,
         ]);

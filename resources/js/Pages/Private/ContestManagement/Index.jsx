@@ -3,11 +3,20 @@ import PageTitle from "@/Components/PageHeader";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link, useForm } from "@inertiajs/react";
 import { Badge, Button, Card, Modal, Tooltip } from "flowbite-react";
-import { Eye, FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import {
+    Eye,
+    FileCheck,
+    FilePenLine,
+    FileX,
+    OctagonAlert,
+    Plus,
+    Trash,
+    Trash2,
+} from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const ContestIndexPage = ({ contests: { data } }) => {
+const ContestIndexPage = ({ contests }) => {
     // State untuk modal dan form
     const [openModal, setOpenModal] = useState(false);
     const [filterText, setFilterText] = useState("");
@@ -15,9 +24,27 @@ const ContestIndexPage = ({ contests: { data } }) => {
     // State untuk data table
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const { delete: destroy } = useForm();
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [toggleCleared, setToggleCleared] = useState(false);
+
+    const handleRowSelected = useCallback((state) => {
+        setSelectedRows(state.selectedRows);
+    }, []);
+
+    const handleBulkDelete = () => {
+        console.log(selectedRows);
+    };
+
+    const handleBulkDeactivate = () => {
+        console.log(selectedRows);
+    };
+
+    const handleBulkActivate = () => {
+        console.log(selectedRows);
+    };
 
     // Funciton untuk handle filter by title
-    const filteredItems = data.filter(
+    const filteredItems = contests.filter(
         (item) =>
             item.title &&
             item.title.toLowerCase().includes(filterText.toLowerCase()),
@@ -96,7 +123,7 @@ const ContestIndexPage = ({ contests: { data } }) => {
                                     as={Link}
                                     href={route("perlombaan.show", row.slug)}
                                 >
-                                    <Eye className="h-5" />
+                                    <Eye className="h-4 w-4" />
                                 </Button>
                             </Tooltip>
 
@@ -184,6 +211,34 @@ const ContestIndexPage = ({ contests: { data } }) => {
             </PageTitle>
 
             <Card>
+                {/* Tombol Delete */}
+                <div className="flex items-center justify-between">
+                    <h1 className="text-xl">
+                        Data Terpilih : {selectedRows.length}
+                    </h1>
+                    {selectedRows.length > 0 && (
+                        <div className="flex gap-4">
+                            <Button color="failure" onClick={handleBulkDelete}>
+                                <Trash className="me-2 h-4 w-4" />
+                                Hapus
+                            </Button>
+
+                            <Button color="gray" onClick={handleBulkDeactivate}>
+                                <FileX className="me-2 h-4 w-4" />
+                                Set Non Aktif
+                            </Button>
+
+                            <Button
+                                color="success"
+                                onClick={handleBulkActivate}
+                            >
+                                <FileCheck className="me-2 h-4 w-4" />
+                                Set Active
+                            </Button>
+                        </div>
+                    )}
+                </div>
+
                 <DataTable
                     columns={ContestTableColumn}
                     data={filteredItems}
@@ -191,6 +246,9 @@ const ContestIndexPage = ({ contests: { data } }) => {
                     subHeaderComponent={subHeaderComponentMemo}
                     pagination
                     paginationResetDefaultPage={resetPaginationToggle}
+                    selectableRows
+                    onSelectedRowsChange={handleRowSelected}
+                    clearSelectedRows={toggleCleared}
                 />
             </Card>
         </AdminLayout>

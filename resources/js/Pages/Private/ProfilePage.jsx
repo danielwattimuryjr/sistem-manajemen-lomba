@@ -1,15 +1,17 @@
+import EditUserProfileCard from "@/Components/EditUserProfileCard";
 import TabLink from "@/Components/TabLink";
+import UserContestCard from "@/Components/UserContestCard";
+import UserProfileCard from "@/Components/UserProfileCard";
 import PublicLayout from "@/Layouts/Public/Layout";
 import { Head, router } from "@inertiajs/react";
+import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import MyContest from "./partials/MyContest";
-import MyProfile from "./partials/MyProfile";
 
 const ProfilePage = ({
     auth: { user },
-    availableGenders,
+    genders,
     queryParams = null,
-    contests: participatedContests,
+    contests,
     fragment,
 }) => {
     const [section, setSection] = useState("profile-section");
@@ -37,9 +39,9 @@ const ProfilePage = ({
         <PublicLayout>
             <Head title="Profile" />
 
-            <div class="md:flex md:flex-row">
+            <div className="md:flex md:flex-row">
                 {/* Sidebar */}
-                <ul class="space-y mb-4 space-y-4 font-medium text-gray-500  md:mb-0 md:me-4 md:w-1/5 md:flex-none">
+                <ul className="space-y mb-4 space-y-4 font-medium text-gray-500  md:mb-0 md:me-4 md:w-1/5 md:flex-none">
                     <TabLink
                         link={"#profile-section"}
                         label={"Profil Saya"}
@@ -56,13 +58,30 @@ const ProfilePage = ({
 
                 <div className=" w-full">
                     {section === "contest-section" ? (
-                        <MyContest contests={participatedContests} />
+                        <UserContestCard
+                            contests={contests}
+                            title={"Perlombaan Saya"}
+                        />
+                    ) : queryParams["edit"] ? (
+                        <EditUserProfileCard
+                            data={user}
+                            title={"Update Profil Saya"}
+                            genders={genders}
+                        />
                     ) : (
-                        <MyProfile
-                            genders={availableGenders}
-                            queryParams={queryParams}
-                            toggleEditMode={toggleEditMode}
-                            user={user}
+                        <UserProfileCard
+                            data={user}
+                            title={"Profil Saya"}
+                            footer={
+                                <Button
+                                    className="mt-10"
+                                    color="dark"
+                                    onClick={() => toggleEditMode(true)}
+                                    type="button"
+                                >
+                                    Ubah Profil
+                                </Button>
+                            }
                         />
                     )}
                 </div>
