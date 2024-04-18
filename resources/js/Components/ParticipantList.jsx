@@ -1,10 +1,11 @@
 import FilterComponent from "@/Components/FilterComponent";
 import { formatDate } from "@/lib/utils";
-import { Card } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
+import { Download } from "lucide-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const ParticipantList = ({ data }) => {
+const ParticipantList = ({ data, slug }) => {
     const [filterText, setFilterText] = useState("");
 
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -58,11 +59,22 @@ const ParticipantList = ({ data }) => {
 
     return (
         <Card>
-            <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white ">
-                Daftar Peserta
-            </h5>
+            <div className="flex items-start justify-between">
+                <div>
+                    <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white ">
+                        Daftar Peserta
+                    </h5>
 
-            <p>Total Peserta: {data.length}</p>
+                    <p>Total Peserta: {data.length}</p>
+                </div>
+
+                <a href={route("generate-participant-report", slug)}>
+                    <Button color={"success"}>
+                        <Download className="me-2 h-4 w-4" />
+                        Excel
+                    </Button>
+                </a>
+            </div>
 
             <DataTable
                 data={filteredItems}

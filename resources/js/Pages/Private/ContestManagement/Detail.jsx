@@ -11,14 +11,16 @@ const ContestDetailPage = ({ data, participants }) => {
     return (
         <AdminLayout>
             <PageTitle title={data.title}>
-                <Button
-                    color={"warning"}
-                    as={Link}
-                    href={route("perlombaan.edit", data.slug)}
-                >
-                    <FilePenLine className="mr-2 h-5 w-5" />
-                    Ubah Data
-                </Button>
+                <div className="flex items-center gap-4">
+                    <Button
+                        color={"warning"}
+                        as={Link}
+                        href={route("perlombaan.edit", data.slug)}
+                    >
+                        <FilePenLine className="mr-2 h-5 w-5" />
+                        Ubah Data
+                    </Button>
+                </div>
             </PageTitle>
 
             <section className="space-y-4">
@@ -32,7 +34,7 @@ const ContestDetailPage = ({ data, participants }) => {
                 <Description description={data.description} />
 
                 {/* Card  Peserta */}
-                <ParticipantList data={participants} />
+                <ParticipantList data={participants} slug={data.slug} />
             </section>
         </AdminLayout>
     );

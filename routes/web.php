@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminManagementController;
-use App\Http\Controllers\CancelParticipationQueueController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestManagementController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -65,6 +65,9 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
                 'guest-management' => 'user:uuid'
             ]
         ]);
+
+        Route::get('/generate-report/{contest:slug}', [ReportController::class, 'generate_participant_report'])
+            ->name('generate-participant-report');
     });
 
     // Only SUPERADMIN
