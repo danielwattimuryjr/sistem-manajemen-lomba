@@ -1,7 +1,7 @@
 import FilterComponent from "@/Components/FilterComponent";
 import PageTitle from "@/Components/PageHeader";
 import AdminLayout from "@/Layouts/Admin/Layout";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { Badge, Button, Card, Modal, Tooltip } from "flowbite-react";
 import {
     Eye,
@@ -31,16 +31,15 @@ const ContestIndexPage = ({ contests }) => {
         setSelectedRows(state.selectedRows);
     }, []);
 
-    const handleBulkDelete = () => {
-        console.log(selectedRows);
-    };
+    const handleBulkAction = (action) => {
+        router.post(
+            route("perlombaan.bulk-action", {
+                slugs: selectedRows.map((item) => item.slug),
+                action_type: action,
+            }),
+        );
 
-    const handleBulkDeactivate = () => {
-        console.log(selectedRows);
-    };
-
-    const handleBulkActivate = () => {
-        console.log(selectedRows);
+        setToggleCleared(!toggleCleared);
     };
 
     // Funciton untuk handle filter by title
@@ -218,19 +217,25 @@ const ContestIndexPage = ({ contests }) => {
                     </h1>
                     {selectedRows.length > 0 && (
                         <div className="flex gap-4">
-                            <Button color="failure" onClick={handleBulkDelete}>
+                            <Button
+                                color="failure"
+                                onClick={() => handleBulkAction("delete")}
+                            >
                                 <Trash className="me-2 h-4 w-4" />
                                 Hapus
                             </Button>
 
-                            <Button color="gray" onClick={handleBulkDeactivate}>
+                            <Button
+                                color="gray"
+                                onClick={() => handleBulkAction("deactivate")}
+                            >
                                 <FileX className="me-2 h-4 w-4" />
                                 Set Non Aktif
                             </Button>
 
                             <Button
                                 color="success"
-                                onClick={handleBulkActivate}
+                                onClick={() => handleBulkAction("activate")}
                             >
                                 <FileCheck className="me-2 h-4 w-4" />
                                 Set Active

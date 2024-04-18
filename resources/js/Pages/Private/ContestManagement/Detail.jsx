@@ -4,15 +4,25 @@ import ParticipantList from "@/Components/ParticipantList";
 import Schedule from "@/Components/Schedule";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link } from "@inertiajs/react";
-import { Button } from "flowbite-react";
+import { Badge, Button } from "flowbite-react";
 import { FilePenLine } from "lucide-react";
 
 const ContestDetailPage = ({ data, participants }) => {
     return (
         <AdminLayout>
-            <PageTitle title={data.title}>
+            <PageTitle
+                title={data.title}
+                description={
+                    <div className="flex items-center justify-center gap-2 sm:justify-start">
+                        <Badge color={data.isActive ? "success" : "failure"}>
+                            {data.isActive ? "Aktif" : "Non Aktif"}
+                        </Badge>
+                    </div>
+                }
+            >
                 <div className="flex items-center gap-4">
                     <Button
+                        className="w-full"
                         color={"warning"}
                         as={Link}
                         href={route("perlombaan.edit", data.slug)}

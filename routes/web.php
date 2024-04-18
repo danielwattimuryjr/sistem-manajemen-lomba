@@ -68,6 +68,11 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
 
         Route::get('/generate-report/{contest:slug}', [ReportController::class, 'generate_participant_report'])
             ->name('generate-participant-report');
+
+        Route::controller(ContestController::class)->prefix('perlombaan/')
+            ->name('perlombaan.')->group(function () {
+                Route::post('bulk-action/{slugs}/{action_type}', 'bulkActions')->name('bulk-action');
+            });
     });
 
     // Only SUPERADMIN

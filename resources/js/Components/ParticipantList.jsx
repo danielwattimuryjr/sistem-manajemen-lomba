@@ -59,7 +59,7 @@ const ParticipantList = ({ data, slug }) => {
 
     return (
         <Card>
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
                 <div>
                     <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white ">
                         Daftar Peserta

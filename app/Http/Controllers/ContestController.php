@@ -27,7 +27,7 @@ class ContestController extends Controller
         ]);
 
         return Inertia::render(
-            'Private/ContestManagement/Index', 
+            'Private/ContestManagement/Index',
             compact('contests')
         );
     }
@@ -85,7 +85,8 @@ class ContestController extends Controller
             'slug',
             'start_date',
             'end_date',
-            'description'
+            'description',
+            'isActive'
         ]);
 
         $participants = $contest->users->map(function ($user) use ($contest) {
@@ -97,7 +98,7 @@ class ContestController extends Controller
         });
 
         return Inertia::render(
-            'Private/ContestManagement/Detail', 
+            'Private/ContestManagement/Detail',
             compact('data', 'participants')
         );
     }
@@ -118,7 +119,7 @@ class ContestController extends Controller
         ]);
 
         return Inertia::render(
-            'Private/ContestManagement/Edit', 
+            'Private/ContestManagement/Edit',
             compact('data')
         );
     }
@@ -180,6 +181,97 @@ class ContestController extends Controller
             return back()->with('message', [
                 'type' => 'error',
                 'text' => 'Terjadi kesalahan saat menghapus data perlombaan.'
+            ]);
+        }
+    }
+
+    public function bulkActions($slugs, $action_type)
+    {
+        // dd($slugs);
+        $slug_array = explode(',', $slugs);
+
+        if (empty($slug_array) || !$action_type) {
+            return back()->with('message', [
+                'type' => 'error',
+                'text' => 'Tidak ada data yang dipilih.'
+            ]);
+        }
+
+        switch ($action_type) {
+            case 'delete':
+                $this->bulkDelete($slug_array);
+                break;
+            case 'activate':
+                $this->bulkUpdateStatus($slug_array, true);
+                break;
+            case 'deactivate':
+                $this->bulkUpdateStatus($slug_array, false);
+                break;
+            default:
+                break;
+        }
+
+
+    }
+
+    public function bulkDelete($slugs)
+    {
+        DB::beginTransaction();
+        try {
+            Contest::whereIn('slug', $slugs)->delete();
+
+            DB::commit();
+
+            return to_route('perlombaan.index')->with('message', [
+                'type' => 'success',
+                'text' => 'Perlombaan berhasil dihapus.'
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Exception caught: ' . $th->getMessage(), [
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            DB::rollBack();
+
+            return back()->with('message', [
+                'type' => 'error',
+                'text' => 'Terjadi kesalahan saat menghapus data perlombaan.'
+            ]);
+        }
+    }
+
+    public function bulkUpdateStatus($slugs, $status)
+    {
+        DB::beginTransaction();
+        try {
+            Contest::whereIn('slug', $slugs)->update([
+                'isActive' => $status
+            ]);
+
+            DB::commit();
+
+            $messageText = $status ? "Perlombaan berhasil diaktifkan" : "Perlombaan berhasil di nonaktifkan";
+
+            return to_route('perlombaan.index')->with('message', [
+                'type' => 'success',
+                'text' => $messageText
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Exception caught: ' . $th->getMessage(), [
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            DB::rollBack();
+
+            $errorMessage = $status ? "Terjadi kesalahan saat mengaktifkan data perlombaan." : "Terjadi kesalahan saat menonaktifkan data perlombaan.";
+
+            return back()->with('message', [
+                'type' => 'error',
+                'text' => $errorMessage
             ]);
         }
     }

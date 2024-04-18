@@ -1,25 +1,32 @@
 <table>
     <thead>
         <tr>
-            <th>No.</th>
-            <th>NIK</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>No. Telp</th>
-            <th>Alamat</th>
-            <th>Tgl. Daftar</th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">No.
+            </th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">NIK
+            </th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">Nama
+            </th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">Email
+            </th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">No.
+                Telp</th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">Alamat
+            </th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">Tgl.
+                Daftar</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($participants as $p)
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $p['nik'] }}</td>
-                <td>{{ $p['full_name'] }}</td>
-                <td>{{ $p['email'] }}</td>
-                <td>{{ $p['phone_number'] }}</td>
-                <td>{{ $p['address'] }}</td>
-                <td>{{ $p['created_at'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $loop->iteration }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['nik'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['full_name'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['email'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['phone_number'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['address'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['created_at'] }}</td>
             </tr>
         @endforeach
     </tbody>
