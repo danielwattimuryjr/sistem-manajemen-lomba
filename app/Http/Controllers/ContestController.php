@@ -218,6 +218,15 @@ class ContestController extends Controller
     {
         DB::beginTransaction();
         try {
+            // Hapus relasi terlebih dahulu
+            foreach ($slugs as $slug) {
+                $contest = Contest::where('slug', $slug)->first();
+                if ($contest) {
+                    $contest->users()->detach(); // Menghapus relasi dengan users
+                }
+            }
+
+            // Hapus entitas utama
             Contest::whereIn('slug', $slugs)->delete();
 
             DB::commit();

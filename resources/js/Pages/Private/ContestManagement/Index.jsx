@@ -40,6 +40,7 @@ const ContestIndexPage = ({ contests }) => {
         );
 
         setToggleCleared(!toggleCleared);
+        setSelectedRows([]);
     };
 
     // Funciton untuk handle filter by title
