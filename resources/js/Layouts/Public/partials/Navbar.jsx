@@ -82,8 +82,6 @@ const Navbar = () => {
                                 Perlombaan
                             </NavLink>
 
-                            <NavLink href={route("faq")}>FAQ</NavLink>
-
                             <NavLink href={route("contact.index")}>
                                 Kontak
                             </NavLink>

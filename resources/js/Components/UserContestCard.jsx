@@ -55,6 +55,20 @@ const UserContestCard = ({ contests, title, footer }) => {
             sortable: true,
             selector: (row) => formatDate(row.created_at),
         },
+        {
+            name: "Nilai",
+            selector: (row) => row.score,
+            sortable: true,
+            cell: (row) => (
+                <>
+                    {row.score !== null ? (
+                        <p>{row.score}</p>
+                    ) : (
+                        <p>Belum ada nilai.</p>
+                    )}
+                </>
+            ),
+        },
     ];
 
     return (

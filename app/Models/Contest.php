@@ -30,4 +30,9 @@ class Contest extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function participantScores()
+    {
+        return $this->hasMany(ParticipantScore::class, 'contest_id', 'id');
+    }
 }

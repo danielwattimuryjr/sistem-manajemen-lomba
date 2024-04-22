@@ -10,10 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('contest_user', function (Blueprint $table) {
+        Schema::create('participant_scores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('contest_id')->constrained();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('contest_id')->constrained('contests')->onDelete('cascade');
+            $table->double('score');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('contest_user');
+        Schema::dropIfExists('participant_scores');
     }
 };

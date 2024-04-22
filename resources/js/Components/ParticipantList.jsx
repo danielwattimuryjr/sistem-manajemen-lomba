@@ -1,5 +1,6 @@
 import FilterComponent from "@/Components/FilterComponent";
 import { formatDate } from "@/lib/utils";
+import { Link } from "@inertiajs/react";
 import { Button, Card } from "flowbite-react";
 import { Download } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -54,6 +55,30 @@ const ParticipantList = ({ data, slug }) => {
             name: "Tgl. Daftar",
             sortable: true,
             selector: (row) => formatDate(row.created_at),
+        },
+        {
+            name: "Nilai",
+            cell: (row) => (
+                <>
+                    {row.score !== null ? (
+                        <p>{row.score}</p>
+                    ) : (
+                        <p>
+                            Belum ada nilai.
+                            <br />
+                            <Link
+                                href={route("perlombaan.penilaian.create", {
+                                    contest: slug,
+                                    user: row.uuid,
+                                })}
+                                className="text-blue-600 hover:underline"
+                            >
+                                Beri nilai
+                            </Link>
+                        </p>
+                    )}
+                </>
+            ),
         },
     ];
 

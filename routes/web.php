@@ -6,6 +6,7 @@ use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestManagementController;
+use App\Http\Controllers\ParticipantScoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -16,10 +17,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/', function () {
     return Inertia::render('LandingPage');
 })->name('welcome');
-
-Route::get('/frequently-ask-question', function () {
-    return Inertia::render('Public/Faq');
-})->name('faq');
 
 Route::prefix('/contact-us')->controller(ContactController::class)->name('contact.')
     ->group(function () {
@@ -46,8 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'saveData'])->name('profile.update');
 });
 
+// ADMIN / SUPERADMIN Can access
 Route::prefix('/admin/')->middleware('auth')->group(function () {
-    // ADMIN / SUPERADMIN Can access
     Route::middleware('role:ADMIN|SUPERADMIN')->group(function () {
 
         // Ke halaman dashboard milik admin
@@ -66,13 +63,25 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
             ]
         ]);
 
+        Route::prefix('perlombaan/')->name('perlombaan.')
+            ->group(function () {
+                // Route untuk bulk actions                
+                Route::post('{slugs}/bulk-action/{action_type}', [
+                    ContestController::class,
+                    'bulkActions'
+                ])->name('bulk-action');
+
+                Route::controller(ParticipantScoreController::class)
+                    ->prefix('{contest:slug}/penilaian/{user:uuid}/')->name('penilaian.')->group(function () {
+                        Route::get('create/', 'create')->name('create');
+                        Route::post('create/', 'store')->name('store');
+                        Route::delete('delete/', 'destroy')->name('destroy');
+                    });
+            });
+
+        // Route untuk generate excel
         Route::get('/generate-report/{contest:slug}', [ReportController::class, 'generate_participant_report'])
             ->name('generate-participant-report');
-
-        Route::controller(ContestController::class)->prefix('perlombaan/')
-            ->name('perlombaan.')->group(function () {
-                Route::post('bulk-action/{slugs}/{action_type}', 'bulkActions')->name('bulk-action');
-            });
     });
 
     // Only SUPERADMIN

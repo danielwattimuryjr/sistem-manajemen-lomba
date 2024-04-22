@@ -78,7 +78,7 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        $contest->load('users');
+        $contest->load(['users', 'participantScores']);
 
         $data = $contest->only([
             'title',
@@ -91,10 +91,14 @@ class ContestController extends Controller
 
         $participants = $contest->users->map(function ($user) use ($contest) {
             $pivot = $user->pivot->only('created_at');
+            $score = $contest->participantScores->where('user_id', $user->id)->first();
+            $scoreData = $score ? $score->only('score') : ['score' => null];
+
             return array_merge($user->only([
+                'uuid',
                 'full_name',
                 'email',
-            ]), $pivot);
+            ]), $pivot, $scoreData);
         });
 
         return Inertia::render(

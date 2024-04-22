@@ -43,6 +43,7 @@ class User extends Authenticatable implements LaratrustUser
         'password',
         'remember_token',
         'nik',
+        'id'
     ];
 
     /**
@@ -66,5 +67,10 @@ class User extends Authenticatable implements LaratrustUser
     public function contests()
     {
         return $this->belongsToMany(Contest::class)->withTimestamps();
+    }
+
+    public function participantScores()
+    {
+        return $this->hasMany(ParticipantScore::class);
     }
 }
