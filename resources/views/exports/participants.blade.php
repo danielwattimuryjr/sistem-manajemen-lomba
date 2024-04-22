@@ -15,6 +15,8 @@
             </th>
             <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">Tgl.
                 Daftar</th>
+            <th style="font-weight: bold; text-align: center; border: 1px solid black; background-color: yellow;">Tgl.
+                Nilai</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +29,7 @@
                 <td style="text-align: center; border: 1px solid black;">{{ $p['phone_number'] }}</td>
                 <td style="text-align: center; border: 1px solid black;">{{ $p['address'] }}</td>
                 <td style="text-align: center; border: 1px solid black;">{{ $p['created_at'] }}</td>
+                <td style="text-align: center; border: 1px solid black;">{{ $p['score'] }}</td>
             </tr>
         @endforeach
     </tbody>

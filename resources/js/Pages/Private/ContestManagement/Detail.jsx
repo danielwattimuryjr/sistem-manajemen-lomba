@@ -5,7 +5,7 @@ import Schedule from "@/Components/Schedule";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link } from "@inertiajs/react";
 import { Badge, Button } from "flowbite-react";
-import { FilePenLine } from "lucide-react";
+import { FilePenLine, Trophy } from "lucide-react";
 
 const ContestDetailPage = ({ data, participants }) => {
     return (
@@ -20,7 +20,7 @@ const ContestDetailPage = ({ data, participants }) => {
                     </div>
                 }
             >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 ">
                     <Button
                         className="w-full"
                         color={"warning"}
@@ -28,7 +28,12 @@ const ContestDetailPage = ({ data, participants }) => {
                         href={route("perlombaan.edit", data.slug)}
                     >
                         <FilePenLine className="mr-2 h-5 w-5" />
-                        Ubah Data
+                        Update
+                    </Button>
+
+                    <Button className="w-full">
+                        <Trophy className="mr-2 h-5 w-5" />
+                        Winner
                     </Button>
                 </div>
             </PageTitle>

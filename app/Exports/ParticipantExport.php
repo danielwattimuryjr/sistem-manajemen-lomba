@@ -24,17 +24,22 @@ class ParticipantExport implements
     {
         $contest = Contest::where('slug', $this->slug)->firstOrFail();
 
-        $participants = $contest->users->map(function ($user) {
+        $participants = $contest->users->map(function ($user) use ($contest) {
             $formattedCreatedAt = Carbon::parse($user->pivot->created_at)->format('d F Y');
+            $score = $user->participantScores->where('contest_id', $contest->id)->first();
+            $scoreData = $score ? $score->score : null;
 
-            return [
+            $array = [
                 'nik' => (string) $user->nik,
                 'full_name' => $user->full_name,
                 'email' => $user->email,
                 'phone_number' => (string) $user->phone_number,
                 'address' => $user->address,
-                'created_at' => $formattedCreatedAt
+                'created_at' => $formattedCreatedAt,
+                'score' => $scoreData
             ];
+
+            return $array;
         });
 
         return view('exports.participants', compact('participants'));

@@ -90,25 +90,28 @@ class GuestManagementController extends Controller
     public function show(User $user)
     {
         $user->load('contests');
-        
+
         $data = $user->only([
             'nik',
-            'uuid', 
-            'full_name', 
-            'd_o_b', 
-            'phone_number', 
-            'address', 
-            'gender', 
+            'uuid',
+            'full_name',
+            'd_o_b',
+            'phone_number',
+            'address',
+            'gender',
             'contests'
         ]);
 
         $contests = $user->contests->map(function ($contest) use ($user) {
             $pivot = $contest->pivot->only('created_at');
+            $score = $user->participantScores->where('contest_id', $contest->id)->first();
+            $scoreData = $score ? $score->only('score') : ['score' => null];
+
             return array_merge($contest->only([
                 'title',
                 'start_date',
                 'end_date'
-            ]), $pivot);
+            ]), $pivot, $scoreData);
         });
 
         return inertia()->render(
@@ -125,12 +128,12 @@ class GuestManagementController extends Controller
         $data = $user->only([
             'nik',
             'email',
-            'uuid', 
-            'full_name', 
-            'd_o_b', 
-            'phone_number', 
-            'address', 
-            'gender', 
+            'uuid',
+            'full_name',
+            'd_o_b',
+            'phone_number',
+            'address',
+            'gender',
             'contests'
         ]);
 
