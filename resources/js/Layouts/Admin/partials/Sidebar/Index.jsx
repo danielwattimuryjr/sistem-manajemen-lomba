@@ -147,6 +147,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 </li>
                                 /* <!-- Menu Admin Management --> */
                             )}
+
+                            {/* <!-- Menu Level Management --> */}
+                            <li>
+                                <NavLink
+                                    href={route("tingkat-peserta.index")}
+                                    Icon={Users}
+                                    label={"Manage Tingkatan Peserta"}
+                                    isActive={route().current(
+                                        "*tingkat-peserta*",
+                                    )}
+                                />
+                            </li>
+                            {/* <!-- Menu Level Management --> */}
                         </ul>
                     </div>
                 </nav>

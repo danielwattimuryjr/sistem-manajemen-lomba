@@ -9,3 +9,13 @@ export function cn(...inputs) {
 export function formatDate(value) {
     return dayjs(value).format("DD MMMM YYYY");
 }
+
+export function transformText(text) {
+    // Mengubah seluruh huruf menjadi uppercase
+    const uppercaseText = text.toUpperCase();
+
+    // Mengganti spasi dengan '_'
+    const transformedText = uppercaseText.replace(/ /g, "_");
+
+    return transformedText;
+}

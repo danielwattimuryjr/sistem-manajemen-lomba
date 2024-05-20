@@ -1,13 +1,15 @@
+import ContestAssessmentFactor from "@/Components/ContestAssessmentFactor";
 import Description from "@/Components/Description";
 import PageTitle from "@/Components/PageHeader";
 import ParticipantList from "@/Components/ParticipantList";
 import Schedule from "@/Components/Schedule";
 import AdminLayout from "@/Layouts/Admin/Layout";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { Badge, Button } from "flowbite-react";
-import { FilePenLine, Trophy } from "lucide-react";
+import { Check, FilePenLine, Trophy, X } from "lucide-react";
 
-const ContestDetailPage = ({ data, participants }) => {
+const ContestDetailPage = ({ data, participants, factors }) => {
+    console.log(factors);
     return (
         <AdminLayout>
             <PageTitle
@@ -21,6 +23,27 @@ const ContestDetailPage = ({ data, participants }) => {
                 }
             >
                 <div className="flex items-center gap-4 ">
+                    <Button
+                        className="w-full"
+                        color={data.isActive ? "failure" : "success"}
+                        onClick={(e) => {
+                            e.preventDefault();
+
+                            router.patch(
+                                route("perlombaan.update-status", {
+                                    contest: data.slug,
+                                    status: data.isActive ? 0 : 1,
+                                }),
+                            );
+                        }}
+                    >
+                        {data.isActive ? (
+                            <X className="mr-2 h-5 w-5" />
+                        ) : (
+                            <Check className="mr-2 h-5 w-5" />
+                        )}
+                        {data.isActive ? "Deactivate" : "Activate"}
+                    </Button>
                     <Button
                         className="w-full"
                         color={"warning"}
@@ -47,6 +70,9 @@ const ContestDetailPage = ({ data, participants }) => {
 
                 {/* Card Deskripsi */}
                 <Description description={data.description} />
+
+                {/* Card Faktor Penilaian */}
+                <ContestAssessmentFactor data={factors} />
 
                 {/* Card  Peserta */}
                 <ParticipantList data={participants} slug={data.slug} />

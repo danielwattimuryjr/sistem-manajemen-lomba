@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Role;
 use App\Rules\EndDateAfterOrEqualStartDate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -29,6 +30,7 @@ class UpdateContestRequest extends FormRequest
      */
     public function rules(): array
     {
+        $availableRoles = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])->pluck('id')->toArray();
         return [
             'title' => [
                 'required',
@@ -42,7 +44,14 @@ class UpdateContestRequest extends FormRequest
                 'required',
                 Rule::unique('contests', 'slug')->ignore($this->contest)
             ],
-            'quota' => 'numeric|min:0'
+            'form_penilaian' => 'required',
+            'form_penilaian.*.nama_faktor' => 'required',
+            'form_penilaian.*.bobot_penilaian' => 'required|numeric|min:1',
+            'role_id' => [
+                'required',
+                'array',
+                'in:' . implode(',', $availableRoles),
+            ]
         ];
     }
 
@@ -60,8 +69,6 @@ class UpdateContestRequest extends FormRequest
             'end_date.after_or_equal' => 'Tanggal berakhir harus sama atau setelah tanggal mulai.',
             'slug.required' => 'Slug harus diisi.',
             'slug.unique' => 'Slug tersebut sudah digunakan sebelumnya.',
-            'quota.numeric' => 'Kuota harus berupa angka.',
-            'quota.min' => 'Kuota tidak boleh kurang dari 0.',
         ];
     }
 }

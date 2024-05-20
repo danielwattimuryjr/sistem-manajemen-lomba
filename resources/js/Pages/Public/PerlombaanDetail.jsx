@@ -1,3 +1,4 @@
+import ContestAssessmentFactor from "@/Components/ContestAssessmentFactor";
 import Description from "@/Components/Description";
 import PageTitle from "@/Components/PageHeader";
 import Schedule from "@/Components/Schedule";
@@ -5,12 +6,7 @@ import PublicLayout from "@/Layouts/Public/Layout";
 import { Head, router } from "@inertiajs/react";
 import { Button } from "flowbite-react";
 
-const PerlombaanDetail = ({
-    available: isAvailable,
-    contest: data,
-    hasParticipated,
-}) => {
-    // const { post, processing, errors } = useForm();
+const PerlombaanDetail = ({ contest: data, hasParticipated, factors }) => {
     const submitParticipation = () => {
         router.post(route("public.perlombaan.participate", data.slug));
     };
@@ -21,15 +17,13 @@ const PerlombaanDetail = ({
 
             <PageTitle title={data.title}>
                 <Button
-                    disabled={!isAvailable || hasParticipated}
+                    disabled={hasParticipated}
                     onClick={submitParticipation}
                     color={"blue"}
                 >
                     {hasParticipated
                         ? "Anda Telah Mendaftarkan Diri"
-                        : isAvailable
-                          ? "Daftar Sekarang"
-                          : "Kuota Sudah Penuh"}
+                        : "Daftar Sekarang"}
                 </Button>
             </PageTitle>
 
@@ -39,6 +33,9 @@ const PerlombaanDetail = ({
                     start_date={data.start_date}
                     end_date={data.end_date}
                 />
+
+                {/* Card Faktor Penilaian */}
+                <ContestAssessmentFactor data={factors} />
 
                 {/* Card Deskripsi */}
                 <Description description={data.description} />

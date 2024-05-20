@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enum\GenderEnum;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,6 +35,7 @@ class StoreGuestManagementRequest extends FormRequest
         $genderValues = array_map(function (GenderEnum $gender) {
             return $gender->value;
         }, GenderEnum::cases());
+        $availableRoles = Role::pluck('id')->toArray();
 
         return [
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
@@ -68,6 +70,10 @@ class StoreGuestManagementRequest extends FormRequest
                 'required',
                 'in:' . implode(',', $genderValues),
             ],
+            'role_id' => [
+                'required',
+                'in:' . implode(',', $availableRoles),
+            ]
         ];
     }
 

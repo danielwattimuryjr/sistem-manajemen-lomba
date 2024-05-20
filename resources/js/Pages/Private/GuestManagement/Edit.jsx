@@ -1,5 +1,6 @@
 import DateInput from "@/Components/DateInput";
 import PageTitle from "@/Components/PageHeader";
+import SelectInput from "@/Components/SelectInput";
 import TextareaInput from "@/Components/Textarea";
 import InputText from "@/Components/Textinput";
 import AdminLayout from "@/Layouts/Admin/Layout";
@@ -9,7 +10,7 @@ import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
 import { CircleX, Save } from "lucide-react";
 import { useState } from "react";
 
-const Edit = ({ data: user, genders }) => {
+const Edit = ({ data: user, genders, availableUserLevels: levels }) => {
     // State untuk visibility password
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -22,7 +23,9 @@ const Edit = ({ data: user, genders }) => {
         address: user.address,
         phone_number: user.phone_number,
         gender: user.gender,
+        role_id: user.role_id,
     });
+    console.log(data);
 
     // Function untuk handle onChange pada gender radio button
     const handleGenderChange = (e) => {
@@ -111,7 +114,7 @@ const Edit = ({ data: user, genders }) => {
                         </div>
                     </div>
 
-                    <hr class="my-8 h-px flex-1 border-0 bg-gray-200 dark:bg-gray-700"></hr>
+                    <hr className="my-8 h-px flex-1 border-0 bg-gray-200 dark:bg-gray-700"></hr>
 
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
                         {/* NIK */}
@@ -194,6 +197,20 @@ const Edit = ({ data: user, genders }) => {
                             color={errors?.address && "failure"}
                             helperText={errors?.address && errors.address}
                         />
+
+                        <SelectInput
+                            color={errors?.role_id && "failure"}
+                            label={"Tingkatan Peserta"}
+                            onChange={(e) => setData("role_id", e.target.value)}
+                            helperText={errors?.role_id}
+                            defaultValue={data.role_id}
+                        >
+                            {levels.map((level, i) => (
+                                <option key={i} value={level.id}>
+                                    {level.display_name}
+                                </option>
+                            ))}
+                        </SelectInput>
                     </div>
 
                     <div className="mt-4 flex flex-row-reverse gap-2">

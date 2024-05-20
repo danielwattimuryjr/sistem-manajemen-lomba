@@ -3,11 +3,12 @@ import PageTitle from "@/Components/PageHeader";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { Link, useForm } from "@inertiajs/react";
 import { Button, Card, Modal, Tooltip } from "flowbite-react";
-import { Eye, FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
+import { FilePenLine, OctagonAlert, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const Index = ({ data }) => {
+function Index({ roles }) {
+    console.log(roles);
     // State untuk modal dan form
     const [openModal, setOpenModal] = useState(false);
     const { delete: destroy } = useForm();
@@ -16,16 +17,16 @@ const Index = ({ data }) => {
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-    // Function untuk handle filter Admin by name
-    const filteredItems = data.filter(
+    // Function untuk handle filter roles by name
+    const filteredItems = roles.filter(
         (item) =>
-            item.full_name &&
-            item.full_name.toLowerCase().includes(filterText.toLowerCase()),
+            item.display_name &&
+            item.display_name.toLowerCase().includes(filterText.toLowerCase()),
     );
 
     // Function untuk execute delete data admin
-    const deleteGuest = (id) => {
-        destroy(route("guest-management.destroy", id));
+    const deleteRole = (id) => {
+        destroy(route("tingkat-peserta.destroy", id));
         setOpenModal(false);
     };
 
@@ -46,23 +47,10 @@ const Index = ({ data }) => {
         );
     }, [filterText, resetPaginationToggle]);
 
-    // Mendefinisikan Kolom untuk data table
-    const AdminTableColumn = [
+    const RoleTableColumn = [
         {
-            name: "Nama",
-            selector: (row) => row.full_name,
-            sortable: true,
-        },
-
-        {
-            name: "E- mail",
-            selector: (row) => row.email,
-            sortable: true,
-        },
-        {
-            name: "Tingkatan Peserta",
-            selector: (row) => row.role,
-            sortable: true,
+            name: "Nama Tingkatan",
+            selector: (row) => row.display_name,
         },
         {
             name: "Actions",
@@ -70,33 +58,17 @@ const Index = ({ data }) => {
                 return (
                     <>
                         <div className="flex flex-col gap-2 lg:flex-row">
-                            <Tooltip content="Lihat detail guest">
-                                <Button
-                                    color={"success"}
-                                    size="sm"
-                                    as={Link}
-                                    href={route(
-                                        "guest-management.show",
-                                        row.uuid,
-                                    )}
-                                >
-                                    <Eye className="h-4 w-4" />
-                                </Button>
-                            </Tooltip>
-                            <Tooltip content="Ubah data admin">
+                            <Tooltip content="Ubah data tingakatan peserta">
                                 <Button
                                     color={"warning"}
                                     size="sm"
                                     as={Link}
-                                    href={route(
-                                        "guest-management.edit",
-                                        row.uuid,
-                                    )}
+                                    href={route("tingkat-peserta.edit", row.id)}
                                 >
                                     <FilePenLine className="h-4 w-4" />
                                 </Button>
                             </Tooltip>
-                            <Tooltip content="Hapus Data guest">
+                            <Tooltip content="Hapus Data tingkatan peserta">
                                 <Button
                                     color={"failure"}
                                     size="sm"
@@ -127,9 +99,7 @@ const Index = ({ data }) => {
                                     <div className="flex justify-center gap-4">
                                         <Button
                                             color="failure"
-                                            onClick={() =>
-                                                deleteGuest(row.uuid)
-                                            }
+                                            onClick={() => deleteRole(row.id)}
                                         >
                                             {"Ya, saya yakin"}
                                         </Button>
@@ -152,24 +122,24 @@ const Index = ({ data }) => {
     return (
         <AdminLayout>
             <PageTitle
-                title={"All Guests"}
+                title={"All Tingakatan Peserta"}
                 description={
-                    "Di halaman ini kamu dapat melihat seluruh data user guest yang ada"
+                    "Di halaman ini kamu dapat melihat seluruh tingakatan peserta yang ada"
                 }
             >
                 <Button
                     color={"blue"}
                     as={Link}
-                    href={route("guest-management.create")}
+                    href={route("tingkat-peserta.create")}
                 >
                     <Plus className="mr-2 h-5 w-5" />
-                    Guest
+                    Tingkatan
                 </Button>
             </PageTitle>
 
             <Card>
                 <DataTable
-                    columns={AdminTableColumn}
+                    columns={RoleTableColumn}
                     data={filteredItems}
                     subHeaderComponent={subHeaderComponentMemo}
                     paginationResetDefaultPage={resetPaginationToggle}
@@ -179,6 +149,6 @@ const Index = ({ data }) => {
             </Card>
         </AdminLayout>
     );
-};
+}
 
 export default Index;

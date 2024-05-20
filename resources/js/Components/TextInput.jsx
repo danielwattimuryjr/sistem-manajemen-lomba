@@ -15,7 +15,7 @@ const InputText = ({
                 <Label color={color} value={label} />
             </div>
             <TextInput
-                className="w-full"
+                // className="w-full"
                 type={props.type || "text"}
                 placeholder={placeholder}
                 value={value}

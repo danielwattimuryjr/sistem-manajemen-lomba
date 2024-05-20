@@ -1,14 +1,14 @@
 import DateInput from "@/Components/DateInput";
+import SelectInput from "@/Components/SelectInput";
 import TextareaInput from "@/Components/Textarea";
 import InputText from "@/Components/Textinput";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { formatDate } from "@/lib/utils";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Button, Card, Checkbox, Label, Radio } from "flowbite-react";
-import { CircleArrowLeft, CircleArrowRight } from "lucide-react";
 import { useState } from "react";
 
-const SignUp = ({ availableGenders: genders }) => {
+const SignUp = ({ availableGenders: genders, availableUserLevels: levels }) => {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -20,7 +20,10 @@ const SignUp = ({ availableGenders: genders }) => {
         address: "",
         phone_number: "",
         gender: "",
+        role_id: "",
     });
+
+    console.log(data);
 
     // State untuk visibility password
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -43,10 +46,8 @@ const SignUp = ({ availableGenders: genders }) => {
         e.preventDefault();
         setFormStep(1);
     };
-
-    // Function untuk handle onChange pada gender radio button
-    const handleGenderChange = (e) => {
-        setData("gender", e.target.value);
+    const handleRadioButtonChange = (key, value) => {
+        setData(key, value);
     };
 
     // Function untuk toggle password visibility
@@ -65,7 +66,7 @@ const SignUp = ({ availableGenders: genders }) => {
             <Head title="Sign Up" />
             <Card className="w-full sm:max-w-3xl md:mt-0 xl:p-0">
                 <div className="space-y-4 md:space-y-6">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+                    <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                         {`Tahap ${formStep} dari 2`}
                     </h1>
                     <form onSubmit={submit}>
@@ -147,7 +148,7 @@ const SignUp = ({ availableGenders: genders }) => {
                         )}
 
                         {formStep == 2 && (
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+                            <div className="grid gap-4 lg:grid-cols-2">
                                 {/* NIK */}
                                 <InputText
                                     label={"NIK"}
@@ -182,8 +183,11 @@ const SignUp = ({ availableGenders: genders }) => {
                                         </Label>
                                     </div>
                                     <div className="flex flex-row gap-x-5">
-                                        {genders.map((gender) => (
-                                            <div className="flex items-center gap-2">
+                                        {genders.map((gender, i) => (
+                                            <div
+                                                className="flex items-center gap-2"
+                                                key={i}
+                                            >
                                                 <Radio
                                                     id={gender}
                                                     value={gender}
@@ -191,8 +195,11 @@ const SignUp = ({ availableGenders: genders }) => {
                                                     checked={
                                                         data.gender === gender
                                                     }
-                                                    onChange={
-                                                        handleGenderChange
+                                                    onChange={(e) =>
+                                                        handleRadioButtonChange(
+                                                            "gender",
+                                                            e.target.value,
+                                                        )
                                                     }
                                                 />
                                                 <Label>{gender}</Label>
@@ -237,10 +244,27 @@ const SignUp = ({ availableGenders: genders }) => {
                                         setData("address", e.target.value)
                                     }
                                     color={errors?.address && "failure"}
-                                    helperText={
-                                        errors?.address && errors.address
-                                    }
+                                    helperText={errors?.address}
                                 />
+
+                                {/* Tingkatan Peserta */}
+                                <SelectInput
+                                    color={errors?.role_id && "failure"}
+                                    label={"Tingkatan Peserta"}
+                                    onChange={(e) =>
+                                        setData("role_id", e.target.value)
+                                    }
+                                    helperText={errors?.role_id}
+                                >
+                                    <option selected disabled>
+                                        -- PILIH TINGKAT PESERTA --
+                                    </option>
+                                    {levels.map((level, i) => (
+                                        <option key={i} value={level.id}>
+                                            {level.display_name}
+                                        </option>
+                                    ))}
+                                </SelectInput>
                             </div>
                         )}
 
@@ -251,10 +275,7 @@ const SignUp = ({ availableGenders: genders }) => {
                                     disabled={formStep == 1 || processing}
                                     onClick={prevStep}
                                 >
-                                    <CircleArrowLeft className="h-6 w-6 md:mr-2" />{" "}
-                                    <span className="hidden md:inline">
-                                        Sebelum
-                                    </span>
+                                    <span>Sebelum</span>
                                 </Button>
                                 {formStep == 1 ? (
                                     <Button
@@ -262,15 +283,11 @@ const SignUp = ({ availableGenders: genders }) => {
                                         onClick={nextStep}
                                         disabled={processing}
                                     >
-                                        <span className="hidden md:inline">
-                                            Lanjut
-                                        </span>
-                                        <CircleArrowRight className="h-6 w-6 md:ml-2" />{" "}
+                                        <span>Lanjut</span>
                                     </Button>
                                 ) : (
                                     <Button
                                         type="submit"
-                                        // className="w-full"
                                         isProcessing={processing}
                                         disabled={processing}
                                     >

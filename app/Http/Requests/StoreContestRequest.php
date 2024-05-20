@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Role;
 use App\Rules\EndDateAfterOrEqualStartDate;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,13 +29,22 @@ class StoreContestRequest extends FormRequest
      */
     public function rules(): array
     {
+        $availableRoles = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])->pluck('id')->toArray();
+
         return [
             'title' => 'required|string|unique:contests,title',
             'description' => 'required',
             'start_date' => 'required|date_format:d F Y',
             'end_date' => ['required', 'date_format:d F Y', new EndDateAfterOrEqualStartDate($this->input('start_date'))],
             'slug' => 'required|unique:contests,slug',
-            'quota' => 'numeric|min:0'
+            'form_penilaian' => 'required',
+            'form_penilaian.*.nama_faktor' => 'required',
+            'form_penilaian.*.bobot_penilaian' => 'required|numeric|min:1',
+            'role_id' => [
+                'required',
+                'array',
+                'in:' . implode(',', $availableRoles),
+            ]
         ];
     }
 
@@ -53,8 +63,6 @@ class StoreContestRequest extends FormRequest
             'required' => ':attribute wajib diisi.',
             'string' => ':attribute harus berupa teks.',
             'date_format' => ':attribute harus ditulis dengan format "10 Maret 2023".',
-            'quota.numeric' => 'Kuota harus berupa angka.',
-            'quota.min' => 'Kuota harus minimal :min.',
         ];
     }
 }

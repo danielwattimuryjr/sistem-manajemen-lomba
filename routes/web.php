@@ -6,6 +6,7 @@ use App\Http\Controllers\ContestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestManagementController;
+use App\Http\Controllers\LevelManagementController;
 use App\Http\Controllers\ParticipantScoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
@@ -55,21 +56,30 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
         Route::resources([
             // Routes untuk manajemen lomba
             'perlombaan' => ContestController::class,
+            'tingkat-peserta' => LevelManagementController::class,
             'guest-management' => GuestManagementController::class
         ], [
             'parameters' => [
                 'perlombaan' => 'contest:slug',
-                'guest-management' => 'user:uuid'
+                'guest-management' => 'user:uuid',
+                'tingkat-peserta' => 'role'
             ]
         ]);
 
         Route::prefix('perlombaan/')->name('perlombaan.')
             ->group(function () {
-                // Route untuk bulk actions                
-                Route::post('{slugs}/bulk-action/{action_type}', [
-                    ContestController::class,
-                    'bulkActions'
-                ])->name('bulk-action');
+
+
+                Route::controller(ContestController::class)->group(function () {
+                    // Route untuk bulk actions                
+                    Route::post(
+                        '{slugs}/bulk-action/{action_type}',
+                        'bulkActions'
+                    )->name('bulk-action');
+
+                    Route::patch('{contest:slug}/update_status/{status}', 'updateStatus')
+                        ->name('update-status');
+                });
 
                 Route::controller(ParticipantScoreController::class)
                     ->prefix('{contest:slug}/penilaian/{user:uuid}/')->name('penilaian.')->group(function () {

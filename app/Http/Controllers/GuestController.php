@@ -35,16 +35,16 @@ class GuestController extends Controller
             'start_date',
             'end_date',
             'slug',
-            'quota'
+
         ]);
 
         return Inertia::render('Public/PerlombaanAllPage/Page', [
-            'data' =>  $query->get([
+            'data' => $query->get([
                 'title',
                 'start_date',
                 'end_date',
                 'slug',
-                'quota'
+
             ]),
             'queryParams' => request()->query() ?: null,
         ]);
@@ -52,18 +52,10 @@ class GuestController extends Controller
 
     public function getPerlombaanDetail(Contest $contest)
     {
-        // Mendapatkan data jumlah peserta yang berpartisipasi
-        $participant = $contest->users()->count();
         if (auth()->user()) {
             $hasParticipated = $contest->users()->where('user_id', auth()->user()->id)->exists();
         } else {
             $hasParticipated = false;
-        }
-
-        if ($contest->quota == 0) {
-            $available = true;
-        } else {
-            $available = $participant < $contest->quota;
         }
 
         $data = $contest->only([
@@ -76,7 +68,7 @@ class GuestController extends Controller
 
         return Inertia::render('Public/PerlombaanDetail', [
             'contest' => $data,
-            'available' => $available,
+            'factors' => $contest->assessmentFactors,
             'hasParticipated' => $hasParticipated
         ]);
     }

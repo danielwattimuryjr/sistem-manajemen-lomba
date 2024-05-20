@@ -6,6 +6,7 @@ use App\Enum\GenderEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSignUpFirstStepRequest;
 use App\Http\Requests\StoreSignUpSecondStepRequest;
+use App\Models\Role;
 use App\Models\User;
 use App\Notifications\RegisterNotification;
 use Illuminate\Auth\Events\Registered;
@@ -26,8 +27,12 @@ class RegisteredUserController extends Controller
             GenderEnum::FEMALE,
         ];
 
+        $availableUserLevels = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])
+            ->get(['id', 'display_name']);
+
         return Inertia::render('Auth/SignUp', [
             'availableGenders' => $genders,
+            'availableUserLevels' => $availableUserLevels
         ]);
     }
 
@@ -43,7 +48,9 @@ class RegisteredUserController extends Controller
      */
     public function store(StoreSignUpSecondStepRequest $request): RedirectResponse
     {
-        $user = User::create($request->validated())->addRole('GUEST');
+        $validated = $request->validated();
+
+        $user = User::create($validated)->addRole($validated['role_id']);
 
         event(new Registered($user));
 

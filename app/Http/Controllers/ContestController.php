@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContestRequest;
 use App\Http\Requests\UpdateContestRequest;
 use App\Models\Contest;
+use App\Models\Role;
 use Illuminate\Support\Facades\{
     DB,
     Log
@@ -37,7 +38,13 @@ class ContestController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Private/ContestManagement/Create');
+        $roles = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])
+            ->get(['id', 'display_name']);
+
+        return Inertia::render(
+            'Private/ContestManagement/Create',
+            compact('roles')
+        );
     }
 
     /**
@@ -50,7 +57,17 @@ class ContestController extends Controller
             $validated = $request->validated();
             $validated['created_by'] = auth()->id();
 
-            Contest::create($validated);
+            $contest = Contest::create($validated);
+
+            foreach ($validated['form_penilaian'] as $form_penilaian) {
+                $contest->assessmentFactors()->create([
+                    'nama_faktor' => $form_penilaian['nama_faktor'],
+                    'bobot_penilaian' => $form_penilaian['bobot_penilaian']
+                ]);
+            }
+
+            $contest->roles()->attach($validated['role_id']);
+
             DB::commit();
 
             return to_route('perlombaan.index')->with('message', [
@@ -78,7 +95,7 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        $contest->load(['users', 'participantScores']);
+        $contest->load(['users', 'participantScores', 'assessmentFactors']);
 
         $data = $contest->only([
             'title',
@@ -88,6 +105,8 @@ class ContestController extends Controller
             'description',
             'isActive'
         ]);
+
+        $factors = $contest->assessmentFactors;
 
         $participants = $contest->users->map(function ($user) use ($contest) {
             $pivot = $user->pivot->only('created_at');
@@ -103,7 +122,7 @@ class ContestController extends Controller
 
         return Inertia::render(
             'Private/ContestManagement/Detail',
-            compact('data', 'participants')
+            compact('data', 'participants', 'factors')
         );
     }
 
@@ -112,9 +131,21 @@ class ContestController extends Controller
      */
     public function edit(Contest $contest)
     {
+        $roles = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])
+            ->get(['id', 'display_name']);
+        $contest_roles = $contest->roles->pluck('id');
+
+        $contest_assessment_factors = [];
+
+        foreach ($contest->assessmentFactors as $factor) {
+            $contest_assessment_factors[] = [
+                'nama_faktor' => $factor->nama_faktor,
+                'bobot_penilaian' => $factor->bobot_penilaian
+            ];
+        }
+
         $data = $contest->only([
             'title',
-            'quota',
             'description',
             'slug',
             'isActive',
@@ -124,7 +155,7 @@ class ContestController extends Controller
 
         return Inertia::render(
             'Private/ContestManagement/Edit',
-            compact('data')
+            compact('data', 'roles', 'contest_roles', 'contest_assessment_factors')
         );
     }
 
@@ -135,7 +166,22 @@ class ContestController extends Controller
     {
         DB::beginTransaction();
         try {
-            $contest->update($request->validated());
+            $validated = $request->validated();
+
+            $contest->update($validated);
+
+            $contest->assessmentFactors()->delete();
+            $contest->roles()->detach();
+
+            foreach ($validated['form_penilaian'] as $form_penilaian) {
+                $contest->assessmentFactors()->create([
+                    'nama_faktor' => $form_penilaian['nama_faktor'],
+                    'bobot_penilaian' => $form_penilaian['bobot_penilaian']
+                ]);
+            }
+
+            $contest->roles()->attach($validated['role_id']);
+
             DB::commit();
 
             return to_route('perlombaan.index')->with('message', [
@@ -214,8 +260,6 @@ class ContestController extends Controller
             default:
                 break;
         }
-
-
     }
 
     public function bulkDelete($slugs)
@@ -285,6 +329,36 @@ class ContestController extends Controller
             return back()->with('message', [
                 'type' => 'error',
                 'text' => $errorMessage
+            ]);
+        }
+    }
+
+    public function updateStatus(Contest $contest, $status)
+    {
+        DB::beginTransaction();
+        try {
+            $contest->update([
+                'isActive' => (boolean) $status
+            ]);
+
+            DB::commit();
+
+            return back()->with('message', [
+                'type' => 'success',
+                'text' => "Status perlombaan berhasil diperbaharui"
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Exception caught: ' . $th->getMessage(), [
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            DB::rollBack();
+
+            return back()->with('message', [
+                'type' => 'error',
+                'text' => "Gagal memperbaharui status perlombaan"
             ]);
         }
     }

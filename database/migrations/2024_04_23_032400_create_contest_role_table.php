@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Contest;
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,11 +12,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('contest_user', function (Blueprint $table) {
+        Schema::create('contest_role', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('contest_id')->constrained();
-            $table->boolean('isApproved')->default(false);
+            $table->foreignIdFor(Contest::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Role::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('contest_user');
+        Schema::dropIfExists('contest_role');
     }
 };

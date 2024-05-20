@@ -33,13 +33,6 @@ const ContestCard = ({ contest }) => {
                         </dt>
                         <dd className="text-xs text-gray-500">Tgl. Selesai</dd>
                     </div>
-
-                    <div className="flex flex-col-reverse">
-                        <dt className="text-sm font-medium text-gray-600">
-                            {contest.quota}
-                        </dt>
-                        <dd className="text-xs text-gray-500">Quota</dd>
-                    </div>
                 </dl>
             </a>
         </li>

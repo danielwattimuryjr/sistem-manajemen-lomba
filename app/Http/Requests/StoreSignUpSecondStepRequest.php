@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enum\GenderEnum;
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -33,6 +34,8 @@ class StoreSignUpSecondStepRequest extends FormRequest
         $genderValues = array_map(function (GenderEnum $gender) {
             return $gender->value;
         }, GenderEnum::cases());
+
+        $availableRoles = Role::pluck('id')->toArray();
 
         return array_merge($firstStepRules, [
             'full_name' => [
@@ -65,6 +68,10 @@ class StoreSignUpSecondStepRequest extends FormRequest
                 'required',
                 'in:' . implode(',', $genderValues),
             ],
+            'role_id' => [
+                'required',
+                'in:' . implode(',', $availableRoles),
+            ]
         ]);
     }
 

@@ -15,7 +15,6 @@ class Contest extends Model
         'start_date',
         'end_date',
         'isActive',
-        'quota',
         'slug',
         'created_by'
     ];
@@ -31,8 +30,18 @@ class Contest extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
     public function participantScores()
     {
         return $this->hasMany(ParticipantScore::class, 'contest_id', 'id');
+    }
+
+    public function assessmentFactors()
+    {
+        return $this->hasMany(ContestAssessmentFactor::class);
     }
 }

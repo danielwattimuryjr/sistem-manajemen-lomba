@@ -34,5 +34,23 @@ class UserSeeder extends Seeder
             'phone_number' => '09999999',
             'gender' => \App\Enum\GenderEnum::MALE
         ])->addRole('GUEST');
+
+        $this->command->info("Creating PERANGKAT_DAERAH user");
+        \App\Models\User::factory()->create([
+            'full_name' => 'Perangkat Daerah',
+            'email' => 'PERANGKAT_DAERAH@app.com',
+        ])->addRole('PERANGKAT_DAERAH');
+
+        $this->command->info("Creating GURU user");
+        \App\Models\User::factory()->create([
+            'full_name' => 'Guru',
+            'email' => 'GURU@app.com',
+        ])->addRole('GURU');
+
+        $this->command->info("Creating GURU user");
+        \App\Models\User::factory()->create([
+            'full_name' => 'Guru',
+            'email' => 'GURU@app.com',
+        ])->addRole('GURU');
     }
 }

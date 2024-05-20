@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Enum\GenderEnum;
 use App\Http\Requests\StoreGuestManagementRequest;
 use App\Http\Requests\UpdateGuestManagementRequest;
+use App\Http\Resources\SingleUserResource;
+use App\Http\Resources\UserResource;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,14 +20,19 @@ class GuestManagementController extends Controller
      */
     public function index()
     {
-        $data = User::whereHasRole('GUEST')
+        $roles = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])
+            ->pluck('name')
+            ->toArray();
+
+        $data = UserResource::collection(User::whereHasRole($roles)
             ->orderByDesc('created_at')
-            ->get([
-                'full_name',
-                'email',
-                'uuid'
-            ]);
-        $users = User::whereHasRole("GUEST")->orderByDesc('created_at');
+            ->get()
+            ->map(function ($user) {
+                $roleName = $user->roles->first()->display_name;
+                $user->role_name = $roleName;
+                return $user;
+            }));
+
 
         return inertia()->render(
             'Private/GuestManagement/Index',
@@ -42,9 +50,15 @@ class GuestManagementController extends Controller
             GenderEnum::FEMALE,
         ];
 
+        $availableUserLevels = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])
+            ->get(['id', 'display_name']);
+
         return inertia()->render(
             'Private/GuestManagement/Create',
-            compact('genders')
+            [
+                'genders' => $genders,
+                'availableRoles' => $availableUserLevels
+            ]
         );
     }
 
@@ -60,7 +74,7 @@ class GuestManagementController extends Controller
 
             $validated['password'] = Hash::make($validated['password']);
 
-            User::create($validated)->addRole('GUEST');
+            User::create($validated)->addRole($validated['role_id']);
 
             DB::commit();
 
@@ -125,26 +139,20 @@ class GuestManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $data = $user->only([
-            'nik',
-            'email',
-            'uuid',
-            'full_name',
-            'd_o_b',
-            'phone_number',
-            'address',
-            'gender',
-            'contests'
-        ]);
+        $user->load('roles');
+        $data = new SingleUserResource($user);
 
         $genders = [
             GenderEnum::MALE,
             GenderEnum::FEMALE,
         ];
 
+        $availableUserLevels = Role::whereNotIn('name', ['SUPERADMIN', 'ADMIN'])
+            ->get(['id', 'display_name']);
+
         return inertia()->render(
             'Private/GuestManagement/Edit',
-            compact('data', 'genders')
+            compact('data', 'genders', 'availableUserLevels')
         );
     }
 
@@ -164,6 +172,8 @@ class GuestManagementController extends Controller
             }
 
             $user->update($validatedData);
+            $user->removeRole($user->roles->first()->id);
+            $user->addRole($validatedData['role_id']);
 
             DB::commit();
 
