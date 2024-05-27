@@ -1,12 +1,11 @@
 import FilterComponent from "@/Components/FilterComponent";
 import { formatDate } from "@/lib/utils";
-import { Link } from "@inertiajs/react";
-import { Button, Card } from "flowbite-react";
-import { Download } from "lucide-react";
+import { Button, Card, Tooltip } from "flowbite-react";
+import { Download, PenSquare, Trash } from "lucide-react";
 import { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
-const ParticipantList = ({ data, slug }) => {
+const ParticipantList = ({ data, slug, factors }) => {
     const [filterText, setFilterText] = useState("");
 
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -57,30 +56,49 @@ const ParticipantList = ({ data, slug }) => {
             selector: (row) => formatDate(row.created_at),
         },
         {
-            name: "Nilai",
+            name: "Action",
             cell: (row) => (
                 <>
-                    {row.score !== null ? (
-                        <p>{row.score}</p>
-                    ) : (
-                        <p>
-                            Belum ada nilai.
-                            <br />
-                            <Link
-                                href={route("perlombaan.penilaian.create", {
-                                    contest: slug,
-                                    user: row.uuid,
-                                })}
-                                className="text-blue-600 hover:underline"
-                            >
-                                Beri nilai
-                            </Link>
-                        </p>
-                    )}
+                    <div className="items flex flex-col gap-x-2 lg:flex-row">
+                        <Tooltip content="Hapus dari perlombaan">
+                            <Button color={"failure"} size="sm" href={"#"}>
+                                <Trash className="h-4 w-4" />
+                            </Button>
+                        </Tooltip>
+
+                        <Tooltip content="Ubah Data Nilai">
+                            <Button color={"warning"} size="sm" href={"#"}>
+                                <PenSquare className="h-4 w-4" />
+                            </Button>
+                        </Tooltip>
+                    </div>
                 </>
             ),
         },
     ];
+
+    const insertIndex = 3;
+
+    if (factors) {
+        factors.forEach((factor, i) => {
+            columns.splice(insertIndex + i, 0, {
+                name: factor.nama_faktor,
+                selector: (row) => {
+                    if (row.scores) {
+                        const scoreEntry = Object.values(row.scores).find(
+                            (score) =>
+                                score.contest_assessment_factor_id ===
+                                factor.id,
+                        );
+
+                        return <p>{scoreEntry ? scoreEntry.score : 0}</p>;
+                    } else {
+                        return <p>-</p>;
+                    }
+                },
+            });
+        });
+    }
 
     return (
         <Card>

@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreParticipationScoreRequest;
 use App\Models\Contest;
-use App\Models\ContestUser;
 use App\Models\ParticipantScore;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -17,10 +15,11 @@ class ParticipantScoreController extends Controller
     {
         $contest_data = $contest->only(['slug']);
         $user_data = $user->only(['full_name', 'uuid']);
+        $assessment_factors = $contest->assessmentFactors;
 
         return inertia()->render(
             'Private/ParticipantScore/Create',
-            compact('contest_data', 'user_data')
+            compact('contest_data', 'user_data', 'assessment_factors')
         );
     }
 
@@ -28,14 +27,17 @@ class ParticipantScoreController extends Controller
     {
         DB::beginTransaction();
 
-        // Log::info('contest : ' . $contest);
-        // Log::info('user : ' . $user);
         try {
             $validated = $request->validated();
-            $validated['contest_id'] = $contest->id;
-            $validated['user_id'] = $user->id;
 
-            ParticipantScore::create($validated);
+            foreach ($validated['form_penilaian'] as $data) {
+                $contest->participantScores()->create([
+                    'user_id' => $user->id,
+                    'contest_id' => $contest->id,
+                    'contest_assessment_factor_id' => $data['factor_id'],
+                    'score' => $data['score']
+                ]);
+            }
 
             DB::commit();
 

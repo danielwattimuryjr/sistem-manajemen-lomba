@@ -6,6 +6,7 @@ use App\Http\Requests\StoreContestRequest;
 use App\Http\Requests\UpdateContestRequest;
 use App\Models\Contest;
 use App\Models\Role;
+use Arr;
 use Illuminate\Support\Facades\{
     DB,
     Log
@@ -106,18 +107,21 @@ class ContestController extends Controller
             'isActive'
         ]);
 
-        $factors = $contest->assessmentFactors;
+        $factors = $contest->assessmentFactors()->get(['id', 'nama_faktor', 'bobot_penilaian']);
 
         $participants = $contest->users->map(function ($user) use ($contest) {
             $pivot = $user->pivot->only('created_at');
-            $score = $contest->participantScores->where('user_id', $user->id)->first();
-            $scoreData = $score ? $score->only('score') : ['score' => null];
+            $score = $contest->participantScores()->where('user_id', $user->id)->get(['id', 'contest_assessment_factor_id', 'score']);
+            $scoreData = $score ? $score->toArray() : null;
+
+            if ($scoreData)
+                $scores = Arr::keyBy($scoreData, 'contest_assessment_factor_id');
 
             return array_merge($user->only([
                 'uuid',
                 'full_name',
                 'email',
-            ]), $pivot, $scoreData);
+            ]), $pivot, ['scores' => $scoreData ? $scores : null]);
         });
 
         return Inertia::render(
@@ -361,5 +365,16 @@ class ContestController extends Controller
                 'text' => "Gagal memperbaharui status perlombaan"
             ]);
         }
+    }
+
+    public function showContestResult(Contest $contest)
+    {
+        $finalScores = $contest->calculateSAW($contest);
+        $contest->only(['title']);
+
+        return inertia('Private/ContestManagement/ShowLeaderboard', [
+            'leader_board' => $finalScores,
+            'contest_data' => $contest
+        ]);
     }
 }

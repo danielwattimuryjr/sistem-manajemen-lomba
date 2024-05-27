@@ -9,7 +9,6 @@ import { Badge, Button } from "flowbite-react";
 import { Check, FilePenLine, Trophy, X } from "lucide-react";
 
 const ContestDetailPage = ({ data, participants, factors }) => {
-    console.log(factors);
     return (
         <AdminLayout>
             <PageTitle
@@ -54,7 +53,11 @@ const ContestDetailPage = ({ data, participants, factors }) => {
                         Update
                     </Button>
 
-                    <Button className="w-full">
+                    <Button
+                        className="w-full"
+                        as={Link}
+                        href={route("perlombaan.get-saw", data.slug)}
+                    >
                         <Trophy className="mr-2 h-5 w-5" />
                         Winner
                     </Button>
@@ -75,7 +78,11 @@ const ContestDetailPage = ({ data, participants, factors }) => {
                 <ContestAssessmentFactor data={factors} />
 
                 {/* Card  Peserta */}
-                <ParticipantList data={participants} slug={data.slug} />
+                <ParticipantList
+                    data={participants}
+                    slug={data.slug}
+                    factors={factors}
+                />
             </section>
         </AdminLayout>
     );

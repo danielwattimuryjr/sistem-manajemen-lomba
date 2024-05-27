@@ -12,6 +12,7 @@ class ParticipantScore extends Model
     protected $fillable = [
         'score',
         'user_id',
+        'contest_assessment_factor_id',
         'contest_id'
     ];
 
@@ -28,5 +29,10 @@ class ParticipantScore extends Model
     public function contest()
     {
         return $this->belongsTo(Contest::class);
+    }
+
+    public function factor()
+    {
+        return $this->belongsTo(ContestAssessmentFactor::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ContestAssessmentFactor;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreParticipationScoreRequest extends FormRequest
@@ -27,8 +28,15 @@ class StoreParticipationScoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $availableRoles = ContestAssessmentFactor::pluck('id')->toArray();
+
         return [
-            'score' => 'required|min:0|max:100|numeric'
+            'form_penilaian' => 'required',
+            'form_penilaian.*.factor_id' => [
+                'required',
+                'in:' . implode(',', $availableRoles),
+            ],
+            'form_penilaian.*.score' => 'required|numeric|min:1|max:100'
         ];
     }
 }

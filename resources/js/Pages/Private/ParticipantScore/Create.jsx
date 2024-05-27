@@ -3,12 +3,30 @@ import InputText from "@/Components/Textinput";
 import AdminLayout from "@/Layouts/Admin/Layout";
 import { router, useForm } from "@inertiajs/react";
 import { Button, Card } from "flowbite-react";
+import { Save } from "lucide-react";
+import { useEffect } from "react";
 
-const Create = ({ contest_data, user_data }) => {
-    console.log(contest_data, user_data);
-    const { data, setData, post, processing, errors } = useForm({
-        score: 0,
+const Create = ({ contest_data, user_data, assessment_factors }) => {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        form_penilaian: [],
     });
+    console.log(errors);
+
+    useEffect(() => {
+        const defaultFormPenilaian = assessment_factors.map((factor) => ({
+            factor_id: factor.id,
+            nama_faktor: factor.nama_faktor,
+            score: 0,
+        }));
+
+        setData("form_penilaian", defaultFormPenilaian);
+    }, [assessment_factors]);
+
+    const handleScoreChange = (index, value) => {
+        const updatedFormPenilaian = [...data.form_penilaian];
+        updatedFormPenilaian[index].score = value;
+        setData("form_penilaian", updatedFormPenilaian);
+    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -28,38 +46,31 @@ const Create = ({ contest_data, user_data }) => {
 
     return (
         <AdminLayout>
-            {JSON.stringify(errors)}
             <PageTitle title={"Form Penilaian"} />
 
             <Card>
-                <form onSubmit={submit}>
-                    <InputText
-                        type="number"
-                        value={data.score}
-                        onChange={(e) => setData("score", e.target.value)}
-                        min={0}
-                        label={"Nilai"}
-                        placeholder={`Masukkan nilai untuk ${user_data.full_name}`}
-                        color={errors?.score && "failure"}
-                        helperText={errors?.score}
-                    />
+                <form onSubmit={submit} className="space-y-4">
+                    {data.form_penilaian.map((faktor, i) => (
+                        <InputText
+                            label={faktor.nama_faktor}
+                            value={faktor.score}
+                            onChange={(e) =>
+                                handleScoreChange(i, e.target.value)
+                            }
+                        />
+                    ))}
 
                     <Button
                         type="submit"
-                        className="mt-4 self-end"
-                        isProcessing={processing}
+                        color="blue"
                         disabled={processing}
+                        isProcessing={processing}
                     >
-                        Submit
+                        <Save className="mr-2 h-5 w-5" />
+                        Simpan
                     </Button>
                 </form>
             </Card>
-
-            {/* <div className="flex flex-col gap-4 md:flex-row">
-                
-
-                <Card>Ini data lomba</Card>
-            </div> */}
         </AdminLayout>
     );
 };

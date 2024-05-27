@@ -16,10 +16,15 @@ class GuestController extends Controller
         // Mulai dengan semua kontes yang aktif
         $query = Contest::where('isActive', true);
 
-        // Jika pengguna terautentikasi, cari kontes yang tidak berhubungan dengan pengguna
         if ($user) {
+            // Jika pengguna terautentikasi, cari kontes yang belum diikut sertakan oleh user yang sedang login
             $query->whereDoesntHave('users', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
+            });
+
+            // Get Contest hanya sesuai dengan role user yang dimiliki
+            $query->whereHas('roles', function ($query) use ($user) {
+                $query->whereIn('roles.id', $user->roles->pluck('id'));
             });
         }
 
@@ -35,7 +40,6 @@ class GuestController extends Controller
             'start_date',
             'end_date',
             'slug',
-
         ]);
 
         return Inertia::render('Public/PerlombaanAllPage/Page', [
@@ -44,7 +48,6 @@ class GuestController extends Controller
                 'start_date',
                 'end_date',
                 'slug',
-
             ]),
             'queryParams' => request()->query() ?: null,
         ]);

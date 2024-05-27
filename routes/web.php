@@ -68,8 +68,6 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
 
         Route::prefix('perlombaan/')->name('perlombaan.')
             ->group(function () {
-
-
                 Route::controller(ContestController::class)->group(function () {
                     // Route untuk bulk actions                
                     Route::post(
@@ -79,6 +77,8 @@ Route::prefix('/admin/')->middleware('auth')->group(function () {
 
                     Route::patch('{contest:slug}/update_status/{status}', 'updateStatus')
                         ->name('update-status');
+
+                    Route::get('leader_board/{contest:slug}', 'showContestResult')->name('get-saw');
                 });
 
                 Route::controller(ParticipantScoreController::class)

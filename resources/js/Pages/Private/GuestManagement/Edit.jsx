@@ -121,6 +121,7 @@ const Edit = ({ data: user, genders, availableUserLevels: levels }) => {
                         <InputText
                             label={"NIK"}
                             value={data.nik}
+                            maxLength={16}
                             placeholder={"Nomor Induk Kependudukan"}
                             onChange={(e) => setData("nik", e.target.value)}
                             color={errors?.nik && "failure"}
@@ -177,6 +178,7 @@ const Edit = ({ data: user, genders, availableUserLevels: levels }) => {
                         <InputText
                             label={"Nomor Telepon"}
                             type={"tel"}
+                            maxLength={13}
                             value={data.phone_number}
                             placeholder={"081234567890"}
                             onChange={(e) =>

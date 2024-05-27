@@ -153,6 +153,7 @@ const SignUp = ({ availableGenders: genders, availableUserLevels: levels }) => {
                                 <InputText
                                     label={"NIK"}
                                     value={data.nik}
+                                    maxLength={16}
                                     placeholder={"Nomor Induk Kependudukan"}
                                     onChange={(e) =>
                                         setData("nik", e.target.value)
@@ -223,6 +224,7 @@ const SignUp = ({ availableGenders: genders, availableUserLevels: levels }) => {
                                 <InputText
                                     label={"Nomor Telepon"}
                                     type={"tel"}
+                                    maxLength={13}
                                     value={data.phone_number}
                                     placeholder={"081234567890"}
                                     onChange={(e) =>
@@ -256,9 +258,6 @@ const SignUp = ({ availableGenders: genders, availableUserLevels: levels }) => {
                                     }
                                     helperText={errors?.role_id}
                                 >
-                                    <option selected disabled>
-                                        -- PILIH TINGKAT PESERTA --
-                                    </option>
                                     {levels.map((level, i) => (
                                         <option key={i} value={level.id}>
                                             {level.display_name}
