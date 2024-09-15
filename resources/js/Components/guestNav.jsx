@@ -21,13 +21,14 @@ export default function GuestNav() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
-          <Link href="#" prefetch={false}>
+          <Link href="#">
             <MountainIcon className="h-6 w-6" />
             <span className="sr-only">Company Logo</span>
           </Link>
           <div className="grid gap-2 py-6">
             {guestNavItems.map((item, i) => (
               <Link
+                key={i}
                 href={item.href}
                 className="flex w-full items-center py-2 text-lg font-semibold"
               >
@@ -38,7 +39,7 @@ export default function GuestNav() {
         </SheetContent>
       </Sheet>
 
-      <Link href="#" className="mr-6 hidden lg:flex" prefetch={false}>
+      <Link href="#" className="mr-6 hidden lg:flex">
         <MountainIcon className="h-6 w-6" />
         <span className="sr-only">Company Logo</span>
       </Link>
@@ -47,7 +48,16 @@ export default function GuestNav() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {auth.user ? (
-            <Button variant={"destructive"}>Sign Out</Button>
+            <Link
+              as="button"
+              method="post"
+              href={route("logout")}
+              className={buttonVariants({
+                variant: "destructive",
+              })}
+            >
+              Sign Out
+            </Link>
           ) : (
             <div className="flex items-center gap-2">
               <Link
@@ -74,11 +84,10 @@ export default function GuestNav() {
         <NavigationMenu>
           <NavigationMenuList>
             {guestNavItems.map((item, i) => (
-              <NavigationMenuLink asChild>
+              <NavigationMenuLink asChild key={i} active={item.active}>
                 <Link
                   href={item.href}
                   className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-                  prefetch={false}
                 >
                   {item.title}
                 </Link>

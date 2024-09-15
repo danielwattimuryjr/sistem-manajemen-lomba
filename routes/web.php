@@ -1,19 +1,21 @@
 <?php
 
 use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+  return Inertia::render('welcome', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+  ]);
 })->name('welcome');
+
+Route::get('/redirect', [DashboardController::class, 'index'])->name('redirect');
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
@@ -29,14 +31,13 @@ Route::get('/', function () {
 //     ]);
 // });
 
-Route::get('/sign-in', function () {
-    return to_route('login');
-})->name('sign-in');
-
 Route::prefix('/admin')->name('dashboard.')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('admin/dashboard');
-    })->name('home');
+  Route::get('/', function () {
+    return Inertia::render('admin/dashboard');
+  })->name('home');
+
+  // Tingkat Peserta Route
+  Route::resource('roles', RoleController::class);
 });
 
 require __DIR__ . '/auth.php';

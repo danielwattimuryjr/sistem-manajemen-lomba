@@ -6,24 +6,34 @@ export const adminNavItems = [
     active: route().current() == "dashboard.home",
   },
   {
-    title: "Users",
+    title: "Manajemen Tingkat Peserta",
+    href: route("dashboard.roles.index"),
+    icon: "IconLabelImportantFilled",
+    active: route().current() == "dashboard.roles.*",
+  },
+  {
+    title: "Manajemen Pengguna",
     href: "#",
     icon: "IconUsersGroup",
-    active: route().current() == "users.*",
+    active: route().current() == "dashboard.users.*",
+  },
+  {
+    title: "Manajemen Perlombaan",
+    href: "#",
+    icon: "IconTournament",
+    active: route().current() == "dashboard.competitions.*",
   },
 ]
 
 export const guestNavItems = [
   {
-    title: "Menu 1",
-    href: "#",
+    title: "Beranda",
+    href: route("welcome"),
+    active: route().current() == "welcome",
   },
   {
-    title: "Menu 1",
-    href: "#",
-  },
-  {
-    title: "Menu 1",
-    href: "#",
+    title: "Perlombaan",
+    href: route("welcome"),
+    active: route().current() == "competitions.*",
   },
 ]

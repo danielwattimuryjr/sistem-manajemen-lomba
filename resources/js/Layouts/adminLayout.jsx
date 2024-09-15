@@ -1,5 +1,6 @@
 import Header from "@/Components/layout/header"
 import Sidebar from "@/Components/layout/sidebar"
+import { Toaster } from "@/Components/ui/toaster"
 import { Head } from "@inertiajs/react"
 
 const AdminLayout = ({ children }) => {
@@ -12,6 +13,7 @@ const AdminLayout = ({ children }) => {
           <Header />
           {children}
         </main>
+        <Toaster />
       </div>
     </>
   )
