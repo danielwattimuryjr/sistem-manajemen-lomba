@@ -9,20 +9,21 @@ import { buttonVariants } from "@/Components/ui/button"
 import { IconPlus } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/Components/ui/separator"
-import RolesTable from "@/Components/roleTable/roleTable"
+import CompetitionTable from "@/Components/competitionTable/competitionTable"
 
-const RoleIndex = props => {
+const CompetitionIndex = props => {
   const breadcrumbItems = [
     { title: "Dashboard", link: route("dashboard.home") },
-    { title: "Manajemen Tingkat Peserta" },
+    { title: "Manajemen Perlombaan" },
   ]
 
-  const { data: roles, meta, links } = props.roles
+  const { data: competitions, meta, links } = props.competitions
   const [params, setParams] = useState(props.state)
+
   useFilter({
-    route: route("dashboard.roles.index"),
+    route: route("dashboard.competitions.index"),
     values: params,
-    only: ["roles"],
+    only: ["competitions"],
   })
 
   const handleSort = newField => {
@@ -44,14 +45,14 @@ const RoleIndex = props => {
 
           <div className="flex items-start justify-between">
             <Heading
-              title={"Tingkatan Peserta"}
+              title={"Perlombaan"}
               description={
                 "Di halaman ini, anda bisa melihat seluruh data tingkatan peserta yang terdaftar dalam sistem."
               }
             />
 
             <Link
-              href={route("dashboard.roles.create")}
+              href={route("dashboard.competitions.create")}
               className={cn(buttonVariants({ variant: "default" }))}
             >
               <IconPlus className="mr-2 h-4 w-4" />
@@ -61,8 +62,8 @@ const RoleIndex = props => {
 
           <Separator />
 
-          <RolesTable
-            roles={roles}
+          <CompetitionTable
+            competitions={competitions}
             meta={meta}
             links={links}
             params={params}
@@ -75,4 +76,4 @@ const RoleIndex = props => {
   )
 }
 
-export default RoleIndex
+export default CompetitionIndex

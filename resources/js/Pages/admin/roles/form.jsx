@@ -11,8 +11,18 @@ import { Separator } from "@/Components/ui/separator"
 import { toast } from "@/hooks/use-toast"
 import AdminLayout from "@/Layouts/adminLayout"
 import { getTimeStamp } from "@/lib/getTimeStamp"
+import Breadcrumbs from "@/Components/breadcrumbs"
 
 const RoleForm = ({ initialData }) => {
+  const breadcrumbItems = [
+    { title: "Dashboard", link: route("dashboard.home") },
+    {
+      title: "Manajemen Tingkat Peserta",
+      link: route("dashboard.roles.index"),
+    },
+    { title: initialData ? "Update Data" : "Tambah Data" },
+  ]
+
   const isEditing = !!initialData
   const title = isEditing
     ? "Edit Tingkatan Peserta"
@@ -61,8 +71,12 @@ const RoleForm = ({ initialData }) => {
     <AdminLayout>
       <PageContainer>
         <div className="space-y-4">
+          <Breadcrumbs items={breadcrumbItems} />
+
           <Heading title={title} description={description} />
+
           <Separator />
+
           <form onSubmit={handleSubmit} className="w-full space-y-8">
             <div className="gap-8 md:grid md:grid-cols-3">
               <div>

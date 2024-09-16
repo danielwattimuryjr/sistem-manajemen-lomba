@@ -37,7 +37,12 @@ Route::prefix('/admin')->name('dashboard.')->group(function () {
   })->name('home');
 
   // Tingkat Peserta Route
-  Route::resource('roles', RoleController::class);
+  Route::resource('roles', RoleController::class)->scoped([
+    'role' => 'name'
+  ]);
+  Route::resource('competitions', CompetitionController::class)->scoped([
+    'competition' => 'slug'
+  ]);
 });
 
 require __DIR__ . '/auth.php';

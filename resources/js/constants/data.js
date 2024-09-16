@@ -19,7 +19,7 @@ export const adminNavItems = [
   },
   {
     title: "Manajemen Perlombaan",
-    href: "#",
+    href: route("dashboard.competitions.index"),
     icon: "IconTournament",
     active: route().current() == "dashboard.competitions.*",
   },
