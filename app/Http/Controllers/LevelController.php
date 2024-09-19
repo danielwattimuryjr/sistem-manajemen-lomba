@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
-use App\Http\Resources\RoleResource;
-use App\Models\Role;
+use App\Http\Requests\StoreLevelRequest;
+use App\Http\Requests\UpdateLevelRequest;
+use App\Http\Resources\LevelResource;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
-class RoleController extends Controller
+class LevelController extends Controller
 {
   /**
    * Display a listing of the resource.
@@ -18,17 +18,14 @@ class RoleController extends Controller
   public function index(Request $request)
   {
     $request->validate([
-      'field' => Rule::in(['updated_at', 'created_at', 'name', 'display_name', 'users_count']),
+      'field' => Rule::in(['updated_at', 'created_at', 'name', 'slug', 'users_count']),
       'direction' => Rule::in(['asc', 'desc'])
     ]);
 
     $limit = $request->input('limit', 10);
 
-    $roles = RoleResource::collection(
-      Role::query()
-        ->select('roles.*')
-        ->where('name', '<>', 'admin')
-        ->where('name', '<>', 'superadmin')
+    $levels = LevelResource::collection(
+      Level::query()
         ->withCount('users')
         ->when($request->search, function ($query, $value) {
           $query->where(function ($q) use ($value) {
@@ -49,8 +46,8 @@ class RoleController extends Controller
         ->withQueryString()
     );
 
-    return Inertia::render('admin/roles/index', [
-      'roles' => fn() => $roles,
+    return Inertia::render('admin/levels/index', [
+      'levels' => fn() => $levels,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction')
     ]);
   }
@@ -60,17 +57,17 @@ class RoleController extends Controller
    */
   public function create()
   {
-    return Inertia::render('admin/roles/form');
+    return Inertia::render('admin/levels/form');
   }
 
   /**
    * Store a newly created resource in storage.
    */
-  public function store(StoreRoleRequest $request)
+  public function store(StoreLevelRequest $request)
   {
-    Role::create($request->validated());
+    Level::create($request->validated());
 
-    return to_route('dashboard.roles.index');
+    return to_route('dashboard.levels.index');
   }
 
   /**
@@ -84,30 +81,30 @@ class RoleController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(Role $role)
+  public function edit(Level $level)
   {
-    return Inertia::render('admin/roles/form', [
-      'initialData' => $role
+    return Inertia::render('admin/levels/form', [
+      'initialData' => $level
     ]);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(UpdateRoleRequest $request, Role $role)
+  public function update(UpdateLevelRequest $request, Level $level)
   {
-    $role->update($request->validated());
+    $level->update($request->validated());
 
-    return to_route('dashboard.roles.index');
+    return to_route('dashboard.levels.index');
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Role $role)
+  public function destroy(Level $level)
   {
-    $role->delete();
+    $level->delete();
 
-    return to_route('dashboard.roles.index');
+    return to_route('dashboard.levels.index');
   }
 }

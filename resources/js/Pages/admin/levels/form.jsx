@@ -18,7 +18,7 @@ const RoleForm = ({ initialData }) => {
     { title: "Dashboard", link: route("dashboard.home") },
     {
       title: "Manajemen Tingkat Peserta",
-      link: route("dashboard.roles.index"),
+      link: route("dashboard.levels.index"),
     },
     { title: initialData ? "Update Data" : "Tambah Data" },
   ]
@@ -36,8 +36,8 @@ const RoleForm = ({ initialData }) => {
   const action = isEditing ? "Simpan Perubahan" : "Tambah Data"
 
   const { data, setData, post, put, processing, errors } = useForm({
-    name: initialData?.name || "",
-    display_name: initialData?.display_name || "",
+    slug: initialData?.slug || "",
+    name: initialData?.slug || "",
   })
 
   const handleSubmit = e => {
@@ -51,16 +51,16 @@ const RoleForm = ({ initialData }) => {
     }
 
     isEditing
-      ? put(route("dashboard.roles.update", initialData.id), { onSuccess })
-      : post(route("dashboard.roles.store"), { onSuccess })
+      ? put(route("dashboard.levels.update", initialData), { onSuccess })
+      : post(route("dashboard.levels.store"), { onSuccess })
   }
 
   const handleDisplayNameChange = e => {
-    const newDisplayName = e.target.value
+    const newName = e.target.value
     setData(prevData => ({
       ...prevData,
-      display_name: newDisplayName,
-      name: slugify(newDisplayName, {
+      name: newName,
+      slug: slugify(newName, {
         replacement: "_",
         lower: true,
       }),
@@ -81,13 +81,13 @@ const RoleForm = ({ initialData }) => {
             <div className="gap-8 md:grid md:grid-cols-3">
               <div>
                 <Label htmlFor="display_name" className="capitalize">
-                  Display Name
+                  Name
                 </Label>
                 <Input
                   id="display_name"
                   type="text"
                   name="display_name"
-                  value={data.display_name}
+                  value={data.name}
                   autoFocus
                   onChange={handleDisplayNameChange}
                 />
@@ -95,14 +95,14 @@ const RoleForm = ({ initialData }) => {
               </div>
               <div>
                 <Label htmlFor="name" className="capitalize">
-                  Name
+                  Slug (Identifier)
                 </Label>
                 <Input
                   disabled
                   id="name"
                   type="text"
                   name="name"
-                  value={data.name}
+                  value={data.slug}
                 />
                 <InputError message={errors.name} className="mt-2" />
               </div>

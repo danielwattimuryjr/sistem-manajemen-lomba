@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
-use App\Http\Resources\RoleResource;
+use App\Http\Resources\LevelResource;
 use App\Models\Competition;
-use App\Models\Role;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -52,8 +52,8 @@ class CompetitionController extends Controller
    */
   public function create()
   {
-    $roles = RoleResource::collection(
-      Role::orderBy('name', 'ASC')->get()
+    $roles = LevelResource::collection(
+      Level::orderBy('name', 'ASC')->get()
     );
 
     return Inertia::render('admin/competitions/form', [
@@ -84,8 +84,8 @@ class CompetitionController extends Controller
    */
   public function edit(Competition $competition)
   {
-    $roles = Role::orderBy('created_at', 'ASC')
-      ->get(['id', 'display_name']);
+    $roles = Level::orderBy('created_at', 'ASC')
+      ->get(['id', 'name']);
     return response()->json([$competition, $roles]);
   }
 

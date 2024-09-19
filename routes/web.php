@@ -3,7 +3,7 @@
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,9 +37,8 @@ Route::prefix('/admin')->name('dashboard.')->group(function () {
     return Inertia::render('admin/dashboard');
   })->name('home');
 
-  // Tingkat Peserta Route
-  Route::resource('roles', RoleController::class)->scoped([
-    'role' => 'name'
+  Route::resource('levels', LevelController::class)->scoped([
+    'level' => 'slug'
   ]);
   Route::resource('competitions', CompetitionController::class)->scoped([
     'competition' => 'slug'

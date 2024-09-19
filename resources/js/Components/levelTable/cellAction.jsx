@@ -14,11 +14,11 @@ import {
 } from "../ui/dropdown-menu"
 import DropdownDialog from "../dropdownDialog"
 
-const RoleCellAction = ({ role }) => {
+const LevelCellAction = ({ level }) => {
   const { delete: destroy } = useForm()
 
   const deleteData = role => {
-    destroy(route("dashboard.roles.destroy", role), {
+    destroy(route("dashboard.levels.destroy", role), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
@@ -41,7 +41,7 @@ const RoleCellAction = ({ role }) => {
         <DropdownMenuSeparator />
         <DropdownDialog
           description="Keputusan ini tidak dapat di batalkan. Data tingkatan peserta akan dihapus."
-          action={() => deleteData(role)}
+          action={() => deleteData(level)}
           submit_text="Ya, saya yakin!"
           cancel_text="Batalkan"
           buttonStyle="destructive"
@@ -51,7 +51,7 @@ const RoleCellAction = ({ role }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.roles.edit", role)}
+            href={route("dashboard.levels.edit", level)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />
@@ -63,4 +63,4 @@ const RoleCellAction = ({ role }) => {
   )
 }
 
-export default RoleCellAction
+export default LevelCellAction
