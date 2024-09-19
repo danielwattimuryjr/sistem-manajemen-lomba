@@ -17,8 +17,6 @@ const DashboardNav = ({ items, setOpen, isMobileNav = false }) => {
     return null
   }
 
-  // console.log("isActive", isMobileNav, isMinimized)
-
   return (
     <nav className="grid items-start gap-2">
       <TooltipProvider>

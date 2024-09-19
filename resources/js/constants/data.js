@@ -13,7 +13,7 @@ export const adminNavItems = [
   },
   {
     title: "Manajemen Pengguna",
-    href: "#",
+    href: route("dashboard.users.index"),
     icon: "IconUsersGroup",
     active: route().current() == "dashboard.users.*",
   },
@@ -22,18 +22,5 @@ export const adminNavItems = [
     href: route("dashboard.competitions.index"),
     icon: "IconTournament",
     active: route().current() == "dashboard.competitions.*",
-  },
-]
-
-export const guestNavItems = [
-  {
-    title: "Beranda",
-    href: route("welcome"),
-    active: route().current() == "welcome",
-  },
-  {
-    title: "Perlombaan",
-    href: route("welcome"),
-    active: route().current() == "competitions.*",
   },
 ]

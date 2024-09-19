@@ -3,6 +3,7 @@ import { Link, usePage } from "@inertiajs/react"
 import MobileSidebar from "./mobileSidebar"
 import { ThemeToggle } from "../themeToggle"
 import { Button, buttonVariants } from "../ui/button"
+import UserNav from "../userNav"
 
 const Header = () => {
   const { auth } = usePage().props
@@ -13,18 +14,7 @@ const Header = () => {
           <MobileSidebar />
         </div>
         <div className="flex flex-row-reverse items-center gap-2">
-          {auth.user && (
-            <Link
-              as="button"
-              method="post"
-              href={route("logout")}
-              className={buttonVariants({
-                variant: "destructive",
-              })}
-            >
-              Sign Out
-            </Link>
-          )}
+          {auth?.user?.data && <UserNav />}
           <ThemeToggle />
         </div>
       </nav>

@@ -4,6 +4,7 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,6 +44,7 @@ Route::prefix('/admin')->name('dashboard.')->group(function () {
   Route::resource('competitions', CompetitionController::class)->scoped([
     'competition' => 'slug'
   ]);
+  Route::resource('users', UserController::class);
 });
 
 require __DIR__ . '/auth.php';

@@ -7,19 +7,48 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu"
 import { ThemeToggle } from "./themeToggle"
-import { guestNavItems } from "@/constants/data"
+import UserNav from "./userNav"
+import { useEffect } from "react"
+
+const guestNavItems = [
+  {
+    title: "Beranda",
+    href: route("welcome"),
+    active: route().current() == "welcome",
+  },
+  {
+    title: "Perlombaan",
+    href: route("welcome"),
+    active: route().current() == "competitions.*",
+  },
+]
 
 export default function GuestNav() {
   const { auth } = usePage().props
+
+  console.log(auth.user)
+
+  // useEffect(() => {
+  //   const
+
+  //   return () => {
+  //     second
+  //   }
+  // }, [])
+
   return (
-    <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6 border-b border-border/80">
+    <header className="flex h-20 w-full shrink-0 items-center border-b border-border/80 px-4 md:px-6">
       <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="lg:hidden">
-            <MenuIcon className="h-6 w-6" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
+        <div className="flex w-full items-center justify-between lg:hidden">
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon">
+              <MenuIcon className="h-6 w-6" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+
+          {auth.user?.data && <UserNav />}
+        </div>
         <SheetContent side="left">
           <Link href="#">
             <MountainIcon className="h-6 w-6" />
@@ -44,20 +73,11 @@ export default function GuestNav() {
         <span className="sr-only">Company Logo</span>
       </Link>
 
-      <div className="hidden lg:flex lg:justify-between lg:flex-row-reverse  w-full">
+      <div className="hidden w-full lg:flex lg:flex-row-reverse lg:justify-between">
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          {auth.user ? (
-            <Link
-              as="button"
-              method="post"
-              href={route("logout")}
-              className={buttonVariants({
-                variant: "destructive",
-              })}
-            >
-              Sign Out
-            </Link>
+          {auth.user?.data ? (
+            <UserNav />
           ) : (
             <div className="flex items-center gap-2">
               <Link
