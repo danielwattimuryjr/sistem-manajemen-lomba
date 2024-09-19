@@ -1,8 +1,4 @@
-const roleTableColumns = [
-  {
-    label: "display name",
-    column: "display_name",
-  },
+const levelTableColumns = [
   {
     label: "name",
     column: "name",
@@ -21,4 +17,4 @@ const roleTableColumns = [
   },
 ]
 
-export default roleTableColumns
+export default levelTableColumns

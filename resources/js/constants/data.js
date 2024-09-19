@@ -7,9 +7,9 @@ export const adminNavItems = [
   },
   {
     title: "Manajemen Tingkat Peserta",
-    href: route("dashboard.roles.index"),
+    href: route("dashboard.levels.index"),
     icon: "IconLabelImportantFilled",
-    active: route().current() == "dashboard.roles.*",
+    active: route().current() == "dashboard.levels.*",
   },
   {
     title: "Manajemen Pengguna",

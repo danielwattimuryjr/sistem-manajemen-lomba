@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class StoreRoleRequest extends FormRequest
+class UpdateLevelRequest extends FormRequest
 {
   /**
    * Determine if the user is authorized to make this request.
@@ -28,15 +28,17 @@ class StoreRoleRequest extends FormRequest
    */
   public function rules(): array
   {
+    $level = $this->route('level');
+
     return [
       'name' => [
         'required',
         'string',
-        Rule::unique('roles')
       ],
-      'display_name' => [
+      'slug' => [
         'required',
-        'string'
+        'string',
+        Rule::unique('levels')->ignore($level)
       ]
     ];
   }

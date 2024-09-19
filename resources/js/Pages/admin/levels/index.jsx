@@ -9,7 +9,7 @@ import { buttonVariants } from "@/Components/ui/button"
 import { IconPlus } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/Components/ui/separator"
-import RolesTable from "@/Components/roleTable/roleTable"
+import LevelTable from "@/Components/levelTable/levelTable"
 
 const RoleIndex = props => {
   const breadcrumbItems = [
@@ -17,12 +17,12 @@ const RoleIndex = props => {
     { title: "Manajemen Tingkat Peserta" },
   ]
 
-  const { data: roles, meta, links } = props.roles
+  const { data: levels, meta, links } = props.levels
   const [params, setParams] = useState(props.state)
   useFilter({
-    route: route("dashboard.roles.index"),
+    route: route("dashboard.levels.index"),
     values: params,
-    only: ["roles"],
+    only: ["levels"],
   })
 
   const handleSort = newField => {
@@ -51,7 +51,7 @@ const RoleIndex = props => {
             />
 
             <Link
-              href={route("dashboard.roles.create")}
+              href={route("dashboard.levels.create")}
               className={cn(buttonVariants({ variant: "default" }))}
             >
               <IconPlus className="mr-2 h-4 w-4" />
@@ -61,8 +61,8 @@ const RoleIndex = props => {
 
           <Separator />
 
-          <RolesTable
-            roles={roles}
+          <LevelTable
+            levels={levels}
             meta={meta}
             links={links}
             params={params}

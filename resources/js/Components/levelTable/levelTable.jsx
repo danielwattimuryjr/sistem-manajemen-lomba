@@ -17,10 +17,10 @@ import {
 import { Input } from "@/components/ui/input"
 import SortIndicator from "@/components/SortIndicator"
 import SimplePagination from "@/components/SimplePagination"
-import roleTableColumns from "./columns"
-import RoleCellAction from "./cellAction"
+import levelTableColumns from "./columns"
+import LevelCellAction from "./cellAction"
 
-const RolesTable = ({ roles, meta, links, params, setParams, handleSort }) => {
+const LevelTable = ({ levels, meta, links, params, setParams, handleSort }) => {
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
@@ -57,7 +57,7 @@ const RolesTable = ({ roles, meta, links, params, setParams, handleSort }) => {
         <Table className="relative">
           <TableRow>
             <TableHead className="w-[50px] text-center">#</TableHead>
-            {roleTableColumns.map((col, i) => (
+            {levelTableColumns.map((col, i) => (
               <TableHead key={i} onClick={() => handleSort(col.column)}>
                 <SortIndicator
                   label={col.label}
@@ -71,20 +71,19 @@ const RolesTable = ({ roles, meta, links, params, setParams, handleSort }) => {
           </TableRow>
 
           <TableBody>
-            {roles.length > 0 ? (
+            {levels.length > 0 ? (
               <>
-                {roles.map((role, i) => (
-                  <TableRow key={role.id}>
+                {levels.map((level, i) => (
+                  <TableRow key={level.id}>
                     <TableCell className="w-0 py-7 text-center">
                       {meta.from + i}
                     </TableCell>
-                    <TableCell>{role.displayName}</TableCell>
-                    <TableCell>{role.name}</TableCell>
-                    <TableCell>{role.usersCount}</TableCell>
-                    <TableCell>{role.createdAt}</TableCell>
-                    <TableCell>{role.updatedAt}</TableCell>
+                    <TableCell>{level.name}</TableCell>
+                    <TableCell>{level.usersCount}</TableCell>
+                    <TableCell>{level.createdAt}</TableCell>
+                    <TableCell>{level.updatedAt}</TableCell>
                     <TableCell>
-                      <RoleCellAction role={role} />
+                      <LevelCellAction level={level} />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -107,4 +106,4 @@ const RolesTable = ({ roles, meta, links, params, setParams, handleSort }) => {
   )
 }
 
-export default RolesTable
+export default LevelTable
