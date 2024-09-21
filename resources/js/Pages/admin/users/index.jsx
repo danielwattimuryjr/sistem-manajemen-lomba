@@ -1,13 +1,31 @@
 import Breadcrumbs from "@/Components/breadcrumbs"
 import Heading from "@/Components/heading"
 import PageContainer from "@/Components/layout/pageContainer"
+import SortIndicator from "@/Components/sortIndicator"
 import { buttonVariants } from "@/Components/ui/button"
+import { Input } from "@/Components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/Components/ui/select"
 import { Separator } from "@/Components/ui/separator"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@/Components/ui/table"
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
+import UserTable from "@/Components/userTable/userTable"
 import { useFilter } from "@/hooks/useFilter"
 import AdminLayout from "@/Layouts/adminLayout"
 import { cn } from "@/lib/utils"
 import { Link } from "@inertiajs/react"
+import { ScrollArea } from "@radix-ui/react-scroll-area"
 import { TabsContent } from "@radix-ui/react-tabs"
 import { IconPlus } from "@tabler/icons-react"
 import { useState } from "react"
@@ -38,9 +56,8 @@ const UserIndex = props => {
     setParams({ ...params, field: newField, direction: newDirection })
   }
 
-  const handleTab = userRole => {
-    let newUserRole = params?.role ?? "guest"
-    setParams({ ...params, role: newUserRole })
+  const handleTab = selectedRole => {
+    setParams({ ...params, role: selectedRole })
   }
 
   return (
@@ -50,10 +67,24 @@ const UserIndex = props => {
           <Breadcrumbs items={breadcrumbItems} />
 
           <div className="flex items-start justify-between">
-            <Heading title={"Pengguna"} description={"..."} />
+            <Heading
+              title={"Pengguna"}
+              description={
+                <Tabs
+                  defaultValue="guest"
+                  className="mt-4 space-y-4"
+                  onValueChange={val => handleTab(val)}
+                >
+                  <TabsList>
+                    <TabsTrigger value="guest">Peserta</TabsTrigger>
+                    <TabsTrigger value="admin">Juri</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              }
+            />
 
             <Link
-              href={"#"}
+              href={route("dashboard.users.create")}
               className={cn(buttonVariants({ variant: "default" }))}
             >
               <IconPlus className="mr-2 h-4 w-4" />
@@ -63,16 +94,15 @@ const UserIndex = props => {
 
           <Separator />
 
-          <Tabs defaultValue="guest" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="guest">Peserta</TabsTrigger>
-              <TabsTrigger value="admin">Juri</TabsTrigger>
-            </TabsList>
-            <TabsContent value="guest">guest</TabsContent>
-            <TabsContent value="admin">Admin</TabsContent>
-          </Tabs>
-
           {/* Table */}
+          <UserTable
+            users={users}
+            meta={meta}
+            links={links}
+            params={params}
+            setParams={setParams}
+            handleSort={handleSort}
+          />
         </div>
       </PageContainer>
     </AdminLayout>

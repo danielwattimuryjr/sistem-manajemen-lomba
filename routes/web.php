@@ -43,7 +43,9 @@ Route::prefix('/admin')->name('dashboard.')->group(function () {
   Route::resource('competitions', CompetitionController::class)->scoped([
     'competition' => 'slug'
   ]);
-  Route::resource('users', UserController::class);
+  Route::resource('users', UserController::class)->scoped([
+    'user' => 'username'
+  ]);
 });
 
 require __DIR__ . '/auth.php';

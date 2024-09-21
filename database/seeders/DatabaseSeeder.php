@@ -17,10 +17,19 @@ class DatabaseSeeder extends Seeder
     $this->call([CompetitionSeeder::class]);
 
     User::factory()->create([
-      'name' => 'Test User',
-      'email' => 'test@example.com',
+      'name' => 'Superadmin',
+      'email' => 'superadmin@app.com',
       'role' => 'superadmin'
     ]);
 
+    User::factory()->create([
+      'name' => 'Admin',
+      'email' => 'admin@app.com',
+      'role' => 'admin'
+    ]);
+
+    User::factory(10)->create([
+      'role' => 'guest'
+    ]);
   }
 }

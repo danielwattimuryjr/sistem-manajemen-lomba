@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { IconCalendar } from "@tabler/icons-react"
 import { format } from "date-fns"
 
-const DateRangePicker = ({ className, from, to, onChange }) => {
+const DateRangePicker = ({ placeholder, className, from, to, onChange }) => {
   const date = { from, to }
 
   return (
@@ -31,7 +31,7 @@ const DateRangePicker = ({ className, from, to, onChange }) => {
                 format(new Date(date.from), "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>{placeholder || "Pick a date"}</span>
             )}
           </Button>
         </PopoverTrigger>

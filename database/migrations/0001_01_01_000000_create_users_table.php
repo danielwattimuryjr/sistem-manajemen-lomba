@@ -19,12 +19,13 @@ return new class extends Migration {
       $table->string('password');
 
       // Additional Fields
+      $table->string('username')->unique();
       $table->enum('role', ['superadmin', 'admin', 'guest'])->default('guest');
       $table->string('phone_number');
       $table->text('address');
       $table->string('nik')->unique();
       $table->timestamp('date_of_birth');
-      $table->boolean('isAccountVerified')->nullable()->default(null);
+      $table->timestamp('account_verified_at')->nullable();
       $table->foreignIdFor(Level::class)->nullable()->constrained()->cascadeOnDelete();
 
       $table->timestamp('email_verified_at')->nullable();

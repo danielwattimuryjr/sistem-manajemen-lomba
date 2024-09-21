@@ -37,7 +37,7 @@ const RoleForm = ({ initialData }) => {
 
   const { data, setData, post, put, processing, errors } = useForm({
     slug: initialData?.slug || "",
-    name: initialData?.slug || "",
+    name: initialData?.name || "",
   })
 
   const handleSubmit = e => {
