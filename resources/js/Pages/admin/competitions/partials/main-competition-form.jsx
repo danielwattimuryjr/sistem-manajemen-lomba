@@ -6,9 +6,27 @@ import InputError from "@/Components/inputError"
 import DateRangePicker from "@/Components/dateRangePicker"
 import Tiptap from "@/Components/textEditor/tiptap"
 import { format } from "date-fns"
+import { MultiSelect } from "@/Components/multiSelect"
 
-const MainCompetitionForm = ({ data, setData, errors, initialData }) => {
+const MainCompetitionForm = ({
+  data,
+  setData,
+  errors,
+  initialData,
+  levels,
+  judges,
+}) => {
   const isEditing = !!initialData
+
+  const levelsList = levels.data.map(level => ({
+    value: level.id,
+    label: level.name,
+  }))
+
+  const judgesList = judges.data.map(judge => ({
+    value: judge.id,
+    label: judge.name,
+  }))
 
   const handleDisplayNameChange = e => {
     const newName = e.target.value
@@ -65,7 +83,10 @@ const MainCompetitionForm = ({ data, setData, errors, initialData }) => {
             to={data.end_date}
             onChange={handleDateChange}
           />
-          <InputError message={errors.date} className="mt-2" />
+          <InputError
+            message={errors.start_date || errors.end_date}
+            className="mt-2"
+          />
         </div>
       </div>
 
@@ -76,6 +97,39 @@ const MainCompetitionForm = ({ data, setData, errors, initialData }) => {
             description={data.description}
             onChange={e => setData("description", e)}
           />
+          <InputError message={errors.description} className="mt-2" />
+        </div>
+      </div>
+
+      <div className="w-full space-y-8">
+        <div>
+          <Label>Tingkat Peserta</Label>
+          <MultiSelect
+            options={levelsList}
+            onValueChange={e => setData("levels", e)}
+            defaultValue={data.levels}
+            placeholder="Pilih Tingkat Peserta"
+            variant="inverted"
+            animation={2}
+            maxCount={5}
+          />
+          <InputError message={errors.levels} className="mt-2" />
+        </div>
+      </div>
+
+      <div className="w-full space-y-8">
+        <div>
+          <Label>Juri</Label>
+          <MultiSelect
+            options={judgesList}
+            onValueChange={e => setData("judges", e)}
+            defaultValue={data.judges}
+            placeholder="Pilih Juri"
+            variant="inverted"
+            animation={2}
+            maxCount={5}
+          />
+          <InputError message={errors.judges} className="mt-2" />
         </div>
       </div>
     </>

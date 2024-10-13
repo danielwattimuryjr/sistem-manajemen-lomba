@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
 
-class StoreCompetitionRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
   /**
    * Determine if the user is authorized to make this request.
@@ -15,9 +16,9 @@ class StoreCompetitionRequest extends FormRequest
   {
     $user = Auth::user();
 
-    if ($user->hasRole('superadmin')) {
+    if (!$user)
       return true;
-    }
+
     return false;
   }
 
@@ -31,54 +32,41 @@ class StoreCompetitionRequest extends FormRequest
     return [
       'name' => [
         'required',
-        'string',
-        'min:3'
       ],
-      'slug' => [
+      'password' => [
         'required',
-        'string',
-        'min:3',
-        Rule::unique('competitions', 'slug')
+        'confirmed',
+        Rules\Password::defaults()
       ],
-      'description' => [
+      'username' => [
         'required',
+        Rule::unique('users', 'username')
       ],
-      'start_date' => [
+      'phone_number' => [
+        'required',
+        'digits:10'
+      ],
+      'address' => [
+        'required'
+      ],
+      'nik' => [
+        'required',
+        'digits:16',
+        Rule::unique('users', 'nik')
+      ],
+      'date_of_birth' => [
         'required',
         'date'
       ],
-      'end_date' => [
+      'level_id' => [
         'required',
-        'date'
-      ],
-      'assessment_factors' => [
-        'required',
-        'array'
-      ],
-      'assessment_factors.*.name' => [
-        'required',
-        'string'
-      ],
-      'assessment_factors.*.weight' => [
-        'required',
-        'integer',
-      ],
-      'levels' => [
-        'required',
-        'array'
-      ],
-      'levels.*' => [
-        'integer',
         Rule::exists('levels', 'id')
       ],
-      'judges' => [
+      'email' => [
         'required',
-        'array'
+        'email',
+        Rule::unique('users', 'email')
       ],
-      'judges.*' => [
-        'integer',
-        Rule::exists('users', 'id')
-      ]
     ];
   }
 }

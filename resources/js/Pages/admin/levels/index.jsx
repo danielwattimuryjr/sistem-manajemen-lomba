@@ -1,7 +1,7 @@
 import { Link } from "@inertiajs/react"
 import { useState } from "react"
 import { useFilter } from "@/hooks/useFilter"
-import AdminLayout from "@/Layouts/adminLayout"
+import AdminLayout from "@/Layouts/admin-layout"
 import PageContainer from "@/Components/layout/pageContainer"
 import Breadcrumbs from "@/Components/breadcrumbs"
 import Heading from "@/Components/heading"

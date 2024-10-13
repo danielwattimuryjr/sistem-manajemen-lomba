@@ -19,13 +19,17 @@ import {
   TooltipTrigger,
 } from "@/Components/ui/tooltip"
 import Heading from "@/Components/heading"
+import InputError from "@/Components/inputError"
 
 const FormAssessmentFactor = ({
   initialFactors = [],
   setAssessmentFactors,
+  errors,
 }) => {
+  console.log(errors)
+
   const [factors, setFactors] = useState(
-    initialFactors.length > 0 ? initialFactors : [{ name: "", value: 0 }],
+    initialFactors.length > 0 ? initialFactors : [{ name: "", weight: 0 }],
   )
 
   const handleChangeAssessmentFactor = (index, key, value) => {
@@ -37,7 +41,7 @@ const FormAssessmentFactor = ({
   }
 
   const addAssessmentFactor = () => {
-    const newFactor = { name: "", value: 0 }
+    const newFactor = { name: "", weight: 0 }
     const updatedFactors = [...factors, newFactor]
     setFactors(updatedFactors)
     setAssessmentFactors(updatedFactors)
@@ -49,6 +53,10 @@ const FormAssessmentFactor = ({
     setAssessmentFactors(updatedFactors)
   }
 
+  const totalWeight = factors.reduce((sum, item) => {
+    return sum + Number(item.weight)
+  }, 0)
+
   return (
     <>
       <Heading
@@ -57,6 +65,8 @@ const FormAssessmentFactor = ({
           "Pada bagian ini, silahkan tentukan faktor penilaian untuk lomba ini beserta dengan bobotnya. Total bobot penilaian tidak boleh melebihi 100%"
         }
       />
+
+      <h1>Total bobot penilaian: {totalWeight}</h1>
 
       <ScrollArea className="h-[calc(80vh-300px)] rounded-md border">
         <Table className="relative">
@@ -84,19 +94,27 @@ const FormAssessmentFactor = ({
                           )
                         }
                       />
+                      <InputError
+                        message={errors[`assessment_factors.${i}.name`]}
+                        className="mt-2"
+                      />
                     </TableCell>
                     <TableCell>
                       <Input
                         type={"number"}
                         min={0}
-                        value={factor.value}
+                        value={factor.weight}
                         onChange={e =>
                           handleChangeAssessmentFactor(
                             i,
-                            "value",
+                            "weight",
                             e.target.value,
                           )
                         }
+                      />
+                      <InputError
+                        message={errors[`assessment_factors.${i}.weight`]}
+                        className="mt-2"
                       />
                     </TableCell>
                     <TableCell className="flex items-center justify-center">
@@ -137,6 +155,7 @@ const FormAssessmentFactor = ({
               <TableCell colSpan={3}>
                 <Button
                   type="button"
+                  disabled={totalWeight >= 100}
                   onClick={addAssessmentFactor}
                   variant="ghost"
                   className={"w-full"}

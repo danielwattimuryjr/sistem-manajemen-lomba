@@ -1,5 +1,5 @@
 import PageContainer from "@/Components/layout/pageContainer"
-import AppLayout from "@/Layouts/appLayout"
+import AppLayout from "@/Layouts/app-layout"
 
 const Home = () => {
   return (

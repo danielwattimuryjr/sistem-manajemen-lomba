@@ -6,9 +6,12 @@ use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\LevelResource;
+use App\Http\Resources\UserResource;
 use App\Models\Competition;
 use App\Models\Level;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -52,12 +55,18 @@ class CompetitionController extends Controller
    */
   public function create()
   {
-    $roles = LevelResource::collection(
+    $levels = LevelResource::collection(
       Level::orderBy('name', 'ASC')->get()
+    );
+    $judges = UserResource::collection(
+      User::where('role', 'admin')
+        ->orderBy('name', 'ASC')
+        ->get()
     );
 
     return Inertia::render('admin/competitions/form', [
-      'roles' => $roles
+      'levels' => $levels,
+      'judges' => $judges
     ]);
   }
 
@@ -66,9 +75,33 @@ class CompetitionController extends Controller
    */
   public function store(StoreCompetitionRequest $request)
   {
-    $competition = Competition::create($request->validated());
+    $validated = $request->validated();
 
-    return response()->json($competition);
+    DB::beginTransaction();
+    try {
+      $competition = Competition::create([
+        'name' => $validated['name'],
+        'slug' => $validated['slug'],
+        'description' => $validated['description'],
+        'start_date' => $validated['start_date'],
+        'end_date' => $validated['end_date'],
+        'is_active' => true
+      ]);
+
+      $competition->judges()->attach($validated['judges']);
+      $competition->levels()->attach($validated['levels']);
+      foreach ($validated['assessment_factors'] as $criteria) {
+        $competition->criterias()->create([
+          'name' => $criteria['name'],
+          'weight' => $criteria['weight']
+        ]);
+      }
+      DB::commit();
+
+      return to_route('dashboard.competitions.index');
+    } catch (\Throwable $th) {
+      DB::rollBack();
+    }
   }
 
   /**

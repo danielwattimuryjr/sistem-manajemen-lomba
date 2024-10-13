@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,21 +19,7 @@ Route::get('/', function () {
 
 Route::get('/redirect', [DashboardController::class, 'index'])->name('redirect');
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-//     Route::resource('competitions', CompetitionController::class)->parameters([
-//         'competition' => 'slug'
-//     ]);
-// });
-
-Route::prefix('/admin')->name('dashboard.')->group(function () {
+Route::middleware(['auth', 'verified', 'roles:superadmin'])->prefix('/admin')->name('dashboard.')->group(function () {
   Route::get('/', function () {
     return Inertia::render('admin/dashboard');
   })->name('home');

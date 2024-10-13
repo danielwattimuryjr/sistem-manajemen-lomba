@@ -9,6 +9,7 @@ use App\Http\Resources\SingleUserResource;
 use App\Http\Resources\UserResource;
 use App\Models\Level;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -85,7 +86,15 @@ class UserController extends Controller
   public function store(StoreUserRequest $request)
   {
     $validated = $request->validated();
-    User::create($validated);
+    if ($validated['role'] === 'admin') {
+      $validated['email_verified_at'] = now();
+      $validated['account_verified_at'] = now();
+    }
+    $user = User::create($validated);
+
+    if ($validated['role'] === 'guest') {
+      event(new Registered($user));
+    }
 
     return to_route('dashboard.users.index', [
       'role' => $validated['role']
@@ -107,8 +116,15 @@ class UserController extends Controller
    */
   public function edit(User $user)
   {
+    $levels = LevelResource::collection(
+      Level::query()
+        ->orderBy('name', 'ASC')
+        ->get()
+    );
+
     return Inertia::render('admin/users/form', [
-      'initialData' => $user
+      'initialData' => $user,
+      'levels' => fn() => $levels
     ]);
   }
 

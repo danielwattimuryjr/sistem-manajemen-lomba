@@ -1,17 +1,17 @@
 import React, { useEffect } from "react"
 import { useForm } from "@inertiajs/react"
 import { toast } from "@/hooks/use-toast"
-import AdminLayout from "@/Layouts/adminLayout"
+import AdminLayout from "@/Layouts/admin-layout"
 import PageContainer from "@/Components/layout/pageContainer"
 import LoadingButton from "@/Components/loadingButton"
 import Breadcrumbs from "@/Components/breadcrumbs"
 import { Separator } from "@/Components/ui/separator"
 import Heading from "@/Components/heading"
 import { getTimeStamp } from "@/lib/getTimeStamp"
-import MainCompetitionForm from "./partials/mainCompetitionForm"
-import FormAssessmentFactor from "./partials/assessmentFactorsForm"
+import MainCompetitionForm from "./partials/main-competition-form"
+import FormAssessmentFactor from "./partials/assessment-factor-form"
 
-const CompetitionForm = ({ initialData }) => {
+const CompetitionForm = ({ initialData, levels, judges }) => {
   const breadcrumbItems = [
     { title: "Dashboard", link: route("dashboard.home") },
     {
@@ -37,15 +37,15 @@ const CompetitionForm = ({ initialData }) => {
     description: initialData?.description || "",
     start_date: initialData?.start_date || null,
     end_date: initialData?.end_date || null,
-    assessment_factors: [],
+    assessment_factors: [
+      {
+        name: "",
+        weight: 0,
+      },
+    ],
+    levels: [],
+    judges: [],
   })
-
-  useEffect(() => {
-    setData(prevData => ({
-      ...prevData,
-      assessment_factors: [{ name: "", value: 0 }],
-    }))
-  }, [])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -88,6 +88,8 @@ const CompetitionForm = ({ initialData }) => {
               setData={setData}
               errors={errors}
               initialData={initialData}
+              levels={levels}
+              judges={judges}
             />
 
             <Separator />
@@ -96,7 +98,10 @@ const CompetitionForm = ({ initialData }) => {
             <FormAssessmentFactor
               initialFactors={data.assessment_factors}
               setAssessmentFactors={setAssessmentFactors}
+              errors={errors}
             />
+
+            <Separator />
 
             <LoadingButton
               label={action}

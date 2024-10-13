@@ -9,7 +9,7 @@ import { Input } from "@/Components/ui/input"
 import { Label } from "@/Components/ui/label"
 import { Separator } from "@/Components/ui/separator"
 import { toast } from "@/hooks/use-toast"
-import AdminLayout from "@/Layouts/adminLayout"
+import AdminLayout from "@/Layouts/admin-layout"
 import { getTimeStamp } from "@/lib/getTimeStamp"
 import Breadcrumbs from "@/Components/breadcrumbs"
 import { DatePicker } from "@/Components/datePicker"
@@ -22,6 +22,7 @@ import {
 } from "@/Components/ui/select"
 import { Textarea } from "@/Components/ui/textarea"
 import { format } from "date-fns"
+import FormField from "@/Components/formField"
 
 const UserForm = ({ initialData, levels }) => {
   const breadcrumbItems = [
@@ -84,11 +85,20 @@ const UserForm = ({ initialData, levels }) => {
   const handleDateChange = selectedDate => {
     setData(data => ({
       ...data,
-      date_of_birth: selectedDate ? format(selectedDate, "yyyy-MM-dd") : null,
+      date_of_birth: selectedDate ?? null,
     }))
   }
 
-  console.log(errors)
+  const roleOptions = [
+    {
+      id: "admin",
+      label: "Admin (Juri)",
+    },
+    {
+      id: "guest",
+      label: "Guest (Peserta)",
+    },
+  ]
 
   return (
     <AdminLayout>
@@ -99,184 +109,99 @@ const UserForm = ({ initialData, levels }) => {
           <Heading title={title} description={description} />
 
           <Separator />
+          {console.log(errors, data)}
 
           <form onSubmit={handleSubmit} className="w-full space-y-8">
             <div className="gap-8 md:grid md:grid-cols-3">
-              <div>
-                <Label htmlFor="email" className="capitalize">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={data.email}
-                  autoFocus
-                  onChange={e => setData("email", e.target.value)}
-                />
-                <InputError message={errors.email} className="mt-2" />
-              </div>
+              <FormField.Input
+                label={"E- mail"}
+                value={data.email}
+                onChange={e => setData("email", e.target.value)}
+                error={errors.email}
+                type="email"
+                autoFocus
+              />
 
-              <div>
-                <Label htmlFor="username" className="capitalize">
-                  Username
-                </Label>
-                <Input
-                  id="username"
-                  type="text"
-                  name="username"
-                  value={data.username}
-                  autoFocus
-                  onChange={e => setData("username", e.target.value)}
-                />
-                <InputError message={errors.username} className="mt-2" />
-              </div>
+              <FormField.Input
+                label={"username"}
+                value={data.username}
+                onChange={e => setData("username", e.target.value)}
+                error={errors.username}
+              />
 
               {!initialData && (
-                <div>
-                  <Label htmlFor="password" className="capitalize">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    name="password"
-                    value={data.password}
-                    autoFocus
-                    onChange={e => setData("password", e.target.value)}
-                  />
-                  <InputError message={errors.password} className="mt-2" />
-                </div>
+                <FormField.Input
+                  label={"Password"}
+                  value={data.password}
+                  onChange={e => setData("password", e.target.value)}
+                  error={errors.password}
+                  type="password"
+                />
               )}
             </div>
 
             <Separator />
 
             <div className="gap-8 md:grid md:grid-cols-3">
-              <div>
-                <Label htmlFor="name" className="capitalize">
-                  Nama Lengkap
-                </Label>
-                <Input
-                  id="name"
-                  type="name"
-                  name="name"
-                  value={data.name}
-                  autoFocus
-                  onChange={e => setData("name", e.target.value)}
-                />
-                <InputError message={errors.name} className="mt-2" />
-              </div>
-
-              <div>
-                <Label htmlFor="nik" className="capitalize">
-                  NIK (No. Induk Kependudukan)
-                </Label>
-                <Input
-                  id="nik"
-                  maxLength={16}
-                  type="text"
-                  name="nik"
-                  value={data.nik}
-                  autoFocus
-                  onChange={e => setData("nik", e.target.value)}
-                />
-                <InputError message={errors.nik} className="mt-2" />
-              </div>
-
-              <div>
-                <Label htmlFor="phoneNumber" className="capitalize">
-                  Nomor Telepon
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  type="text"
-                  name="phoneNumber"
-                  maxLength={10}
-                  value={data.phone_number}
-                  autoFocus
-                  onChange={e => setData("phone_number", e.target.value)}
-                />
-                <InputError message={errors.phone_number} className="mt-2" />
-              </div>
-
-              <div>
-                <Label htmlFor="date_of_birth" className="capitalize">
-                  Tanggal Lahir
-                </Label>
-                <DatePicker
-                  placeholder={"Pilih tanggal lahir"}
-                  selectedDate={data.date_of_birth}
-                  onChange={handleDateChange}
-                />
-                <InputError message={errors.date_of_birth} className="mt-2" />
-              </div>
-
-              <div>
-                <Label htmlFor="role" className="capitalize">
-                  Role
-                </Label>
-
-                <Select
-                  onValueChange={e => handleRoleChange(e)}
-                  defaultValue={data.role}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih Jenis Pengguna" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admin">Admin (Juri)</SelectItem>
-                    <SelectItem value="guest">Guest (Peserta)</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <InputError message={errors.role} className="mt-2" />
-              </div>
-              {data.role === "guest" && (
-                <div>
-                  <Label htmlFor="level_id" className="capitalize">
-                    Tingkatan Peserta
-                  </Label>
-
-                  <Select
-                    onValueChange={e => setData("level_id", `${e}`)}
-                    defaultValue={`${data.level_id}`}
-                  >
-                    <SelectTrigger disabled={!(levels.data.length > 0)}>
-                      <SelectValue
-                        placeholder={
-                          levels?.data
-                            ? "Pilih Tingkatan Peserta"
-                            : "Tingkat Peserta Kosong"
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {levels.data.map((level, i) => (
-                        <SelectItem value={`${level.id}`} key={level.id}>
-                          {level.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <InputError message={errors.level_id} className="mt-2" />
-                </div>
-              )}
-            </div>
-
-            <div>
-              <Label htmlFor="level_id" className="capitalize">
-                Alamat
-              </Label>
-
-              <Textarea
-                onChange={e => setData("address", e.target.value)}
-                value={data.address}
+              <FormField.Input
+                label={"Nama lengkap"}
+                value={data.name}
+                onChange={e => setData("name", e.target.value)}
+                error={errors.name}
+              />
+              <FormField.Input
+                label={"Nomor Induk Kependudukan (NIK)"}
+                value={data.nik}
+                onChange={e => setData("nik", e.target.value)}
+                error={errors.nik}
+                maxLength={16}
+              />
+              <FormField.Input
+                label={"Nomor Telepon"}
+                value={data.phone_number}
+                onChange={e => setData("phone_number", e.target.value)}
+                error={errors.phone_number}
+                maxLength={10}
+              />
+              <FormField.Date
+                label={"Tanggal Lahir"}
+                value={data.date_of_birth}
+                onChange={handleDateChange}
+                error={errors.date_of_birth}
+                placeholder="Pilih tanggal lahir"
               />
 
-              <InputError message={errors.address} className="mt-2" />
+              <FormField.SelectOption
+                label={"role"}
+                value={data.role}
+                onChange={e => handleRoleChange(e)}
+                error={errors.role}
+                placeholder={"Pilih Jenis Pengguna"}
+                options={roleOptions}
+              />
+
+              {data.role === "guest" && (
+                <FormField.SelectOption
+                  label={"Tingkatan Peserta"}
+                  value={data.level_id}
+                  onChange={e => setData("level_id", e)}
+                  error={errors.level_id}
+                  placeholder={"Pilih Tingkat Peserta"}
+                  options={levels.data.map(level => ({
+                    id: level.id,
+                    label: level.name,
+                  }))}
+                />
+              )}
+
+              <FormField.Textarea
+                label={"Alamat"}
+                value={data.address}
+                onChange={e => setData("address", e.target.value)}
+                error={errors.address}
+              />
             </div>
+
             <LoadingButton
               label={action}
               loading={processing}

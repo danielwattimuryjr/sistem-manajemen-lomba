@@ -13,6 +13,7 @@ return new class extends Migration {
   {
     Schema::create('users', function (Blueprint $table) {
       $table->id();
+      $table->foreignIdFor(Level::class)->nullable()->constrained()->cascadeOnDelete();
       $table->string('name');
       $table->string('email')->unique();
 
@@ -26,7 +27,7 @@ return new class extends Migration {
       $table->string('nik')->unique();
       $table->timestamp('date_of_birth');
       $table->timestamp('account_verified_at')->nullable();
-      $table->foreignIdFor(Level::class)->nullable()->constrained()->cascadeOnDelete();
+
 
       $table->timestamp('email_verified_at')->nullable();
       $table->rememberToken();

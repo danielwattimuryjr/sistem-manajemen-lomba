@@ -22,7 +22,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import UserTable from "@/Components/userTable/userTable"
 import { useFilter } from "@/hooks/useFilter"
-import AdminLayout from "@/Layouts/adminLayout"
+import AdminLayout from "@/Layouts/admin-layout"
 import { cn } from "@/lib/utils"
 import { Link } from "@inertiajs/react"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
@@ -71,7 +71,7 @@ const UserIndex = props => {
               title={"Pengguna"}
               description={
                 <Tabs
-                  defaultValue="guest"
+                  defaultValue={params.role ?? "guest"}
                   className="mt-4 space-y-4"
                   onValueChange={val => handleTab(val)}
                 >

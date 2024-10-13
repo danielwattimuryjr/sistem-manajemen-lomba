@@ -3,12 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
   use HasFactory, Notifiable;
 
@@ -28,7 +31,8 @@ class User extends Authenticatable
     'nik',
     'date_of_birth',
     'level_id',
-    'account_verified_at'
+    'account_verified_at',
+    'email_verified_at'
   ];
 
   /**
@@ -51,6 +55,7 @@ class User extends Authenticatable
     return [
       'email_verified_at' => 'datetime',
       'account_verified_at' => 'datetime',
+      'date_of_birth' => 'datetime',
       'password' => 'hashed',
     ];
   }
@@ -67,5 +72,15 @@ class User extends Authenticatable
   public function level(): BelongsTo
   {
     return $this->belongsTo(Level::class);
+  }
+
+  public function judge(): BelongsToMany
+  {
+    return $this->belongsToMany(Competition::class, Judge::class)->withPivot(['kd_juri']);
+  }
+
+  public function participant(): BelongsToMany
+  {
+    return $this->belongsToMany(Competition::class, Participant::class)->withPivot(['kd_peserta'])->withTimestamps();
   }
 }

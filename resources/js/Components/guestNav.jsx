@@ -90,7 +90,7 @@ export default function GuestNav() {
               </Link>
 
               <Link
-                href="#"
+                href={route("register")}
                 className={buttonVariants({
                   variant: "outline",
                 })}

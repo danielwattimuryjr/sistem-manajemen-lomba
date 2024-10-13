@@ -1,4 +1,4 @@
-import AdminLayout from "@/Layouts/adminLayout"
+import AdminLayout from "@/Layouts/admin-layout"
 import PageContainer from "@/Components/layout/pageContainer"
 import { Button } from "@/Components/ui/button"
 import {
@@ -16,7 +16,7 @@ const Dashboard = () => {
       <PageContainer scrollable={true}>
         <div className="space-y-2">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-2xl font-bold tracking-light">
+            <h2 className="tracking-light text-2xl font-bold">
               Hi, Welcome back 👋
             </h2>
             <div className="hidden items-center space-x-2 md:flex">

@@ -97,7 +97,7 @@ const UserTable = ({ users, meta, links, params, setParams, handleSort }) => {
                     </TableCell>
                     <TableCell>
                       {user.accountVerified && (
-                        <IconCircleCheckFilled className="h-10 w-10 text-green-300" />
+                        <IconCircleCheckFilled className="m-auto h-8 w-8 text-green-300" />
                       )}
                     </TableCell>
                     <TableCell>{user.createdAt}</TableCell>

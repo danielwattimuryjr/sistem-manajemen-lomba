@@ -9,9 +9,11 @@ import { Input } from "@/Components/ui/input"
 import { Label } from "@/Components/ui/label"
 import { Separator } from "@/Components/ui/separator"
 import { toast } from "@/hooks/use-toast"
-import AdminLayout from "@/Layouts/adminLayout"
+import AdminLayout from "@/Layouts/admin-layout"
 import { getTimeStamp } from "@/lib/getTimeStamp"
 import Breadcrumbs from "@/Components/breadcrumbs"
+import FormField from "@/Components/formField"
+import { trans } from "@/lib/utils"
 
 const RoleForm = ({ initialData }) => {
   const breadcrumbItems = [
@@ -60,10 +62,7 @@ const RoleForm = ({ initialData }) => {
     setData(prevData => ({
       ...prevData,
       name: newName,
-      slug: slugify(newName, {
-        replacement: "_",
-        lower: true,
-      }),
+      slug: trans(newName),
     }))
   }
 
@@ -79,33 +78,23 @@ const RoleForm = ({ initialData }) => {
 
           <form onSubmit={handleSubmit} className="w-full space-y-8">
             <div className="gap-8 md:grid md:grid-cols-3">
-              <div>
-                <Label htmlFor="display_name" className="capitalize">
-                  Name
-                </Label>
-                <Input
-                  id="display_name"
-                  type="text"
-                  name="display_name"
-                  value={data.name}
-                  autoFocus
-                  onChange={handleDisplayNameChange}
-                />
-                <InputError message={errors.display_name} className="mt-2" />
-              </div>
-              <div>
-                <Label htmlFor="name" className="capitalize">
-                  Slug (Identifier)
-                </Label>
-                <Input
-                  disabled
-                  id="name"
-                  type="text"
-                  name="name"
-                  value={data.slug}
-                />
-                <InputError message={errors.name} className="mt-2" />
-              </div>
+              <FormField.Input
+                label={"name"}
+                value={data.name}
+                onChange={handleDisplayNameChange}
+                error={errors.name}
+                type="text"
+                autoFocus
+              />
+
+              <FormField.Input
+                label={"Slug (Identifier)"}
+                value={data.slug}
+                error={errors.slug}
+                type="text"
+                autoFocus
+                disabled
+              />
             </div>
             <LoadingButton
               label={action}
