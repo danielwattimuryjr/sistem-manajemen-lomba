@@ -1,9 +1,8 @@
 import { cn } from "@/lib/utils"
 import { Link, usePage } from "@inertiajs/react"
-import MobileSidebar from "./mobileSidebar"
-import { ThemeToggle } from "../themeToggle"
-import { Button, buttonVariants } from "../ui/button"
-import UserNav from "../userNav"
+import MobileSidebar from "./mobile-sidebar"
+import { ThemeToggle } from "../theme-toggle"
+import UserNav from "../user-nav"
 
 const Header = () => {
   const { auth } = usePage().props

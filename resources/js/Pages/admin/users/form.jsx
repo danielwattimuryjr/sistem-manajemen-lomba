@@ -1,28 +1,14 @@
 import React from "react"
 import { useForm } from "@inertiajs/react"
-import slugify from "slugify"
 import Heading from "@/Components/heading"
-import InputError from "@/Components/inputError"
-import PageContainer from "@/Components/layout/pageContainer"
-import LoadingButton from "@/Components/loadingButton"
-import { Input } from "@/Components/ui/input"
-import { Label } from "@/Components/ui/label"
+import PageContainer from "@/Components/layout/page-container"
+import LoadingButton from "@/Components/loading-button"
 import { Separator } from "@/Components/ui/separator"
 import { toast } from "@/hooks/use-toast"
 import AdminLayout from "@/Layouts/admin-layout"
 import { getTimeStamp } from "@/lib/getTimeStamp"
 import Breadcrumbs from "@/Components/breadcrumbs"
-import { DatePicker } from "@/Components/datePicker"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/Components/ui/select"
-import { Textarea } from "@/Components/ui/textarea"
-import { format } from "date-fns"
-import FormField from "@/Components/formField"
+import FormField from "@/Components/form-field"
 
 const UserForm = ({ initialData, levels }) => {
   const breadcrumbItems = [

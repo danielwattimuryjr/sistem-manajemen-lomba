@@ -1,6 +1,4 @@
-import Heading from "@/Components/heading"
 import PageContainer from "@/Components/layout/page-container"
-import { buttonVariants } from "@/Components/ui/button"
 import {
   Card,
   CardDescription,
@@ -9,33 +7,45 @@ import {
   CardTitle,
 } from "@/Components/ui/card"
 import { Input } from "@/Components/ui/input"
-import { Separator } from "@/Components/ui/separator"
+import { useFilter } from "@/hooks/useFilter"
 import AppLayout from "@/Layouts/app-layout"
-import { Link, usePage } from "@inertiajs/react"
+import { Link } from "@inertiajs/react"
+import { useState } from "react"
 
-const Home = ({ competitions }) => {
-  const { auth } = usePage().props
-  const user = auth.user
+const GuestCompetitionIndex = props => {
+  const [params, setParams] = useState(props.state)
+  const { data: competitions } = props.competitions
+
+  useFilter({
+    route: route("guest.competitions.index"),
+    values: params,
+    only: ["competitions"],
+  })
 
   return (
-    <AppLayout title={"Home"}>
+    <AppLayout title={"Perlombaan"}>
       <header className="text-center">
         <h2 className="text-3xl font-bold text-primary-foreground">
-          {user ? `Hello, ${user.data.username}!` : `Selamat Datang!`}
+          Daftar Perlombaan
         </h2>
       </header>
 
-      <Heading title={"Perlombaan Terbaru"} />
+      <div className="mx-auto w-full md:w-96">
+        <Input
+          type="text"
+          placeholder="Cari Perlombaan"
+          onChange={e =>
+            setParams(prev => ({ ...prev, search: e.target.value }))
+          }
+        />
+      </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {competitions.data.map((competition, idx) => (
-          <Link
-            href={route("guest.competitions.show", competition)}
-            key={competition.slug}
-          >
+      <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
+        {competitions.map((competition, idx) => (
+          <Link href={route("guest.competitions.show", competition)}>
             <Card
               key={competition.slug}
-              className="duration-300 hover:scale-105"
+              className="duration-200 hover:scale-105"
             >
               <CardHeader>
                 <CardTitle>{competition.name}</CardTitle>
@@ -54,27 +64,8 @@ const Home = ({ competitions }) => {
           </Link>
         ))}
       </div>
-
-      <div className="text-center">
-        <Link
-          className={buttonVariants({
-            variant: "link",
-          })}
-          href={route("guest.competitions.index")}
-        >
-          See More
-        </Link>
-      </div>
-
-      {user && (
-        <>
-          <Separator />
-
-          <Heading title={"Perlombaan Yang Kamu Ikuti"} />
-        </>
-      )}
     </AppLayout>
   )
 }
 
-export default Home
+export default GuestCompetitionIndex

@@ -2,8 +2,8 @@ import React, { useEffect } from "react"
 import { useForm } from "@inertiajs/react"
 import { toast } from "@/hooks/use-toast"
 import AdminLayout from "@/Layouts/admin-layout"
-import PageContainer from "@/Components/layout/pageContainer"
-import LoadingButton from "@/Components/loadingButton"
+import PageContainer from "@/Components/layout/page-container"
+import LoadingButton from "@/Components/loading-button"
 import Breadcrumbs from "@/Components/breadcrumbs"
 import { Separator } from "@/Components/ui/separator"
 import Heading from "@/Components/heading"
@@ -37,14 +37,14 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     description: initialData?.description || "",
     start_date: initialData?.start_date || null,
     end_date: initialData?.end_date || null,
-    assessment_factors: [
+    assessment_factors: initialData?.assessment_factors || [
       {
         name: "",
         weight: 0,
       },
     ],
-    levels: [],
-    judges: [],
+    levels: initialData?.levels || [],
+    judges: initialData?.judges || [],
   })
 
   const handleSubmit = e => {
@@ -58,7 +58,7 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     }
 
     isEditing
-      ? put(route("dashboard.competitions.update", initialData.id), {
+      ? put(route("dashboard.competitions.update", initialData), {
           onSuccess,
         })
       : post(route("dashboard.competitions.store"), { onSuccess })

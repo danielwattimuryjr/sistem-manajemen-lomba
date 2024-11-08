@@ -1,10 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import { Input } from "@/Components/ui/input"
 import { Label } from "./ui/label"
-import InputError from "./inputError"
-import { DatePicker } from "./datePicker"
+import InputError from "./input-error"
+import { DatePicker } from "./date-picker"
 import { Textarea } from "./ui/textarea"
-import slugify from "slugify"
 import { trans } from "@/lib/utils"
 import {
   Select,
@@ -13,6 +12,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/Components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/Components/ui/popover"
+import { Button } from "./ui/button"
+import { IconSelector } from "@tabler/icons-react"
 // import { SelectTrigger } from "@radix-ui/react-select"
 
 const FormField = ({ label, error, children }) => {

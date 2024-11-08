@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import DropdownDialog from "../dropdownDialog"
+import DropdownDialog from "../dropdown-dialog"
 
 const UserCellAction = ({ user }) => {
   const { delete: destroy } = useForm()

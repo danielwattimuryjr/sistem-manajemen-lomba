@@ -12,17 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import DropdownDialog from "../dropdownDialog"
+import DropdownDialog from "../dropdown-dialog"
 
-const CompetitionCellAction = ({ competition }) => {
+const LevelCellAction = ({ level }) => {
   const { delete: destroy } = useForm()
 
-  const deleteData = competition => {
-    destroy(route("dashboard.competitions.destroy", competition), {
+  const deleteData = role => {
+    destroy(route("dashboard.levels.destroy", role), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
-          title: "Perlombaan berhasil dihapus",
+          title: "Tingkatan peserta berhasil dihapus",
           description: getTimeStamp(),
         })
       },
@@ -40,8 +40,8 @@ const CompetitionCellAction = ({ competition }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownDialog
-          description="Keputusan ini tidak dapat di batalkan. Data perlombaan akan dihapus."
-          action={() => deleteData(competition)}
+          description="Keputusan ini tidak dapat di batalkan. Data tingkatan peserta akan dihapus."
+          action={() => deleteData(level)}
           submit_text="Ya, saya yakin!"
           cancel_text="Batalkan"
           buttonStyle="destructive"
@@ -51,7 +51,7 @@ const CompetitionCellAction = ({ competition }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.competitions.edit", competition)}
+            href={route("dashboard.levels.edit", level)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />
@@ -63,4 +63,4 @@ const CompetitionCellAction = ({ competition }) => {
   )
 }
 
-export default CompetitionCellAction
+export default LevelCellAction

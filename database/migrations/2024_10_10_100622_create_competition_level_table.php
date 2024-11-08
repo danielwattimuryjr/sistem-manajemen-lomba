@@ -15,7 +15,6 @@ return new class extends Migration {
     Schema::create('competition_level', function (Blueprint $table) {
       $table->foreignIdFor(Competition::class)->constrained()->cascadeOnDelete();
       $table->foreignIdFor(Level::class)->constrained()->cascadeOnDelete();
-
     });
   }
 

@@ -6,8 +6,8 @@ import {
   NavigationMenuList,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu"
-import { ThemeToggle } from "./themeToggle"
-import UserNav from "./userNav"
+import { ThemeToggle } from "./theme-toggle"
+import UserNav from "./user-nav"
 import { useEffect } from "react"
 
 const guestNavItems = [
@@ -18,23 +18,13 @@ const guestNavItems = [
   },
   {
     title: "Perlombaan",
-    href: route("welcome"),
+    href: route("guest.competitions.index"),
     active: route().current() == "competitions.*",
   },
 ]
 
 export default function GuestNav() {
   const { auth } = usePage().props
-
-  console.log(auth.user)
-
-  // useEffect(() => {
-  //   const
-
-  //   return () => {
-  //     second
-  //   }
-  // }, [])
 
   return (
     <header className="flex h-20 w-full shrink-0 items-center border-b border-border/80 px-4 md:px-6">

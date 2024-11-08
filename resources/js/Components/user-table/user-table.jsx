@@ -16,12 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import SortIndicator from "@/components/SortIndicator"
-import SimplePagination from "@/components/SimplePagination"
+import SortIndicator from "@/Components/sort-indicator"
+import SimplePagination from "@/Components/simple-pagination"
 import userTableColumns from "./columns"
 import { Link } from "@inertiajs/react"
 import { IconCircleCheckFilled } from "@tabler/icons-react"
-import UserCellAction from "./cellAction"
+import UserCellAction from "./cell-action"
 
 const UserTable = ({ users, meta, links, params, setParams, handleSort }) => {
   return (

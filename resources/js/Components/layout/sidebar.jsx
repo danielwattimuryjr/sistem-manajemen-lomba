@@ -2,7 +2,7 @@ import { useState } from "react"
 import { adminNavItems } from "@/constants/data"
 import { useSidebar } from "@/hooks/useSidebar"
 import { Link } from "@inertiajs/react"
-import DashboardNav from "../dashboardNav"
+import DashboardNav from "../dashboard-nav"
 import { Icon } from "../icon"
 import { cn } from "@/lib/utils"
 
@@ -16,7 +16,7 @@ const Sidebar = ({ className }) => {
   return (
     <aside
       className={cn(
-        `relative  hidden h-screen flex-none border-r bg-card transition-[width] duration-500 md:block`,
+        `relative hidden h-screen flex-none border-r bg-card transition-[width] duration-500 md:block`,
         !isMinimized ? "w-72" : "w-[72px]",
         className,
       )}
@@ -40,7 +40,7 @@ const Sidebar = ({ className }) => {
       <Icon
         icon={"IconChevronLeft"}
         className={cn(
-          "absolute -right-3 top-10 z-50  cursor-pointer rounded-full border bg-background text-3xl text-foreground",
+          "absolute -right-3 top-10 z-50 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
           isMinimized && "rotate-180",
         )}
         onClick={handleToggle}

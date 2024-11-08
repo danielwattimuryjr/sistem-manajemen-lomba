@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/Components/ui/tooltip"
 import Heading from "@/Components/heading"
-import InputError from "@/Components/inputError"
+import InputError from "@/Components/input-error"
 
 const FormAssessmentFactor = ({
   initialFactors = [],

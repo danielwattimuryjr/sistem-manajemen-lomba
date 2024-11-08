@@ -41,7 +41,7 @@ class Competition extends Model
 
   public function judges(): BelongsToMany
   {
-    return $this->belongsToMany(User::class, Judge::class)->withPivot(['kd_juri']);
+    return $this->belongsToMany(User::class, Judge::class);
   }
 
   public function participants(): BelongsToMany
@@ -62,5 +62,21 @@ class Competition extends Model
   public function judgements(): HasManyThrough
   {
     return $this->hasManyThrough(Judgement::class, Participant::class);
+  }
+
+  public function generateParticipantCode()
+  {
+    $words = explode(' ', $this->name);
+    $acronym = '';
+
+    foreach ($words as $word) {
+      $acronym .= strtoupper(substr($word, 0, 1));
+    }
+
+    $currentCount = $this->participants()->count() + 1;
+
+    $numberPart = str_pad($currentCount, 3, '0', STR_PAD_LEFT);
+
+    return $acronym . '-' . $numberPart;
   }
 }

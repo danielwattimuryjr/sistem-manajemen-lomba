@@ -12,21 +12,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import DropdownDialog from "../dropdownDialog"
+import DropdownDialog from "../dropdown-dialog"
 
-const LevelCellAction = ({ level }) => {
+const ParticipantCellAction = ({ level: participant }) => {
   const { delete: destroy } = useForm()
 
-  const deleteData = role => {
-    destroy(route("dashboard.levels.destroy", role), {
-      preserveScroll: true,
-      onSuccess: () => {
-        toast({
-          title: "Tingkatan peserta berhasil dihapus",
-          description: getTimeStamp(),
-        })
-      },
-    })
+  const deleteData = participant => {
+    // destroy(route("dashboard.levels.destroy", role), {
+    //   preserveScroll: true,
+    //   onSuccess: () => {
+    //     toast({
+    //       title: "Tingkatan peserta berhasil dihapus",
+    //       description: getTimeStamp(),
+    //     })
+    //   },
+    // })
+    console.log(participant)
   }
 
   return (
@@ -40,8 +41,8 @@ const LevelCellAction = ({ level }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownDialog
-          description="Keputusan ini tidak dapat di batalkan. Data tingkatan peserta akan dihapus."
-          action={() => deleteData(level)}
+          description="Keputusan ini tidak dapat di batalkan. Data peserta akan dihapus."
+          action={() => deleteData(participant)}
           submit_text="Ya, saya yakin!"
           cancel_text="Batalkan"
           buttonStyle="destructive"
@@ -49,18 +50,9 @@ const LevelCellAction = ({ level }) => {
           <Icon icon={"IconTrash"} className={"mr-2"} />
           Delete Permanently
         </DropdownDialog>
-        <DropdownMenuItem>
-          <Link
-            href={route("dashboard.levels.edit", level)}
-            className="flex items-center"
-          >
-            <Icon icon={"IconEdit"} className={"mr-2"} />
-            Perbaharui Data
-          </Link>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
 }
 
-export default LevelCellAction
+export default ParticipantCellAction

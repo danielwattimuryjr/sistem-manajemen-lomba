@@ -1,6 +1,6 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import ToolBar from "./toolBar"
+import ToolBar from "./tool-bar"
 
 const Tiptap = ({ description, onChange }) => {
   const editor = useEditor({

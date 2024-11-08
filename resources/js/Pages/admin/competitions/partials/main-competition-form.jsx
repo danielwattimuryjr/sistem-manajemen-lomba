@@ -2,11 +2,11 @@ import React from "react"
 import slugify from "slugify"
 import { Input } from "@/Components/ui/input"
 import { Label } from "@/Components/ui/label"
-import InputError from "@/Components/inputError"
-import DateRangePicker from "@/Components/dateRangePicker"
-import Tiptap from "@/Components/textEditor/tiptap"
+import InputError from "@/Components/input-error"
+import DateRangePicker from "@/Components/date-range-picker"
+import Tiptap from "@/Components/text-editor/tiptap"
 import { format } from "date-fns"
-import { MultiSelect } from "@/Components/multiSelect"
+import { MultiSelect } from "@/Components/multi-select"
 
 const MainCompetitionForm = ({
   data,

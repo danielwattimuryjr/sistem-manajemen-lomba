@@ -13,6 +13,8 @@ class Participant extends Pivot
 
   public $incrementing = true;
 
+  protected $table = 'participants';
+
   protected $fillable = [
     'kd_peserta'
   ];

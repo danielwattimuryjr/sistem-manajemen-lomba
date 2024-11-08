@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -15,10 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import SortIndicator from "@/components/SortIndicator"
-import SimplePagination from "@/components/SimplePagination"
+import SortIndicator from "@/Components/sort-indicator"
+import SimplePagination from "@/Components/simple-pagination"
 import competitionTableColumns from "./columns"
-import CompetitionCellAction from "./cellAction"
+import CompetitionCellAction from "./cell-action"
+import { Icon } from "../icon"
 
 const CompetitionTable = ({
   competitions,
@@ -62,20 +64,22 @@ const CompetitionTable = ({
 
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <Table className="relative">
-          <TableRow>
-            <TableHead className="w-[50px] text-center">#</TableHead>
-            {competitionTableColumns.map((col, i) => (
-              <TableHead key={i} onClick={() => handleSort(col.column)}>
-                <SortIndicator
-                  label={col.label}
-                  column={col.column}
-                  field={params?.field}
-                  direction={params?.direction}
-                />
-              </TableHead>
-            ))}
-            <TableHead />
-          </TableRow>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[50px] text-center">#</TableHead>
+              {competitionTableColumns.map((col, i) => (
+                <TableHead key={i} onClick={() => handleSort(col.column)}>
+                  <SortIndicator
+                    label={col.label}
+                    column={col.column}
+                    field={params?.field}
+                    direction={params?.direction}
+                  />
+                </TableHead>
+              ))}
+              <TableHead />
+            </TableRow>
+          </TableHeader>
 
           <TableBody>
             {competitions.length > 0 ? (
@@ -86,7 +90,21 @@ const CompetitionTable = ({
                       {meta.from + i}
                     </TableCell>
                     <TableCell>{competition.name}</TableCell>
-                    <TableCell>{competition.isActive}</TableCell>
+                    <TableCell
+                      className={
+                        competition.isActive
+                          ? "text-green-400"
+                          : "text-destructive"
+                      }
+                    >
+                      <div className="flex items-center">
+                        <Icon
+                          icon={competition.isActive ? "IconCheck" : "IconX"}
+                          className={"mr-2"}
+                        />
+                        {competition.isActive ? "Aktif" : "Tidak Aktif "}
+                      </div>
+                    </TableCell>
                     <TableCell>{competition.startDate}</TableCell>
                     <TableCell>{competition.endDate}</TableCell>
                     <TableCell>{competition.createdAt}</TableCell>

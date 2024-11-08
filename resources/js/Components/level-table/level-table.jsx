@@ -15,10 +15,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import SortIndicator from "@/components/SortIndicator"
-import SimplePagination from "@/components/SimplePagination"
+import SortIndicator from "@/Components/sort-indicator"
+import SimplePagination from "@/Components/simple-pagination"
 import levelTableColumns from "./columns"
-import LevelCellAction from "./cellAction"
+import LevelCellAction from "./cell-action"
 
 const LevelTable = ({ levels, meta, links, params, setParams, handleSort }) => {
   return (

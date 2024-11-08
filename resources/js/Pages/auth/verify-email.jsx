@@ -1,5 +1,5 @@
-import LoadingButton from "@/Components/loadingButton"
-import { ThemeToggle } from "@/Components/themeToggle"
+import LoadingButton from "@/Components/loading-button"
+import { ThemeToggle } from "@/Components/theme-toggle"
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert"
 import { buttonVariants } from "@/Components/ui/button"
 import { Head, Link, useForm, usePage } from "@inertiajs/react"

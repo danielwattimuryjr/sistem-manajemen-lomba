@@ -17,7 +17,8 @@ class CompetitionResource extends JsonResource
     return [
       'name' => $this->name,
       'slug' => $this->slug,
-      'isActive' => $this->is_active ? '✅ Aktif' : '❌ Tidak aktif',
+      'participantsCount' => $this->participants_count,
+      'isActive' => $this->is_active,
       'startDate' => $this->start_date->toDateString(),
       'endDate' => $this->end_date->toDateString(),
       'createdAt' => $this->created_at->diffForHumans(),

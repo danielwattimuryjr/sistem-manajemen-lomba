@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\LevelResource;
+use App\Http\Resources\SingleCompetitionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Competition;
 use App\Models\Level;
@@ -107,9 +108,31 @@ class CompetitionController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Competition $competition)
+  public function show(Competition $competition, Request $request)
   {
-    return response()->json($competition);
+    $competition->load([
+      'criterias',
+      'judges',
+      'levels'
+    ]);
+
+    $competition = new SingleCompetitionResource($competition);
+
+    $participants = UserResource::collection(
+      $competition->participants()
+        ->when($request->search, function ($q, $value) {
+          $q->where('name', 'like', '%' . $value . '%')
+            ->orWhere('email', 'like', '%' . $value . '%');
+        })
+        ->orderBy('created_at', 'DESC')
+        ->get()
+    );
+
+    return Inertia::render('admin/competitions/show', [
+      'competition' => $competition,
+      'participants' => $participants,
+      'state' => $request->only('search'),
+    ]);
   }
 
   /**
@@ -117,9 +140,38 @@ class CompetitionController extends Controller
    */
   public function edit(Competition $competition)
   {
-    $roles = Level::orderBy('created_at', 'ASC')
-      ->get(['id', 'name']);
-    return response()->json([$competition, $roles]);
+    $competition->load(['criterias', 'levels', 'judges']);
+    $initialData = [
+      'name' => $competition->name,
+      'slug' => $competition->slug,
+      'description' => $competition->description,
+      'start_date' => $competition->start_date,
+      'end_date' => $competition->end_date,
+      'assessment_factors' => $competition->criterias->map(function ($criteria) {
+        return [
+          'name' => $criteria->name,
+          'weight' => $criteria->weight,
+        ];
+      }),
+      'levels' => $competition->levels->pluck('id')->toArray(),
+      'judges' => $competition->judges->pluck('id')->toArray(),
+    ];
+
+    $roles = LevelResource::collection(
+      Level::orderBy('name', 'ASC')->get()
+    );
+
+    $judges = UserResource::collection(
+      User::where('role', 'admin')
+        ->orderBy('name', 'ASC')
+        ->get()
+    );
+
+    return Inertia::render('admin/competitions/form', [
+      'initialData' => $initialData,
+      'levels' => $roles,
+      'judges' => $judges
+    ]);
   }
 
   /**
@@ -127,7 +179,41 @@ class CompetitionController extends Controller
    */
   public function update(UpdateCompetitionRequest $request, Competition $competition)
   {
+    $validated = $request->validated();
 
+    DB::beginTransaction();
+    try {
+      $competition->update([
+        'name' => $validated['name'],
+        'slug' => $validated['slug'],
+        'description' => $validated['description'],
+        'start_date' => $validated['start_date'],
+        'end_date' => $validated['end_date'],
+      ]);
+
+      $requestedNames = collect($validated['assessment_factors'])->pluck('name')->toArray();
+      foreach ($validated['assessment_factors'] as $factorData) {
+        $competition->criterias()->updateOrCreate(
+          ['name' => $factorData['name']],
+          [
+            'name' => $factorData['name'],
+            'weight' => $factorData['weight'],
+          ]
+        );
+      }
+      $competition->criterias()
+        ->whereNotIn('name', $requestedNames)
+        ->delete();
+
+      $competition->judges()->sync($validated['judges']);
+      $competition->levels()->sync($validated['levels']);
+
+      DB::commit();
+
+      return to_route('dashboard.competitions.index');
+    } catch (\Throwable $th) {
+      DB::rollBack();
+    }
   }
 
   /**
@@ -136,5 +222,20 @@ class CompetitionController extends Controller
   public function destroy(Competition $competition)
   {
     $competition->delete();
+
+    return to_route('dashboard.competitions.index');
+  }
+
+  public function updateCompetitionStatus(Competition $competition, Request $request)
+  {
+    $validated = $request->validate([
+      'isActive' => ['required', 'boolean']
+    ]);
+
+    $competition->update([
+      'is_active' => $validated['isActive']
+    ]);
+
+    return to_route('dashboard.competitions.index');
   }
 }

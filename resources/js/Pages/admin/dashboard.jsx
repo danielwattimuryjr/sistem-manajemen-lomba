@@ -1,5 +1,5 @@
 import AdminLayout from "@/Layouts/admin-layout"
-import PageContainer from "@/Components/layout/pageContainer"
+import PageContainer from "@/Components/layout/page-container"
 import { Button } from "@/Components/ui/button"
 import {
   Card,

@@ -7,13 +7,25 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SingleCompetitionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
-    {
-        return parent::toArray($request);
-    }
+  /**
+   * Transform the resource into an array.
+   *
+   * @return array<string, mixed>
+   */
+  public function toArray(Request $request): array
+  {
+    return [
+      'name' => $this->name,
+      'slug' => $this->slug,
+      'isActive' => $this->is_active,
+      'description' => $this->description,
+      'startDate' => $this->start_date->toFormattedDateString(),
+      'endDate' => $this->end_date->toFormattedDateString(),
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
+      'judges' => UserResource::collection($this->judges),
+      'criterias' => CriteriaResource::collection($this->criterias),
+      'levels' => LevelResource::collection($this->levels)
+    ];
+  }
 }

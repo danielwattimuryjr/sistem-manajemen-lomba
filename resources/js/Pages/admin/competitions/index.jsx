@@ -2,14 +2,14 @@ import { Link } from "@inertiajs/react"
 import { useState } from "react"
 import { useFilter } from "@/hooks/useFilter"
 import AdminLayout from "@/Layouts/admin-layout"
-import PageContainer from "@/Components/layout/pageContainer"
+import PageContainer from "@/Components/layout/page-container"
 import Breadcrumbs from "@/Components/breadcrumbs"
 import Heading from "@/Components/heading"
 import { buttonVariants } from "@/Components/ui/button"
 import { IconPlus } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/Components/ui/separator"
-import CompetitionTable from "@/Components/competitionTable/competitionTable"
+import CompetitionTable from "@/Components/competition-table/competition-table"
 
 const CompetitionIndex = props => {
   const breadcrumbItems = [

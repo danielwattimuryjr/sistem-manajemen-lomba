@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/Components/themeToggle"
+import { ThemeToggle } from "@/Components/theme-toggle"
 import {
   Card,
   CardContent,

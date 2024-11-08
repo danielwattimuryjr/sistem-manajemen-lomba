@@ -1,32 +1,14 @@
 import Breadcrumbs from "@/Components/breadcrumbs"
 import Heading from "@/Components/heading"
-import PageContainer from "@/Components/layout/pageContainer"
-import SortIndicator from "@/Components/sortIndicator"
+import PageContainer from "@/Components/layout/page-container"
 import { buttonVariants } from "@/Components/ui/button"
-import { Input } from "@/Components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/Components/ui/select"
 import { Separator } from "@/Components/ui/separator"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@/Components/ui/table"
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
-import UserTable from "@/Components/userTable/userTable"
+import UserTable from "@/Components/user-table/user-table"
 import { useFilter } from "@/hooks/useFilter"
 import AdminLayout from "@/Layouts/admin-layout"
 import { cn } from "@/lib/utils"
 import { Link } from "@inertiajs/react"
-import { ScrollArea } from "@radix-ui/react-scroll-area"
-import { TabsContent } from "@radix-ui/react-tabs"
 import { IconPlus } from "@tabler/icons-react"
 import { useState } from "react"
 

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
-import DashboardNav from "../dashboardNav"
+import DashboardNav from "../dashboard-nav"
 import { adminNavItems } from "@/constants/data"
 import { Icon } from "../icon"
 
