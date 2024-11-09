@@ -235,7 +235,5 @@ class CompetitionController extends Controller
     $competition->update([
       'is_active' => $validated['isActive']
     ]);
-
-    return to_route('dashboard.competitions.index');
   }
 }
