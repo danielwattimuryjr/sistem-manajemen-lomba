@@ -12,7 +12,7 @@ class DashboardController extends Controller
     $user = Auth::user();
 
     if ($user->hasRole(['admin', 'superadmin'])) {
-      return to_route('dashboard.home');
+      return to_route('dashboard.home.home');
     } else {
       return to_route('welcome');
     }

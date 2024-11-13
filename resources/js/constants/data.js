@@ -7,20 +7,20 @@ export const adminNavItems = [
   },
   {
     title: "Manajemen Tingkat Peserta",
-    href: route("dashboard.levels.index"),
+    href: route("dashboard.superadmin.levels.index"),
     icon: "IconLabelImportantFilled",
-    active: route().current() == "dashboard.levels.*",
+    active: route().current() == "dashboard.superadmin.levels.*",
   },
   {
     title: "Manajemen Pengguna",
-    href: route("dashboard.users.index"),
+    href: route("dashboard.superadmin.users.index"),
     icon: "IconUsersGroup",
-    active: route().current() == "dashboard.users.*",
+    active: route().current() == "dashboard.superadmin.users.*",
   },
   {
     title: "Manajemen Perlombaan",
-    href: route("dashboard.competitions.index"),
+    href: route("dashboard.superadmin.competitions.index"),
     icon: "IconTournament",
-    active: route().current() == "dashboard.competitions.*",
+    active: route().current() == "dashboard.superadmin.competitions.*",
   },
 ]

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Superadmin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionResource;
@@ -99,7 +100,7 @@ class CompetitionController extends Controller
       }
       DB::commit();
 
-      return to_route('dashboard.competitions.index');
+      return to_route('dashboard.home.competitions.index');
     } catch (\Throwable $th) {
       DB::rollBack();
     }
@@ -210,7 +211,7 @@ class CompetitionController extends Controller
 
       DB::commit();
 
-      return to_route('dashboard.competitions.index');
+      return to_route('dashboard.home.competitions.index');
     } catch (\Throwable $th) {
       DB::rollBack();
     }
@@ -223,7 +224,7 @@ class CompetitionController extends Controller
   {
     $competition->delete();
 
-    return to_route('dashboard.competitions.index');
+    return to_route('dashboard.home.competitions.index');
   }
 
   public function updateCompetitionStatus(Competition $competition, Request $request)

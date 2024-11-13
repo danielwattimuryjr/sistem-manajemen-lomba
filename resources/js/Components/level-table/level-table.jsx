@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -55,20 +56,22 @@ const LevelTable = ({ levels, meta, links, params, setParams, handleSort }) => {
 
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <Table className="relative">
-          <TableRow>
-            <TableHead className="w-[50px] text-center">#</TableHead>
-            {levelTableColumns.map((col, i) => (
-              <TableHead key={i} onClick={() => handleSort(col.column)}>
-                <SortIndicator
-                  label={col.label}
-                  column={col.column}
-                  field={params?.field}
-                  direction={params?.direction}
-                />
-              </TableHead>
-            ))}
-            <TableHead />
-          </TableRow>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[50px] text-center">#</TableHead>
+              {levelTableColumns.map((col, i) => (
+                <TableHead key={i} onClick={() => handleSort(col.column)}>
+                  <SortIndicator
+                    label={col.label}
+                    column={col.column}
+                    field={params?.field}
+                    direction={params?.direction}
+                  />
+                </TableHead>
+              ))}
+              <TableHead />
+            </TableRow>
+          </TableHeader>
 
           <TableBody>
             {levels.length > 0 ? (

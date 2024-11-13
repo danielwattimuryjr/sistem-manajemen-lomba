@@ -18,7 +18,7 @@ const ParticipantCellAction = ({ level: participant }) => {
   const { delete: destroy } = useForm()
 
   const deleteData = participant => {
-    // destroy(route("dashboard.levels.destroy", role), {
+    // destroy(route("dashboard.home.levels.destroy", role), {
     //   preserveScroll: true,
     //   onSuccess: () => {
     //     toast({

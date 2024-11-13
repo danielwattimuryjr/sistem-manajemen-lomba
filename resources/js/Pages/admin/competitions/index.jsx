@@ -21,7 +21,7 @@ const CompetitionIndex = props => {
   const [params, setParams] = useState(props.state)
 
   useFilter({
-    route: route("dashboard.competitions.index"),
+    route: route("dashboard.superadmin.competitions.index"),
     values: params,
     only: ["competitions"],
   })
@@ -52,7 +52,7 @@ const CompetitionIndex = props => {
             />
 
             <Link
-              href={route("dashboard.competitions.create")}
+              href={route("dashboard.superadmin.competitions.create")}
               className={cn(buttonVariants({ variant: "default" }))}
             >
               <IconPlus className="mr-2 h-4 w-4" />

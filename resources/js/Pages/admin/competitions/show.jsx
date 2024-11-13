@@ -20,13 +20,13 @@ const CompetitionIndex = props => {
     { title: "Dashboard", link: route("dashboard.home") },
     {
       title: "Manajemen Perlombaan",
-      link: route("dashboard.competitions.index"),
+      link: route("dashboard.superadmin.competitions.index"),
     },
     { title: competition.name },
   ]
 
   useFilter({
-    route: route("dashboard.competitions.show", competition),
+    route: route("dashboard.superadmin.competitions.show", competition),
     values: params,
     only: ["participants"],
   })

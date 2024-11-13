@@ -84,7 +84,9 @@ const UserTable = ({ users, meta, links, params, setParams, handleSort }) => {
                       {meta.from + i}
                     </TableCell>
                     <TableCell>
-                      <Link href={route("dashboard.users.show", user)}>
+                      <Link
+                        href={route("dashboard.superadmin.users.show", user)}
+                      >
                         {user.name}
                       </Link>
 

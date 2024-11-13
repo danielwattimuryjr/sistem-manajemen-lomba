@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Superadmin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLevelRequest;
 use App\Http\Requests\UpdateLevelRequest;
 use App\Http\Resources\LevelResource;
@@ -67,7 +68,7 @@ class LevelController extends Controller
   {
     Level::create($request->validated());
 
-    return to_route('dashboard.levels.index');
+    return to_route('dashboard.superadmin.levels.index');
   }
 
   /**
@@ -95,7 +96,7 @@ class LevelController extends Controller
   {
     $level->update($request->validated());
 
-    return to_route('dashboard.levels.index');
+    return to_route('dashboard.superadmin.levels.index');
   }
 
   /**
@@ -105,6 +106,6 @@ class LevelController extends Controller
   {
     $level->delete();
 
-    return to_route('dashboard.levels.index');
+    return to_route('dashboard.superadmin.levels.index');
   }
 }

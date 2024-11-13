@@ -20,7 +20,7 @@ const RoleForm = ({ initialData }) => {
     { title: "Dashboard", link: route("dashboard.home") },
     {
       title: "Manajemen Tingkat Peserta",
-      link: route("dashboard.levels.index"),
+      link: route("dashboard.superadmin.levels.index"),
     },
     { title: initialData ? "Update Data" : "Tambah Data" },
   ]
@@ -53,8 +53,10 @@ const RoleForm = ({ initialData }) => {
     }
 
     isEditing
-      ? put(route("dashboard.levels.update", initialData), { onSuccess })
-      : post(route("dashboard.levels.store"), { onSuccess })
+      ? put(route("dashboard.superadmin.levels.update", initialData), {
+          onSuccess,
+        })
+      : post(route("dashboard.superadmin.levels.store"), { onSuccess })
   }
 
   const handleDisplayNameChange = e => {

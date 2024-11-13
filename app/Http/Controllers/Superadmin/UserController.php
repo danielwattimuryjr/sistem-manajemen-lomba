@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Superadmin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\LevelResource;
@@ -96,7 +97,7 @@ class UserController extends Controller
       event(new Registered($user));
     }
 
-    return to_route('dashboard.users.index', [
+    return to_route('dashboard.superadmin.users.index', [
       'role' => $validated['role']
     ]);
   }
@@ -136,7 +137,7 @@ class UserController extends Controller
     $validated = $request->validated();
     $user->update($request->validated());
 
-    return to_route('dashboard.users.index', [
+    return to_route('dashboard.superadmin.users.index', [
       'role' => $validated['role']
     ]);
   }
@@ -148,6 +149,6 @@ class UserController extends Controller
   {
     $user->delete();
 
-    return to_route('dashboard.users.index');
+    return to_route('dashboard.superadmin.users.index');
   }
 }

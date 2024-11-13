@@ -18,7 +18,7 @@ const CompetitionCellAction = ({ competition }) => {
   const { delete: destroy } = useForm()
 
   const deleteData = competition => {
-    destroy(route("dashboard.competitions.destroy", competition), {
+    destroy(route("dashboard.superadmin.competitions.destroy", competition), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
@@ -31,7 +31,7 @@ const CompetitionCellAction = ({ competition }) => {
 
   const toggleIsActiveHandler = competition => {
     router.patch(
-      route("dashboard.competitions.update-status", competition),
+      route("dashboard.superadmin.competitions.update-status", competition),
       {
         isActive: !competition.isActive,
       },
@@ -96,7 +96,7 @@ const CompetitionCellAction = ({ competition }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.competitions.edit", competition)}
+            href={route("dashboard.superadmin.competitions.edit", competition)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />
@@ -105,7 +105,7 @@ const CompetitionCellAction = ({ competition }) => {
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.competitions.show", competition)}
+            href={route("dashboard.superadmin.competitions.show", competition)}
             className="flex items-center"
           >
             <Icon icon={"IconEye"} className={"mr-2"} />

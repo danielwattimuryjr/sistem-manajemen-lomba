@@ -1,20 +1,23 @@
 <?php
 
-use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\Superadmin\CompetitionController as SuperadminCompetitionController;
+use App\Http\Controllers\Superadmin\LevelController as SuperadminLevelController;
+use App\Http\Controllers\Superadmin\UserController as SuperadminUserController;
+
 use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
+
+use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\LevelController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', WelcomeController::class)->name('welcome');
+Route::get('', WelcomeController::class)->name('welcome');
 
-Route::get('/redirect', [DashboardController::class, 'index'])->name('redirect');
+Route::get('redirect', [DashboardController::class, 'index'])->name('redirect');
 
 Route::name('guest.')->group(function () {
   // Route::resource('competitions', GuestCompetitionController::class)->scoped([
@@ -30,24 +33,53 @@ Route::name('guest.')->group(function () {
     });
 });
 
-Route::middleware(['auth', 'verified', 'roles:superadmin'])->prefix('/admin')->name('dashboard.')->group(function () {
-  Route::get('/', function () {
-    return Inertia::render('admin/dashboard');
-  })->name('home');
+Route::middleware(['auth', 'verified'])
+  ->prefix('admin-panel')
+  ->name('dashboard.')
+  ->group(function () {
+    Route::get('/', function () {
+      return Inertia::render('admin/dashboard');
+    })->name('home');
 
-  Route::resource('levels', LevelController::class)->scoped([
-    'level' => 'slug'
-  ]);
-  Route::resource('competitions', CompetitionController::class)->scoped([
-    'competition' => 'slug'
-  ]);
-  Route::patch(
-    'competitions/{competition:slug}/update-competition-status',
-    [CompetitionController::class, 'updateCompetitionStatus']
-  )->name('competitions.update-status');
-  Route::resource('users', UserController::class)->scoped([
-    'user' => 'username'
-  ]);
-});
+    /**
+     * SUPERADMIN ROUTES
+     */
+    Route::middleware(['roles:superadmin'])
+      ->prefix('superadmin')
+      ->name('superadmin.')
+      ->group(function () {
+        // LEVEL MANAGEMENT
+        Route::resource('levels', SuperadminLevelController::class)->scoped([
+          'level' => 'slug'
+        ]);
+
+        // USER MANAGEMENT
+        Route::resource('users', SuperadminUserController::class)->scoped([
+          'user' => 'username'
+        ]);
+
+        // COMPETITION MANAGEMENT
+        Route::resource('competitions', SuperadminCompetitionController::class)->scoped([
+          'competition' => 'slug'
+        ]);
+        Route::patch(
+          'competitions/{competition:slug}/update-competition-status',
+          [SuperadminCompetitionController::class, 'updateCompetitionStatus']
+        )->name('competitions.update-status');
+      });
+
+    /**
+     * ADMIN ROUTES
+     */
+    Route::middleware(['roles:admin'])
+      ->prefix('admin')
+      ->name('admin.')
+      ->group(function () {
+        // COMPETITION MANAGEMENT
+        Route::resource('competitions', AdminCompetitionController::class)->scoped([
+          'competitions' => 'slug'
+        ]);
+      });
+  });
 
 require __DIR__ . '/auth.php';

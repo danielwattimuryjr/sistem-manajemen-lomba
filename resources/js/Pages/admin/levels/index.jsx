@@ -20,7 +20,7 @@ const RoleIndex = props => {
   const { data: levels, meta, links } = props.levels
   const [params, setParams] = useState(props.state)
   useFilter({
-    route: route("dashboard.levels.index"),
+    route: route("dashboard.superadmin.levels.index"),
     values: params,
     only: ["levels"],
   })
@@ -51,7 +51,7 @@ const RoleIndex = props => {
             />
 
             <Link
-              href={route("dashboard.levels.create")}
+              href={route("dashboard.superadmin.levels.create")}
               className={cn(buttonVariants({ variant: "default" }))}
             >
               <IconPlus className="mr-2 h-4 w-4" />

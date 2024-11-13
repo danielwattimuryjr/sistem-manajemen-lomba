@@ -16,7 +16,7 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     { title: "Dashboard", link: route("dashboard.home") },
     {
       title: "Manajemen Perlombaan",
-      link: route("dashboard.competitions.index"),
+      link: route("dashboard.superadmin.competitions.index"),
     },
     { title: initialData ? "Update Data" : "Tambah Data" },
   ]
@@ -58,10 +58,10 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     }
 
     isEditing
-      ? put(route("dashboard.competitions.update", initialData), {
+      ? put(route("dashboard.superadmin.competitions.update", initialData), {
           onSuccess,
         })
-      : post(route("dashboard.competitions.store"), { onSuccess })
+      : post(route("dashboard.superadmin.competitions.store"), { onSuccess })
   }
 
   const setAssessmentFactors = newFactors => {

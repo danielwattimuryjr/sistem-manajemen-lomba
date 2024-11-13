@@ -22,7 +22,7 @@ const UserIndex = props => {
   const [params, setParams] = useState(props.state)
 
   useFilter({
-    route: route("dashboard.users.index"),
+    route: route("dashboard.superadmin.users.index"),
     values: params,
     only: ["users"],
   })
@@ -66,7 +66,7 @@ const UserIndex = props => {
             />
 
             <Link
-              href={route("dashboard.users.create")}
+              href={route("dashboard.superadmin.users.create")}
               className={cn(buttonVariants({ variant: "default" }))}
             >
               <IconPlus className="mr-2 h-4 w-4" />

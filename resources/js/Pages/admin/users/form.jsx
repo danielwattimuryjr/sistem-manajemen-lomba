@@ -15,7 +15,7 @@ const UserForm = ({ initialData, levels }) => {
     { title: "Dashboard", link: route("dashboard.home") },
     {
       title: "Manajemen Peserta",
-      link: route("dashboard.users.index"),
+      link: route("dashboard.superadmin.users.index"),
     },
     { title: initialData ? "Update Data" : "Tambah Data" },
   ]
@@ -52,8 +52,10 @@ const UserForm = ({ initialData, levels }) => {
     }
 
     isEditing
-      ? put(route("dashboard.users.update", initialData), { onSuccess })
-      : post(route("dashboard.users.store"), { onSuccess })
+      ? put(route("dashboard.superadmin.users.update", initialData), {
+          onSuccess,
+        })
+      : post(route("dashboard.superadmin.users.store"), { onSuccess })
   }
 
   const handleRoleChange = selectedRole => {
@@ -95,7 +97,6 @@ const UserForm = ({ initialData, levels }) => {
           <Heading title={title} description={description} />
 
           <Separator />
-          {console.log(errors, data)}
 
           <form onSubmit={handleSubmit} className="w-full space-y-8">
             <div className="gap-8 md:grid md:grid-cols-3">
