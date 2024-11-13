@@ -6,11 +6,13 @@ import UserNav from "../user-nav"
 
 const Header = () => {
   const { auth } = usePage().props
+  const user = auth.user?.data
+
   return (
     <header className="sticky inset-x-0 top-0 w-full">
       <nav className="flex items-center justify-between px-4 py-2 md:justify-end">
         <div className={cn("block lg:!hidden")}>
-          <MobileSidebar />
+          <MobileSidebar role={user?.role} />
         </div>
         <div className="flex flex-row-reverse items-center gap-2">
           {auth?.user?.data && <UserNav />}

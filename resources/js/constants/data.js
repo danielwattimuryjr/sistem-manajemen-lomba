@@ -1,4 +1,4 @@
-export const adminNavItems = [
+export const superadminNavItems = [
   {
     title: "Dashboard",
     href: route("dashboard.home"),
@@ -22,5 +22,20 @@ export const adminNavItems = [
     href: route("dashboard.superadmin.competitions.index"),
     icon: "IconTournament",
     active: route().current() == "dashboard.superadmin.competitions.*",
+  },
+]
+
+export const adminNavItems = [
+  {
+    title: "Dashboard",
+    href: route("dashboard.home"),
+    icon: "IconHome2",
+    active: route().current() == "dashboard.home",
+  },
+  {
+    title: "Perlombaan",
+    href: route("dashboard.admin.competitions.index"),
+    icon: "IconTournament",
+    active: route().current() == "dashboard.admin.competitions.*",
   },
 ]

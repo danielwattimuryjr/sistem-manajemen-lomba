@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { adminNavItems } from "@/constants/data"
+import { superadminNavItems, adminNavItems } from "@/constants/data"
 import { useSidebar } from "@/hooks/useSidebar"
-import { Link } from "@inertiajs/react"
+import { Link, usePage } from "@inertiajs/react"
 import DashboardNav from "../dashboard-nav"
 import { Icon } from "../icon"
 import { cn } from "@/lib/utils"
@@ -12,6 +12,9 @@ const Sidebar = ({ className }) => {
   const handleToggle = () => {
     toggle()
   }
+
+  const { auth } = usePage().props
+  const user = auth.user?.data
 
   return (
     <aside
@@ -48,7 +51,11 @@ const Sidebar = ({ className }) => {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
-            <DashboardNav items={adminNavItems} />
+            <DashboardNav
+              items={
+                user?.role === "superadmin" ? superadminNavItems : adminNavItems
+              }
+            />
           </div>
         </div>
       </div>
