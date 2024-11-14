@@ -15,18 +15,24 @@ const CompetitionIndex = props => {
   const { data: participants } = props.participants
 
   const [params, setParams] = useState(props.state)
+  const user = props.auth.user?.data
+  const isSuperadmin = !!user?.role === "superadmin"
 
   const breadcrumbItems = [
     { title: "Dashboard", link: route("dashboard.home") },
     {
-      title: "Manajemen Perlombaan",
-      link: route("dashboard.superadmin.competitions.index"),
+      title: isSuperadmin ? "Manajemen Perlombaan" : "Perlombaan",
+      link: isSuperadmin
+        ? route("dashboard.superadmin.competitions.index")
+        : route("dashboard.admin.competitions.index"),
     },
     { title: competition.name },
   ]
 
   useFilter({
-    route: route("dashboard.superadmin.competitions.show", competition),
+    route: isSuperadmin
+      ? route("dashboard.superadmin.competitions.show", competition)
+      : route("dashboard.admin.competitions.show", competition),
     values: params,
     only: ["participants"],
   })
@@ -43,7 +49,9 @@ const CompetitionIndex = props => {
 
           <header className="flex flex-col items-center justify-around gap-y-4 md:flex-row md:justify-between">
             <Heading title={competition.name} />
-            <CompetitionActionGroup competition={competition} />
+            {isSuperadmin && (
+              <CompetitionActionGroup competition={competition} />
+            )}
           </header>
 
           <Separator />

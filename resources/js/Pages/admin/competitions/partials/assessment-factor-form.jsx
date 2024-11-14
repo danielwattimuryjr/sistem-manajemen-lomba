@@ -26,8 +26,6 @@ const FormAssessmentFactor = ({
   setAssessmentFactors,
   errors,
 }) => {
-  console.log(errors)
-
   const [factors, setFactors] = useState(
     initialFactors.length > 0 ? initialFactors : [{ name: "", weight: 0 }],
   )

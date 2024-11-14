@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\Superadmin\CompetitionController as SuperadminCompetitionController;
-use App\Http\Controllers\Superadmin\LevelController as SuperadminLevelController;
-use App\Http\Controllers\Superadmin\UserController as SuperadminUserController;
+use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
+use App\Http\Controllers\Admin\LevelController as AdminLevelController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
 
-use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
@@ -49,22 +48,22 @@ Route::middleware(['auth', 'verified'])
       ->name('superadmin.')
       ->group(function () {
         // LEVEL MANAGEMENT
-        Route::resource('levels', SuperadminLevelController::class)->scoped([
+        Route::resource('levels', AdminLevelController::class)->scoped([
           'level' => 'slug'
         ]);
 
         // USER MANAGEMENT
-        Route::resource('users', SuperadminUserController::class)->scoped([
+        Route::resource('users', AdminUserController::class)->scoped([
           'user' => 'username'
         ]);
 
         // COMPETITION MANAGEMENT
-        Route::resource('competitions', SuperadminCompetitionController::class)->scoped([
+        Route::resource('competitions', AdminCompetitionController::class)->scoped([
           'competition' => 'slug'
         ]);
         Route::patch(
           'competitions/{competition:slug}/update-competition-status',
-          [SuperadminCompetitionController::class, 'updateCompetitionStatus']
+          [AdminCompetitionController::class, 'updateCompetitionStatus']
         )->name('competitions.update-status');
       });
 
@@ -77,7 +76,7 @@ Route::middleware(['auth', 'verified'])
       ->group(function () {
         // COMPETITION MANAGEMENT
         Route::resource('competitions', AdminCompetitionController::class)->scoped([
-          'competitions' => 'slug'
+          'competition' => 'slug'
         ]);
       });
   });

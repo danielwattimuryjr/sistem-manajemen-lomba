@@ -4,18 +4,12 @@ import ParticipantTable from "@/Components/participant-table/participant-table"
 import { Card } from "@/Components/ui/card"
 import React from "react"
 
-const CompetitionParticipantsTable = ({
-  participants,
-  isAdmin,
-  params,
-  setParams,
-}) => {
+const CompetitionParticipantsTable = ({ participants, params, setParams }) => {
   return (
     <>
-      <Heading title={"Faktor Penilaian"} />
+      <Heading title={"Daftar Peserta"} />
 
       <ParticipantTable
-        isAdmin={isAdmin}
         params={params}
         participants={participants}
         setParams={setParams}

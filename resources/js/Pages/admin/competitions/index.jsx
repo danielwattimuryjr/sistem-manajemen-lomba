@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react"
+import { Link, usePage } from "@inertiajs/react"
 import { useState } from "react"
 import { useFilter } from "@/hooks/useFilter"
 import AdminLayout from "@/Layouts/admin-layout"
@@ -19,9 +19,14 @@ const CompetitionIndex = props => {
 
   const { data: competitions, meta, links } = props.competitions
   const [params, setParams] = useState(props.state)
+  const { auth } = usePage().props
+  const user = auth.user?.data
+  const isSuperadmin = !!user?.role === "superadmin"
 
   useFilter({
-    route: route("dashboard.superadmin.competitions.index"),
+    route: isSuperadmin
+      ? route("dashboard.superadmin.competitions.index")
+      : route("dashboard.admin.competitions.index"),
     values: params,
     only: ["competitions"],
   })
@@ -47,17 +52,21 @@ const CompetitionIndex = props => {
             <Heading
               title={"Perlombaan"}
               description={
-                "Di halaman ini, anda bisa melihat seluruh data tingkatan peserta yang terdaftar dalam sistem."
+                isSuperadmin
+                  ? "Di halaman ini, anda bisa melihat seluruh data tingkatan peserta yang terdaftar dalam sistem."
+                  : "Di halam ini, anda bisa melihat seluruh perlombaan yang ditugaskan kepada anda"
               }
             />
 
-            <Link
-              href={route("dashboard.superadmin.competitions.create")}
-              className={cn(buttonVariants({ variant: "default" }))}
-            >
-              <IconPlus className="mr-2 h-4 w-4" />
-              Tambah Data
-            </Link>
+            {isSuperadmin && (
+              <Link
+                href={route("dashboard.superadmin.competitions.create")}
+                className={cn(buttonVariants({ variant: "default" }))}
+              >
+                <IconPlus className="mr-2 h-4 w-4" />
+                Tambah Data
+              </Link>
+            )}
           </div>
 
           <Separator />

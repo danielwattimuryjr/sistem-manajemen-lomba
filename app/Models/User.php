@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
   public function judge(): BelongsToMany
   {
-    return $this->belongsToMany(Competition::class, Judge::class)->withPivot(['kd_juri']);
+    return $this->belongsToMany(Competition::class, Judge::class);
   }
 
   public function participant(): BelongsToMany

@@ -42,7 +42,6 @@ const ParticipantTable = ({ params, setParams, participants }) => {
             </TableRow>
           </TableHeader>
 
-          {console.log(participants)}
           <TableBody>
             {participants.length > 0 ? (
               <>

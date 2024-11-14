@@ -15,7 +15,7 @@ import { getTimeStamp } from "@/lib/getTimeStamp"
 const CompetitionActionGroup = ({ competition }) => {
   const toggleCompetitionStatusHandler = () => {
     router.patch(
-      route("dashboard.competitions.update-status", competition),
+      route("dashboard.superadmin.competitions.update-status", competition),
       {
         isActive: !competition.isActive,
       },
@@ -32,15 +32,18 @@ const CompetitionActionGroup = ({ competition }) => {
   }
 
   const deleteCompetitionHandler = () => {
-    router.delete(route("dashboard.competitions.destroy", competition), {
-      preserveScroll: true,
-      onSuccess: () => {
-        toast({
-          title: "Perlombaan berhasil dihapus",
-          description: getTimeStamp(),
-        })
+    router.delete(
+      route("dashboard.superadmin.competitions.destroy", competition),
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast({
+            title: "Perlombaan berhasil dihapus",
+            description: getTimeStamp(),
+          })
+        },
       },
-    })
+    )
   }
 
   return (
@@ -70,7 +73,10 @@ const CompetitionActionGroup = ({ competition }) => {
         <Tooltip>
           <TooltipTrigger>
             <Link
-              href={route("dashboard.competitions.edit", competition)}
+              href={route(
+                "dashboard.superadmin.competitions.edit",
+                competition,
+              )}
               className={buttonVariants({ variant: "outline", size: "icon" })}
             >
               <Icon icon={"IconEdit"} />
