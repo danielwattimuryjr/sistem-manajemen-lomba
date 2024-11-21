@@ -12,16 +12,18 @@ import { Separator } from "@/Components/ui/separator"
 import CompetitionTable from "@/Components/competition-table/competition-table"
 
 const CompetitionIndex = props => {
+  const { auth } = usePage().props
+  const user = auth.user?.data
+  const isSuperadmin = user?.role === "superadmin"
+  console.log(isSuperadmin)
+
   const breadcrumbItems = [
     { title: "Dashboard", link: route("dashboard.home") },
-    { title: "Manajemen Perlombaan" },
+    { title: isSuperadmin ? "Manajemen Perlombaan" : "Perlombaan" },
   ]
 
   const { data: competitions, meta, links } = props.competitions
   const [params, setParams] = useState(props.state)
-  const { auth } = usePage().props
-  const user = auth.user?.data
-  const isSuperadmin = !!user?.role === "superadmin"
 
   useFilter({
     route: isSuperadmin

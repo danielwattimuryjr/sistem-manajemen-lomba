@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompetitionParticipantResource;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\SingleCompetitionResource;
 use App\Http\Resources\UserResource;
@@ -39,13 +40,13 @@ class CompetitionController extends Controller
   {
     $competition->load([
       'criterias',
-      'judges',
+      'judge',
       'levels'
     ]);
 
     $competition = new SingleCompetitionResource($competition);
 
-    $participants = UserResource::collection(
+    $participants = CompetitionParticipantResource::collection(
       $competition->participants()
         ->when($request->search, function ($q, $value) {
           $q->where('name', 'like', '%' . $value . '%')

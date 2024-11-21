@@ -7,13 +7,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CompetitionParticipantResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
-    {
-        return parent::toArray($request);
-    }
+  /**
+   * Transform the resource into an array.
+   *
+   * @return array<string, mixed>
+   */
+  public function toArray(Request $request): array
+  {
+    return [
+      'name' => $this->name,
+      'email' => $this->email,
+      'username' => $this->username,
+      'createdAt' => $this->created_at->toFormattedDateString(),
+    ];
+  }
 }

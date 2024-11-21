@@ -1,21 +1,23 @@
-import { Badge } from "@/Components/ui/badge"
-import DOMPurify from "dompurify"
 import React from "react"
+import DOMPurify from "dompurify"
+import { Badge } from "@/Components/ui/badge"
 
 const Row = ({ title, children }) => (
   <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
     <dt className="font-bold">{title}</dt>
-    <dd className="sm:col-span-2">{children}</dd>
+    <dd className="space-x-4 sm:col-span-2">{children}</dd>
   </div>
 )
 
-const CompetitionInfo = ({ competition }) => {
-  const sanitizedDescriptionHTML = DOMPurify.sanitize(competition.description)
+export default function CompetitionDetailInfo ({competition}) {
+  const sanitizedDescriptionHTML = DOMPurify.sanitize(competition?.description)
+
   return (
     <div className="flow-root">
       <dl className="divide-y divide-muted text-sm">
         <Row title={"Tanggal Mulai"}>{competition.startDate}</Row>
         <Row title={"Tanggal Selesai"}>{competition.endDate}</Row>
+        <Row title={"Juri"}>{competition.judge}</Row>
         <Row title={"Status Saat Ini"}>
           <p
             className={
@@ -26,14 +28,15 @@ const CompetitionInfo = ({ competition }) => {
           </p>
         </Row>
         <Row title={"Tingkat Perlombaan"}>
-          {competition.levels.map(level => (
-            <Badge key={level.slug}>{level.name}</Badge>
-          ))}
-        </Row>
-        <Row title={"Juri Perlombaan"}>
-          {competition.judges.map(judge => (
-            <Badge key={judge.username}>{judge.name}</Badge>
-          ))}
+          {competition.levels.length > 0 ? (
+            <>
+              {competition.levels.map(level => (
+                <Badge key={level.slug}>{level.name}</Badge>
+              ))}
+            </>
+          ) : (
+            "-"
+          )}
         </Row>
       </dl>
 
@@ -44,5 +47,3 @@ const CompetitionInfo = ({ competition }) => {
     </div>
   )
 }
-
-export default CompetitionInfo

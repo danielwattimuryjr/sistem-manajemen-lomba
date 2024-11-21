@@ -15,6 +15,7 @@ const GuestCompetitionShow = props => {
 
   const { data: competition } = props.competition
   const { data: participants } = props.participants
+  const user = props.auth.user
 
   useFilter({
     route: route("guest.competitions.show", competition),
@@ -37,13 +38,6 @@ const GuestCompetitionShow = props => {
           description: getTimeStamp(),
         })
       },
-      onError: res => {
-        toast({
-          title: "Pendaftaran gagal!",
-          variant: "destructive",
-          description: getTimeStamp(),
-        })
-      },
     })
   }
 
@@ -54,13 +48,15 @@ const GuestCompetitionShow = props => {
           {competition.name}
         </h2>
 
-        <form onSubmit={handleParticipationRequest}>
-          <LoadingButton
-            label={"Daftar"}
-            loading={processing}
-            disabled={processing}
-          />
-        </form>
+        {user && (
+          <form onSubmit={handleParticipationRequest}>
+            <LoadingButton
+              label={"Daftar"}
+              loading={processing}
+              disabled={processing}
+            />
+          </form>
+        )}
       </header>
 
       <CompetitionInfoCard competition={competition} />
@@ -68,6 +64,7 @@ const GuestCompetitionShow = props => {
       <CompetitionCriteriasCard criterias={competition.criterias} />
 
       <CompetitionParticipantCard
+        competition={competition}
         participants={participants}
         params={params}
         setParams={handleParamsChange}

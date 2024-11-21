@@ -1,5 +1,5 @@
-import Heading from "@/Components/heading"
-import React from "react"
+import Heading from "@/Components/heading.jsx"
+import { Card } from "@/Components/ui/card.jsx"
 import {
   Table,
   TableBody,
@@ -8,10 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/Components/ui/table"
-import { Card, CardContent } from "@/Components/ui/card"
+} from "@/Components/ui/table.jsx"
 
-const CompetitionCriteria = ({ criterias }) => {
+export default function CompetitionDetailCriteriaTable({ criterias }) {
   return (
     <>
       <Heading title={"Faktor Penilaian"} />
@@ -60,5 +59,3 @@ const CompetitionCriteria = ({ criterias }) => {
     </>
   )
 }
-
-export default CompetitionCriteria

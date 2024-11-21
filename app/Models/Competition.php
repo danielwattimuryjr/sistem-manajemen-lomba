@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Competition extends Model
 {
   use HasFactory;
+
   protected function casts(): array
   {
     return [
@@ -22,6 +23,7 @@ class Competition extends Model
 
   protected $fillable = [
     'name',
+    'user_id',
     'slug',
     'description',
     'start_date',
@@ -34,14 +36,14 @@ class Competition extends Model
     return $this->belongsToMany(Level::class, CompetitionLevel::class);
   }
 
+  public function judge(): BelongsTo
+  {
+    return $this->belongsTo(User::class, 'user_id', 'id');
+  }
+
   public function criterias(): HasMany
   {
     return $this->hasMany(Criteria::class);
-  }
-
-  public function judges(): BelongsToMany
-  {
-    return $this->belongsToMany(User::class, Judge::class);
   }
 
   public function participants(): BelongsToMany
@@ -49,19 +51,14 @@ class Competition extends Model
     return $this->belongsToMany(User::class, Participant::class)->withPivot(['kd_peserta'])->withTimestamps();
   }
 
-  public function certificate_template(): HasOne
+  public function scoreEntries(): HasManyThrough
   {
-    return $this->hasOne(CertificateTemplate::class);
-  }
-
-  public function final_scores(): HasManyThrough
-  {
-    return $this->hasManyThrough(FinalScore::class, Participant::class);
-  }
-
-  public function judgements(): HasManyThrough
-  {
-    return $this->hasManyThrough(Judgement::class, Participant::class);
+    return $this->hasManyThrough(
+      ScoreEntry::class,
+      Participant::class,
+      'competition_id',
+      'participant_id'
+    );
   }
 
   public function generateParticipantCode()

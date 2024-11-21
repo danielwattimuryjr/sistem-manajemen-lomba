@@ -7,6 +7,7 @@ import DateRangePicker from "@/Components/date-range-picker"
 import Tiptap from "@/Components/text-editor/tiptap"
 import { format } from "date-fns"
 import { MultiSelect } from "@/Components/multi-select"
+import FormField from "@/Components/form-field"
 
 const MainCompetitionForm = ({
   data,
@@ -24,7 +25,7 @@ const MainCompetitionForm = ({
   }))
 
   const judgesList = judges.data.map(judge => ({
-    value: judge.id,
+    id: judge.id,
     label: judge.name,
   }))
 
@@ -119,17 +120,14 @@ const MainCompetitionForm = ({
 
       <div className="w-full space-y-8">
         <div>
-          <Label>Juri</Label>
-          <MultiSelect
+          <FormField.SelectOption
+            label={"juri"}
             options={judgesList}
-            onValueChange={e => setData("judges", e)}
-            defaultValue={data.judges}
-            placeholder="Pilih Juri"
-            variant="inverted"
-            animation={2}
-            maxCount={5}
+            onChange={e => setData("user_id", e)}
+            placeholder={"Pilih Juri"}
+            error={errors.user_id}
+            value={data.user_id}
           />
-          <InputError message={errors.judges} className="mt-2" />
         </div>
       </div>
     </>

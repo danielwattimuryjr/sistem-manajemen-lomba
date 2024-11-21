@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
+use App\Http\Resources\CompetitionParticipantResource;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\LevelResource;
 use App\Http\Resources\SingleCompetitionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Competition;
+use App\Models\Judge;
+use App\Models\Judgement;
 use App\Models\Level;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Throwable;
 
 class CompetitionController extends Controller
 {
@@ -34,7 +38,7 @@ class CompetitionController extends Controller
     $user = Auth::user();
     $baseCompetition = Competition::query();
     if ($user->role === 'admin') {
-      $baseCompetition = $user->judge();
+      $baseCompetition = $user->competitions();
     }
 
     $competitions = CompetitionResource::collection(
@@ -90,13 +94,13 @@ class CompetitionController extends Controller
       $competition = Competition::create([
         'name' => $validated['name'],
         'slug' => $validated['slug'],
+        'user_id' => $validated['user_id'],
         'description' => $validated['description'],
         'start_date' => $validated['start_date'],
         'end_date' => $validated['end_date'],
         'is_active' => true
       ]);
 
-      $competition->judges()->attach($validated['judges']);
       $competition->levels()->attach($validated['levels']);
       foreach ($validated['assessment_factors'] as $criteria) {
         $competition->criterias()->create([
@@ -107,7 +111,7 @@ class CompetitionController extends Controller
       DB::commit();
 
       return to_route('dashboard.superadmin.competitions.index');
-    } catch (\Throwable $th) {
+    } catch (Throwable $th) {
       DB::rollBack();
     }
   }
@@ -117,27 +121,23 @@ class CompetitionController extends Controller
    */
   public function show(Competition $competition, Request $request)
   {
+
     $competition->load([
       'criterias',
-      'judges',
-      'levels'
+      'judge',
+      'levels',
+      'participants' => function ($query) use ($request) {
+        $query->when($request->search, function ($q, $value) {
+          $q->where('users.name', 'like', '%' . $value . '%')
+            ->orWhere('users.email', 'like', '%' . $value . '%');
+        })
+          ->orderBy('participants.created_at', 'DESC');
+      }
     ]);
 
-    $competition = new SingleCompetitionResource($competition);
-
-    $participants = UserResource::collection(
-      $competition->participants()
-        ->when($request->search, function ($q, $value) {
-          $q->where('name', 'like', '%' . $value . '%')
-            ->orWhere('email', 'like', '%' . $value . '%');
-        })
-        ->orderBy('created_at', 'DESC')
-        ->get()
-    );
-
-    return Inertia::render('admin/competitions/show', [
-      'competition' => $competition,
-      'participants' => $participants,
+    return Inertia::render('admin/competitions/show-competition-details/index', [
+      'competition' => new SingleCompetitionResource($competition),
+      'participants' => CompetitionParticipantResource::collection($competition->participants),
       'state' => $request->only('search'),
     ]);
   }
@@ -147,9 +147,10 @@ class CompetitionController extends Controller
    */
   public function edit(Competition $competition)
   {
-    $competition->load(['criterias', 'levels', 'judges']);
+    $competition->load(['criterias', 'levels']);
     $initialData = [
       'name' => $competition->name,
+      'user_id' => $competition->user_id,
       'slug' => $competition->slug,
       'description' => $competition->description,
       'start_date' => $competition->start_date,
@@ -161,7 +162,6 @@ class CompetitionController extends Controller
         ];
       }),
       'levels' => $competition->levels->pluck('id')->toArray(),
-      'judges' => $competition->judges->pluck('id')->toArray(),
     ];
 
     $roles = LevelResource::collection(
@@ -192,6 +192,7 @@ class CompetitionController extends Controller
     try {
       $competition->update([
         'name' => $validated['name'],
+        'user_id' => $validated['user_id'],
         'slug' => $validated['slug'],
         'description' => $validated['description'],
         'start_date' => $validated['start_date'],
@@ -199,6 +200,7 @@ class CompetitionController extends Controller
       ]);
 
       $requestedNames = collect($validated['assessment_factors'])->pluck('name')->toArray();
+
       foreach ($validated['assessment_factors'] as $factorData) {
         $competition->criterias()->updateOrCreate(
           ['name' => $factorData['name']],
@@ -212,13 +214,12 @@ class CompetitionController extends Controller
         ->whereNotIn('name', $requestedNames)
         ->delete();
 
-      $competition->judges()->sync($validated['judges']);
       $competition->levels()->sync($validated['levels']);
 
       DB::commit();
 
       return to_route('dashboard.superadmin.competitions.index');
-    } catch (\Throwable $th) {
+    } catch (Throwable $th) {
       DB::rollBack();
     }
   }

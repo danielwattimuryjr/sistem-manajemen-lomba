@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,14 +75,9 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->belongsTo(Level::class);
   }
 
-  public function judge(): BelongsToMany
+  public function competitions(): HasMany
   {
-    return $this->belongsToMany(Competition::class, Judge::class);
-  }
-
-  public function participant(): BelongsToMany
-  {
-    return $this->belongsToMany(Competition::class, Participant::class)->withPivot(['kd_peserta'])->withTimestamps();
+    return $this->hasMany(Competition::class);
   }
 
   public function canParticipate(Competition $competition): bool

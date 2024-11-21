@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react"
 import { Input } from "../ui/input"
 import { ScrollArea } from "../ui/scroll-area"
 import {
@@ -9,8 +10,9 @@ import {
   TableRow,
 } from "../ui/table"
 import participantTableColumns from "./columns"
+import { buttonVariants } from "../ui/button"
 
-const ParticipantTable = ({ params, setParams, participants }) => {
+const ParticipantTable = ({ params, setParams, participants, competition }) => {
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
@@ -59,6 +61,21 @@ const ParticipantTable = ({ params, setParams, participants }) => {
                     </TableCell>
 
                     <TableCell>{participant.createdAt}</TableCell>
+
+                    <TableCell>
+                      <Link
+                        href={route(
+                          "dashboard.admin.score-entries.create",
+                          {
+                            competition: competition.slug,
+                            participant: participant.username,
+                          },
+                        )}
+                        className={buttonVariants({ variant: "link" })}
+                      >
+                        Berikan Nilai
+                      </Link>
+                    </TableCell>
 
                     <TableCell>{/* Cell Action */}</TableCell>
                   </TableRow>

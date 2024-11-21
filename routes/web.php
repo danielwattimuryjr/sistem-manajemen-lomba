@@ -3,25 +3,18 @@
 use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\Admin\LevelController as AdminLevelController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-
-use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
-
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
 use App\Http\Controllers\WelcomeController;
-use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\ScoreEntryController;
 
 Route::get('', WelcomeController::class)->name('welcome');
 
 Route::get('redirect', [DashboardController::class, 'index'])->name('redirect');
 
 Route::name('guest.')->group(function () {
-  // Route::resource('competitions', GuestCompetitionController::class)->scoped([
-  //   'competition' => 'slug'
-  // ]);
   Route::controller(GuestCompetitionController::class)
     ->name('competitions.')
     ->prefix('competitions')
@@ -32,19 +25,36 @@ Route::name('guest.')->group(function () {
     });
 });
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
   ->prefix('admin-panel')
   ->name('dashboard.')
   ->group(function () {
     Route::get('/', function () {
       return Inertia::render('admin/dashboard');
     })->name('home');
+    /**
+     * ADMIN ROUTES
+     */
+    Route::prefix('admin')
+      ->name('admin.')
+      ->group(function () {
+        // COMPETITION MANAGEMENT
+        Route::resource('competitions', AdminCompetitionController::class)->scoped([
+          'competition' => 'slug'
+        ]);
+        Route::controller(ScoreEntryController::class)
+          ->prefix('score-entries')
+          ->name('score-entries.')
+          ->group(function () {
+            Route::get('{competition:slug}/{participant:username}', 'create')->name('create');
+            Route::post('{competition:slug}/{participant:username}', 'store')->name('store');
+          });
+      });
 
     /**
      * SUPERADMIN ROUTES
      */
-    Route::middleware(['roles:superadmin'])
-      ->prefix('superadmin')
+    Route::prefix('superadmin')
       ->name('superadmin.')
       ->group(function () {
         // LEVEL MANAGEMENT
@@ -67,18 +77,7 @@ Route::middleware(['auth', 'verified'])
         )->name('competitions.update-status');
       });
 
-    /**
-     * ADMIN ROUTES
-     */
-    Route::middleware(['roles:admin'])
-      ->prefix('admin')
-      ->name('admin.')
-      ->group(function () {
-        // COMPETITION MANAGEMENT
-        Route::resource('competitions', AdminCompetitionController::class)->scoped([
-          'competition' => 'slug'
-        ]);
-      });
+
   });
 
 require __DIR__ . '/auth.php';

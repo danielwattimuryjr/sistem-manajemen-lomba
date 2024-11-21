@@ -34,6 +34,10 @@ class StoreCompetitionRequest extends FormRequest
         'string',
         'min:3'
       ],
+      'user_id' => [
+        'required',
+        Rule::exists('users', 'id')
+      ],
       'slug' => [
         'required',
         'string',
@@ -71,14 +75,6 @@ class StoreCompetitionRequest extends FormRequest
         'integer',
         Rule::exists('levels', 'id')
       ],
-      'judges' => [
-        'required',
-        'array'
-      ],
-      'judges.*' => [
-        'integer',
-        Rule::exists('users', 'id')
-      ]
     ];
   }
 }

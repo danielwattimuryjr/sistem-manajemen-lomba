@@ -52,7 +52,7 @@ FormField.Input = function InputField({
   ...props
 }) {
   return (
-    <FormField label={label} name={trans(label)} error={error}>
+    <FormField label={label} name={trans(label)} error={error} {...props}>
       <Input
         id={trans(label)}
         name={trans(label)}
@@ -60,7 +60,6 @@ FormField.Input = function InputField({
         onChange={onChange}
         type={type}
         className="mt-1 block w-full"
-        {...props}
       />
     </FormField>
   )

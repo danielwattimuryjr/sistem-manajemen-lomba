@@ -33,6 +33,7 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
 
   const { data, setData, post, put, processing, errors } = useForm({
     name: initialData?.name || "",
+    user_id: initialData?.user_id || "",
     slug: initialData?.slug || "",
     description: initialData?.description || "",
     start_date: initialData?.start_date || null,
@@ -44,8 +45,9 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
       },
     ],
     levels: initialData?.levels || [],
-    judges: initialData?.judges || [],
   })
+
+  console.log(errors)
 
   const handleSubmit = e => {
     e.preventDefault()
