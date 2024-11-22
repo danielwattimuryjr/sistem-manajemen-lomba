@@ -56,7 +56,7 @@ class CompetitionController extends Controller
         ->withQueryString()
     );
 
-    return Inertia::render('admin/competitions/index', [
+    return Inertia::render('admin/competitions/competition-list/index', [
       'competitions' => fn() => $competitions,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction'),
     ]);
@@ -76,7 +76,7 @@ class CompetitionController extends Controller
         ->get()
     );
 
-    return Inertia::render('admin/competitions/form', [
+    return Inertia::render('admin/competitions/competition-form/index', [
       'levels' => $levels,
       'judges' => $judges
     ]);
@@ -174,7 +174,7 @@ class CompetitionController extends Controller
         ->get()
     );
 
-    return Inertia::render('admin/competitions/form', [
+    return Inertia::render('admin/competitions/competition-form/index', [
       'initialData' => $initialData,
       'levels' => $roles,
       'judges' => $judges

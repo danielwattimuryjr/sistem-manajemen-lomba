@@ -21,11 +21,11 @@ import {
 import Heading from "@/Components/heading"
 import InputError from "@/Components/input-error"
 
-const FormAssessmentFactor = ({
+export default function CompetitionCriteriaForm({
   initialFactors = [],
   setAssessmentFactors,
   errors,
-}) => {
+}){
   const [factors, setFactors] = useState(
     initialFactors.length > 0 ? initialFactors : [{ name: "", weight: 0 }],
   )
@@ -169,5 +169,3 @@ const FormAssessmentFactor = ({
     </>
   )
 }
-
-export default FormAssessmentFactor
