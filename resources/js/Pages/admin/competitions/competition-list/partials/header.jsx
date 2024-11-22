@@ -2,6 +2,8 @@ import { Link } from "@inertiajs/react"
 import Breadcrumbs from "@/Components/breadcrumbs";
 import Heading from "@/Components/heading";
 import { buttonVariants } from "@/Components/ui/button";
+import { cn } from "@/lib/utils.js"
+import { IconPlus } from "@tabler/icons-react"
 
 export default function CompetitionListHeader({isSuperadmin}) {
   const breadcrumbItems = [

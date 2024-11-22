@@ -1,10 +1,15 @@
 import CompetitionCriteriaForm from "./partials/criteria-form"
 import CompetitionFormHeader from "./partials/header"
 import CompetitionMainForm from "./partials/main-form"
+import { useForm } from "@inertiajs/react"
+import AdminLayout from "@/Layouts/admin-layout.jsx"
+import PageContainer from "@/Components/layout/page-container.jsx"
+import { Separator } from "@/Components/ui/separator.jsx"
+import LoadingButton from "@/Components/loading-button.jsx"
 
-export default function CompetitionForm() {
+export default function CompetitionForm({ initialData, levels, judges }) {
   const isEditing = !!initialData
-  
+
   const toastMessage = isEditing
     ? "Perlombaan berhasil diperbaharui"
     : "Perlombaan berhasil ditambahkan"
@@ -25,6 +30,8 @@ export default function CompetitionForm() {
     ],
     levels: initialData?.levels || [],
   })
+
+  console.log(data)
 
   const handleSubmit = e => {
     e.preventDefault()

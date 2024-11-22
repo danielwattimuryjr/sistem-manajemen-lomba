@@ -35,7 +35,6 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
   return (
     <>
       <div className="gap-8 md:grid md:grid-cols-3">
-        <div>
         <FormField.Input
           label={'name perlombaan'}
           error={errors.name}
@@ -61,7 +60,6 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
           }}
           onChange={handleDateChange}
         />
-        </div>
       </div>
 
       <div className="w-full space-y-8">
