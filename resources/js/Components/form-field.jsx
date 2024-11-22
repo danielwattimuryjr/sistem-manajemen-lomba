@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Input } from "@/Components/ui/input"
 import { Label } from "./ui/label"
 import InputError from "./input-error"
@@ -159,6 +159,7 @@ FormField.DateRangePicker = function InputField({
 
 FormField.MultiSelect = function InputField({
   label,
+  error,
   value,
   onChange,
   options,
