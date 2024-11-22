@@ -12,22 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/Components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/Components/ui/popover"
-import { Button } from "./ui/button"
-import { IconSelector } from "@tabler/icons-react"
-// import { SelectTrigger } from "@radix-ui/react-select"
+import Tiptap from "./text-editor/tiptap"
+import DateRangePicker from "./date-range-picker"
+import { MultiSelect } from "./multi-select"
 
 const FormField = ({ label, error, children }) => {
   return (
@@ -49,6 +36,8 @@ FormField.Input = function InputField({
   onChange,
   type = "text",
   error,
+  autoFocus = false,
+  disabled = false,
   ...props
 }) {
   return (
@@ -60,6 +49,8 @@ FormField.Input = function InputField({
         onChange={onChange}
         type={type}
         className="mt-1 block w-full"
+        autoFocus={autoFocus}
+        disabled={disabled}
       />
     </FormField>
   )
@@ -128,6 +119,64 @@ FormField.Textarea = function InputField({
         value={value}
         onChange={onChange}
         {...props}
+      />
+    </FormField>
+  )
+}
+
+FormField.TipTap = function InputField({
+  label,
+  value,
+  onChange,
+  error
+}) {
+  return (
+    <FormField label={label} name={trans(label)} error={error}>
+      <Tiptap
+        description={value}
+        onChange={onChange}
+      />
+    </FormField>
+  )
+}
+
+FormField.DateRangePicker = function InputField({
+  label,
+  value,
+  onChange,
+  error
+}) {
+  return (
+    <FormField label={label} name={trans(label)} error={error}>
+      <DateRangePicker
+        from={value.start_date}
+        to={value.end_date}
+        onChange={onChange}
+      />
+    </FormField>
+  )
+}
+
+FormField.MultiSelect = function InputField({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder,
+  variant,
+  animation = 2,
+  maxCount = 3
+}) {
+  return (
+    <FormField label={label} name={trans(label)} error={error}>
+      <MultiSelect
+        options={options}
+        onValueChange={onChange}
+        defaultValue={value}
+        placeholder={placeholder}
+        variant={variant}
+        animation={animation}
+        maxCount={maxCount}
       />
     </FormField>
   )
