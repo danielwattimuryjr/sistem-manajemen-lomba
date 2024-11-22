@@ -1,6 +1,6 @@
-import slugify from "slugify"
 import { format } from "date-fns"
 import FormField from "@/Components/form-field"
+import { trans } from "@/lib/utils"
 
 export default function CompetitionMainForm({data, setData, errors, levels, judges}) {
   const levelList = levels.data.map(level => ({
@@ -17,10 +17,7 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
     setData(data => ({
       ...data,
       name: newName,
-      slug: slugify(newName, {
-        replacement: '-',
-        lower: true
-      })
+      slug: trans(newName)
     }))
   }
 
