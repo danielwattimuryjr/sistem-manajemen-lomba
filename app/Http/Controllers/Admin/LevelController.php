@@ -47,7 +47,7 @@ class LevelController extends Controller
         ->withQueryString()
     );
 
-    return Inertia::render('admin/levels/index', [
+    return Inertia::render('admin/levels/level-list/index', [
       'levels' => fn() => $levels,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction')
     ]);
@@ -58,7 +58,7 @@ class LevelController extends Controller
    */
   public function create()
   {
-    return Inertia::render('admin/levels/form');
+    return Inertia::render('admin/levels/level-form/index');
   }
 
   /**
@@ -84,7 +84,7 @@ class LevelController extends Controller
    */
   public function edit(Level $level)
   {
-    return Inertia::render('admin/levels/form', [
+    return Inertia::render('admin/levels/level-form/index', [
       'initialData' => $level
     ]);
   }
