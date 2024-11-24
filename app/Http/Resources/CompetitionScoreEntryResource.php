@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CompetitionScoreEntryResource extends JsonResource
 {
+    public static $wrap = null;
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +15,10 @@ class CompetitionScoreEntryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+          'participantId' => $this->participant_id,
+          'criteriaId' => $this->criteria_id,
+          'score' => $this->score
+        ];
     }
 }

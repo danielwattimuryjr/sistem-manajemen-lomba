@@ -48,7 +48,7 @@ class Competition extends Model
 
   public function participants(): BelongsToMany
   {
-    return $this->belongsToMany(User::class, Participant::class)->withPivot(['kd_peserta'])->withTimestamps();
+    return $this->belongsToMany(User::class, Participant::class)->withPivot(['kd_peserta', 'id'])->withTimestamps();
   }
 
   public function scoreEntries(): HasManyThrough

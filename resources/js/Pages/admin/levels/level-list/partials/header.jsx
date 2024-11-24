@@ -3,6 +3,7 @@ import Heading from '@/Components/heading'
 import { buttonVariants } from '@/Components/ui/button'
 import { cn } from '@/lib/utils'
 import { Link } from "@inertiajs/react"
+import { IconPlus } from "@tabler/icons-react"
 
 export default function LevelListHeader() {
   const breadcrumbItems = [
@@ -30,6 +31,6 @@ export default function LevelListHeader() {
           Tambah Data
         </Link>
       </div>
-    </>  
+    </>
   )
 }

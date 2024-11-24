@@ -8,8 +8,6 @@ import CompetitionDetailParticipants from "@/pages/admin/competitions/show-compe
 
 const CompetitionShow = props => {
   const { data: competition } = props.competition
-  const { data: participants } = props.participants
-
   const user = props.auth.user?.data
   const isSuperadmin = user?.role === "superadmin"
 
@@ -17,7 +15,10 @@ const CompetitionShow = props => {
     <AdminLayout>
       <PageContainer scrollable>
         <div className="space-y-8">
-          <CompetitionDetailHeader competition={competition} isSuperadmin={isSuperadmin}/>
+          <CompetitionDetailHeader
+            competition={competition}
+            isSuperadmin={isSuperadmin}
+          />
           <Separator />
           <CompetitionDetailInfo competition={competition} />
           <Separator />
@@ -25,8 +26,6 @@ const CompetitionShow = props => {
           <Separator />
           <CompetitionDetailParticipants
             competition={competition}
-            particpants={participants}
-            parameters={props.params}
             isSuperadmin={isSuperadmin}
           />
         </div>

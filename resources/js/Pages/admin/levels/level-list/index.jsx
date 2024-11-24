@@ -2,6 +2,9 @@ import PageContainer from '@/Components/layout/page-container'
 import AdminLayout from '@/Layouts/admin-layout'
 import React, { useState } from 'react'
 import LevelListHeader from './partials/header'
+import { useFilter } from "@/hooks/useFilter.js"
+import { Separator } from "@/Components/ui/separator.jsx"
+import LevelTable from "@/Components/level-table/level-table.jsx"
 
 export default function LevelList(props) {
   const { data: levels, meta, links } = props.levels

@@ -30,8 +30,7 @@ class LevelController extends Controller
         ->withCount('users')
         ->when($request->search, function ($query, $value) {
           $query->where(function ($q) use ($value) {
-            $q->where('name', 'like', '%' . $value . '%')
-              ->orWhere('display_name', 'like', '%' . $value . '%');
+            $q->where('name', 'like', '%' . $value . '%');
           });
         })
         ->when($request->field && $request->direction, function ($query) use ($request) {

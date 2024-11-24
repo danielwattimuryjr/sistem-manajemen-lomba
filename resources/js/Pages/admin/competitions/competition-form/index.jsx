@@ -31,8 +31,6 @@ export default function CompetitionForm({ initialData, levels, judges }) {
     levels: initialData?.levels || [],
   })
 
-  console.log(data)
-
   const handleSubmit = e => {
     e.preventDefault()
 

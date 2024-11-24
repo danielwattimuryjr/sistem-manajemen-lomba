@@ -1,14 +1,16 @@
 import FormField from '@/Components/form-field'
 import LoadingButton from '@/Components/loading-button'
 import { trans } from '@/lib/utils'
-import React from 'react'
+import { useForm } from "@inertiajs/react"
+import { toast } from "@/hooks/use-toast.js"
+import { getTimeStamp } from "@/lib/getTimeStamp.js"
 
 export default function LevelForm({ initialData }) {
   const { data, setData, post, put, processing, errors } = useForm({
     slug: initialData?.slug || "",
     name: initialData?.name || "",
   })
-  
+
   const isEditing = !!initialData
   const handleSubmit = e => {
     e.preventDefault()
@@ -58,7 +60,7 @@ export default function LevelForm({ initialData }) {
         />
       </div>
       <LoadingButton
-        label={action}
+        label={'Submit'}
         loading={processing}
         disabled={processing}
       />

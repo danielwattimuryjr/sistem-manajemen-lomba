@@ -4,12 +4,9 @@ import ParticipantTable from "@/Components/participant-table/participant-table.j
 import { useFilter } from "@/hooks/useFilter.js"
 import { usePage } from "@inertiajs/react"
 
-export default function CompetitionDetailParticipants({
-  parameters,
-  particpants,
-  competition,
-  isSuperadmin
-}) {
+export default function CompetitionDetailParticipants({ competition, isSuperadmin }) {
+  const { participants, params: parameters } = usePage().props
+
   const [params, setParams] = useState(parameters)
   useFilter({
     route: isSuperadmin
@@ -30,7 +27,7 @@ export default function CompetitionDetailParticipants({
       <ParticipantTable
         competition={competition}
         params={params}
-        participants={particpants}
+        participants={participants.data}
         setParams={handleParamsChange}
       />
     </>

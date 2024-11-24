@@ -7,12 +7,11 @@ use App\Http\Requests\StoreCompetitionRequest;
 use App\Http\Requests\UpdateCompetitionRequest;
 use App\Http\Resources\CompetitionParticipantResource;
 use App\Http\Resources\CompetitionResource;
+use App\Http\Resources\CompetitionScoreEntryResource;
 use App\Http\Resources\LevelResource;
 use App\Http\Resources\SingleCompetitionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Competition;
-use App\Models\Judge;
-use App\Models\Judgement;
 use App\Models\Level;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -126,6 +125,7 @@ class CompetitionController extends Controller
       'criterias',
       'judge',
       'levels',
+      'scoreEntries',
       'participants' => function ($query) use ($request) {
         $query->when($request->search, function ($q, $value) {
           $q->where('users.name', 'like', '%' . $value . '%')
@@ -135,9 +135,16 @@ class CompetitionController extends Controller
       }
     ]);
 
+    $participants = CompetitionParticipantResource::collection($competition->participants);
+
+    $scoreEntries = $competition->scoreEntries->groupBy('participant_id')->map(function ($entries, $participantId) {
+      return CompetitionScoreEntryResource::collection($entries);
+    });
+
     return Inertia::render('admin/competitions/show-competition-details/index', [
       'competition' => new SingleCompetitionResource($competition),
-      'participants' => CompetitionParticipantResource::collection($competition->participants),
+      'participants' => $participants,
+      'scoreEntries' => $scoreEntries,
       'state' => $request->only('search'),
     ]);
   }

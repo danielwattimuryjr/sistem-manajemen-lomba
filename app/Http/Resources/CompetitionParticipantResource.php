@@ -15,6 +15,8 @@ class CompetitionParticipantResource extends JsonResource
   public function toArray(Request $request): array
   {
     return [
+      'id' => $this->pivot->id,
+      'participantCode' => $this->pivot->kd_peserta,
       'name' => $this->name,
       'email' => $this->email,
       'username' => $this->username,
