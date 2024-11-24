@@ -14,9 +14,7 @@ import {
 
 const UserNav = ({ ...props }) => {
   const { auth } = usePage().props
-  const signOut = () => {
-    console.log("logout")
-  }
+
   return (
     <DropdownMenu className={props}>
       <DropdownMenuTrigger asChild>

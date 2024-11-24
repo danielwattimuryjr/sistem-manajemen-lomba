@@ -1,31 +1,15 @@
-import React, { useEffect } from "react"
+import CompetitionCriteriaForm from "./partials/criteria-form"
+import CompetitionFormHeader from "./partials/header"
+import CompetitionMainForm from "./partials/main-form"
 import { useForm } from "@inertiajs/react"
-import { toast } from "@/hooks/use-toast"
-import AdminLayout from "@/Layouts/admin-layout"
-import PageContainer from "@/Components/layout/page-container"
-import LoadingButton from "@/Components/loading-button"
-import Breadcrumbs from "@/Components/breadcrumbs"
-import { Separator } from "@/Components/ui/separator"
-import Heading from "@/Components/heading"
-import { getTimeStamp } from "@/lib/getTimeStamp"
-import MainCompetitionForm from "./partials/main-competition-form"
-import FormAssessmentFactor from "./partials/assessment-factor-form"
+import AdminLayout from "@/Layouts/admin-layout.jsx"
+import PageContainer from "@/Components/layout/page-container.jsx"
+import { Separator } from "@/Components/ui/separator.jsx"
+import LoadingButton from "@/Components/loading-button.jsx"
 
-const CompetitionForm = ({ initialData, levels, judges }) => {
-  const breadcrumbItems = [
-    { title: "Dashboard", link: route("dashboard.home") },
-    {
-      title: "Manajemen Perlombaan",
-      link: route("dashboard.competitions.index"),
-    },
-    { title: initialData ? "Update Data" : "Tambah Data" },
-  ]
-
+export default function CompetitionForm({ initialData, levels, judges }) {
   const isEditing = !!initialData
-  const title = isEditing ? "Edit perlombaan" : "Tambah perlombaan"
-  const description = isEditing
-    ? "Update data perlombaan"
-    : "Tambah data perlombaan"
+
   const toastMessage = isEditing
     ? "Perlombaan berhasil diperbaharui"
     : "Perlombaan berhasil ditambahkan"
@@ -33,6 +17,7 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
 
   const { data, setData, post, put, processing, errors } = useForm({
     name: initialData?.name || "",
+    user_id: initialData?.user_id || "",
     slug: initialData?.slug || "",
     description: initialData?.description || "",
     start_date: initialData?.start_date || null,
@@ -44,7 +29,6 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
       },
     ],
     levels: initialData?.levels || [],
-    judges: initialData?.judges || [],
   })
 
   const handleSubmit = e => {
@@ -58,10 +42,10 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     }
 
     isEditing
-      ? put(route("dashboard.competitions.update", initialData), {
+      ? put(route("dashboard.superadmin.competitions.update", initialData), {
           onSuccess,
         })
-      : post(route("dashboard.competitions.store"), { onSuccess })
+      : post(route("dashboard.superadmin.competitions.store"), { onSuccess })
   }
 
   const setAssessmentFactors = newFactors => {
@@ -75,34 +59,23 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     <AdminLayout>
       <PageContainer scrollable>
         <div className="space-y-4">
-          <Breadcrumbs items={breadcrumbItems} />
-
-          <Heading title={title} description={description} />
-
+          <CompetitionFormHeader isEditing={isEditing} />
           <Separator />
-
           <form onSubmit={handleSubmit} className="w-full space-y-8">
-            {/* Form Perlombaan */}
-            <MainCompetitionForm
+            <CompetitionMainForm
               data={data}
               setData={setData}
               errors={errors}
-              initialData={initialData}
               levels={levels}
               judges={judges}
             />
-
             <Separator />
-
-            {/* Form Assessment Factor */}
-            <FormAssessmentFactor
+            <CompetitionCriteriaForm
               initialFactors={data.assessment_factors}
               setAssessmentFactors={setAssessmentFactors}
               errors={errors}
             />
-
             <Separator />
-
             <LoadingButton
               label={action}
               loading={processing}
@@ -114,5 +87,3 @@ const CompetitionForm = ({ initialData, levels, judges }) => {
     </AdminLayout>
   )
 }
-
-export default CompetitionForm

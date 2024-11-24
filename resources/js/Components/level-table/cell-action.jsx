@@ -18,7 +18,7 @@ const LevelCellAction = ({ level }) => {
   const { delete: destroy } = useForm()
 
   const deleteData = role => {
-    destroy(route("dashboard.levels.destroy", role), {
+    destroy(route("dashboard.superadmin.levels.destroy", role), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
@@ -51,7 +51,7 @@ const LevelCellAction = ({ level }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.levels.edit", level)}
+            href={route("dashboard.superadmin.levels.edit", level)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />

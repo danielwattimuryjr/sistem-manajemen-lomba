@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
   public function run(): void
   {
     // User::factory(10)->create();
-    $this->call([CompetitionSeeder::class]);
 
     User::factory()->create([
       'name' => 'Superadmin',
@@ -53,5 +52,7 @@ class DatabaseSeeder extends Seeder
     User::factory(10)->create([
       'role' => 'guest'
     ]);
+
+    $this->call([CompetitionSeeder::class]);
   }
 }

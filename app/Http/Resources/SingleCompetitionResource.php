@@ -16,6 +16,7 @@ class SingleCompetitionResource extends JsonResource
   {
     return [
       'name' => $this->name,
+      'judge' => $this->judge->name,
       'slug' => $this->slug,
       'isActive' => $this->is_active,
       'description' => $this->description,
@@ -23,7 +24,6 @@ class SingleCompetitionResource extends JsonResource
       'endDate' => $this->end_date->toFormattedDateString(),
       'createdAt' => $this->created_at,
       'updatedAt' => $this->updated_at,
-      'judges' => UserResource::collection($this->judges),
       'criterias' => CriteriaResource::collection($this->criterias),
       'levels' => LevelResource::collection($this->levels)
     ];

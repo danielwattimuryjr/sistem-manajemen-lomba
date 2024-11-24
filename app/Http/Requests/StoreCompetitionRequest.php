@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -24,7 +25,7 @@ class StoreCompetitionRequest extends FormRequest
   /**
    * Get the validation rules that apply to the request.
    *
-   * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+   * @return array<string, ValidationRule|array<mixed>|string>
    */
   public function rules(): array
   {
@@ -33,6 +34,10 @@ class StoreCompetitionRequest extends FormRequest
         'required',
         'string',
         'min:3'
+      ],
+      'user_id' => [
+        'required',
+        Rule::exists('users', 'id')
       ],
       'slug' => [
         'required',
@@ -71,14 +76,6 @@ class StoreCompetitionRequest extends FormRequest
         'integer',
         Rule::exists('levels', 'id')
       ],
-      'judges' => [
-        'required',
-        'array'
-      ],
-      'judges.*' => [
-        'integer',
-        Rule::exists('users', 'id')
-      ]
     ];
   }
 }

@@ -3,6 +3,13 @@ import { Card, CardContent, CardHeader } from "@/Components/ui/card"
 import DOMPurify from "dompurify"
 import React from "react"
 
+const Row = ({ title, children }) => (
+  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+    <dt className="font-bold">{title}</dt>
+    <dd className="space-x-4 sm:col-span-2">{children}</dd>
+  </div>
+)
+
 const CompetitionInfoCard = ({ competition }) => {
   const sanitizedDescriptionHTML = DOMPurify.sanitize(competition.description)
 
@@ -12,33 +19,21 @@ const CompetitionInfoCard = ({ competition }) => {
       <CardContent>
         <div className="flow-root">
           <dl className="divide-y divide-muted text-sm">
-            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-              <dt className="font-bold">Tanggal Mulai</dt>
-              <dd className="sm:col-span-2">{competition.startDate}</dd>
-            </div>
+            <Row title={"Tanggal Mulai"}>{competition.startDate}</Row>
+            <Row title={"Tanggal Selesai"}>{competition.endDate}</Row>
+            <Row title={"Juri"}>{competition.judge}</Row>
 
-            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-              <dt className="font-bold">Tanggal Selesai</dt>
-              <dd className="sm:col-span-2">{competition.endDate}</dd>
-            </div>
-
-            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-              <dt className="font-bold">Tingkat Perlombaan</dt>
-              <dd className="space-x-4 sm:col-span-2">
-                {competition.levels.map(level => (
-                  <Badge key={level.slug}>{level.name}</Badge>
-                ))}
-              </dd>
-            </div>
-
-            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-              <dt className="font-bold">Juri Perlombaan</dt>
-              <dd className="space-x-4 sm:col-span-2">
-                {competition.judges.map(judge => (
-                  <Badge key={judge.username}>{judge.name}</Badge>
-                ))}
-              </dd>
-            </div>
+            <Row title={"Tingkat Perlombaan"}>
+              {competition.levels.length > 0 ? (
+                <>
+                  {competition.levels.map(level => (
+                    <Badge key={level.slug}>{level.name}</Badge>
+                  ))}
+                </>
+              ) : (
+                "-"
+              )}
+            </Row>
           </dl>
 
           <div

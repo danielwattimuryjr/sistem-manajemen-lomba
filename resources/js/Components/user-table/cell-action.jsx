@@ -18,7 +18,7 @@ const UserCellAction = ({ user }) => {
   const { delete: destroy } = useForm()
 
   const deleteData = user => {
-    destroy(route("dashboard.users.destroy", user), {
+    destroy(route("dashboard.superadmin.users.destroy", user), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
@@ -51,7 +51,7 @@ const UserCellAction = ({ user }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.users.edit", user)}
+            href={route("dashboard.superadmin.users.edit", user)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />

@@ -1,21 +1,16 @@
-import { Button, buttonVariants } from "@/Components/ui/button"
-import { Icon } from "@/Components/icon"
-import ButtonDialog from "@/Components/button-dialog"
-import React from "react"
 import { Link, router } from "@inertiajs/react"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/Components/ui/tooltip"
-import { toast } from "@/hooks/use-toast"
-import { getTimeStamp } from "@/lib/getTimeStamp"
+import { toast } from "@/hooks/use-toast.js"
+import { getTimeStamp } from "@/lib/getTimeStamp.js"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/Components/ui/tooltip.jsx"
+import { Button, buttonVariants } from "@/Components/ui/button.jsx"
+import { Icon } from "@/Components/icon.jsx"
+import ButtonDialog from "@/Components/button-dialog.jsx"
+import React from "react"
 
-const CompetitionActionGroup = ({ competition }) => {
+export default function CompetitionDetailActionGroup({competition}) {
   const toggleCompetitionStatusHandler = () => {
     router.patch(
-      route("dashboard.competitions.update-status", competition),
+      route("dashboard.superadmin.competitions.update-status", competition),
       {
         isActive: !competition.isActive,
       },
@@ -32,15 +27,18 @@ const CompetitionActionGroup = ({ competition }) => {
   }
 
   const deleteCompetitionHandler = () => {
-    router.delete(route("dashboard.competitions.destroy", competition), {
-      preserveScroll: true,
-      onSuccess: () => {
-        toast({
-          title: "Perlombaan berhasil dihapus",
-          description: getTimeStamp(),
-        })
+    router.delete(
+      route("dashboard.superadmin.competitions.destroy", competition),
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast({
+            title: "Perlombaan berhasil dihapus",
+            description: getTimeStamp(),
+          })
+        },
       },
-    })
+    )
   }
 
   return (
@@ -51,7 +49,7 @@ const CompetitionActionGroup = ({ competition }) => {
             <Button
               size="icon"
               variant={competition.isActive ? "destructive" : "default"}
-              onClick={() => toggleCompetitionStatusHandler()}
+              onClick={toggleCompetitionStatusHandler}
             >
               {competition.isActive ? (
                 <Icon icon={"IconX"} />
@@ -70,7 +68,10 @@ const CompetitionActionGroup = ({ competition }) => {
         <Tooltip>
           <TooltipTrigger>
             <Link
-              href={route("dashboard.competitions.edit", competition)}
+              href={route(
+                "dashboard.superadmin.competitions.edit",
+                competition,
+              )}
               className={buttonVariants({ variant: "outline", size: "icon" })}
             >
               <Icon icon={"IconEdit"} />
@@ -89,7 +90,7 @@ const CompetitionActionGroup = ({ competition }) => {
               }
               triggerIcon={"IconTrash"}
               dialogTitle={"Apa Kamu Yakin?"}
-              dialogActionButtonOnClick={() => deleteCompetitionHandler()}
+              dialogActionButtonOnClick={deleteCompetitionHandler}
             />
           </TooltipTrigger>
           <TooltipContent align="center" sideOffset={8}>
@@ -100,5 +101,3 @@ const CompetitionActionGroup = ({ competition }) => {
     </div>
   )
 }
-
-export default CompetitionActionGroup

@@ -8,8 +8,8 @@ import { IconPlus } from "@tabler/icons-react"
 import React from "react"
 
 const CompetitionParticipantCard = ({
+  competition,
   participants,
-  isAdmin,
   params,
   setParams,
 }) => {
@@ -18,7 +18,7 @@ const CompetitionParticipantCard = ({
       <CardHeader>Peserta Lomba</CardHeader>
       <CardContent>
         <ParticipantTable
-          isAdmin={isAdmin}
+          competition={competition}
           params={params}
           participants={participants}
           setParams={setParams}

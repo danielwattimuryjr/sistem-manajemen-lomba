@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompetitionParticipantResource;
 use App\Http\Resources\CompetitionResource;
+use App\Http\Resources\CompetitionScoreEntryResource;
 use App\Http\Resources\SingleCompetitionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Competition;
@@ -39,25 +41,30 @@ class CompetitionController extends Controller
   {
     $competition->load([
       'criterias',
-      'judges',
-      'levels'
+      'judge',
+      'levels',
+      'scoreEntries',
+      'participants'=> function ($query) use ($request) {
+        $query->when($request->search, function ($q, $value) {
+          $q->where('users.name', 'like', '%' . $value . '%')
+            ->orWhere('users.email', 'like', '%' . $value . '%');
+        })
+          ->orderBy('participants.created_at', 'DESC');
+      }
     ]);
 
     $competition = new SingleCompetitionResource($competition);
 
-    $participants = UserResource::collection(
-      $competition->participants()
-        ->when($request->search, function ($q, $value) {
-          $q->where('name', 'like', '%' . $value . '%')
-            ->orWhere('email', 'like', '%' . $value . '%');
-        })
-        ->orderBy('created_at', 'DESC')
-        ->get()
-    );
+    $participants = CompetitionParticipantResource::collection($competition->participants);
+
+    $scoreEntries = $competition->scoreEntries->groupBy('participant_id')->map(function ($entries, $participantId) {
+      return CompetitionScoreEntryResource::collection($entries);
+    });
 
     return Inertia::render('competitions/show', [
       'competition' => $competition,
       'participants' => $participants,
+      'scoreEntries' => $scoreEntries,
       'state' => $request->only('search'),
     ]);
   }

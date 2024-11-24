@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLevelRequest;
 use App\Http\Requests\UpdateLevelRequest;
 use App\Http\Resources\LevelResource;
@@ -29,8 +30,7 @@ class LevelController extends Controller
         ->withCount('users')
         ->when($request->search, function ($query, $value) {
           $query->where(function ($q) use ($value) {
-            $q->where('name', 'like', '%' . $value . '%')
-              ->orWhere('display_name', 'like', '%' . $value . '%');
+            $q->where('name', 'like', '%' . $value . '%');
           });
         })
         ->when($request->field && $request->direction, function ($query) use ($request) {
@@ -46,7 +46,7 @@ class LevelController extends Controller
         ->withQueryString()
     );
 
-    return Inertia::render('admin/levels/index', [
+    return Inertia::render('admin/levels/level-list/index', [
       'levels' => fn() => $levels,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction')
     ]);
@@ -57,7 +57,7 @@ class LevelController extends Controller
    */
   public function create()
   {
-    return Inertia::render('admin/levels/form');
+    return Inertia::render('admin/levels/level-form/index');
   }
 
   /**
@@ -67,7 +67,7 @@ class LevelController extends Controller
   {
     Level::create($request->validated());
 
-    return to_route('dashboard.levels.index');
+    return to_route('dashboard.superadmin.levels.index');
   }
 
   /**
@@ -83,7 +83,7 @@ class LevelController extends Controller
    */
   public function edit(Level $level)
   {
-    return Inertia::render('admin/levels/form', [
+    return Inertia::render('admin/levels/level-form/index', [
       'initialData' => $level
     ]);
   }
@@ -95,7 +95,7 @@ class LevelController extends Controller
   {
     $level->update($request->validated());
 
-    return to_route('dashboard.levels.index');
+    return to_route('dashboard.superadmin.levels.index');
   }
 
   /**
@@ -105,6 +105,6 @@ class LevelController extends Controller
   {
     $level->delete();
 
-    return to_route('dashboard.levels.index');
+    return to_route('dashboard.superadmin.levels.index');
   }
 }

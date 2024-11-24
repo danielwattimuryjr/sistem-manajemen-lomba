@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import DashboardNav from "../dashboard-nav"
-import { adminNavItems } from "@/constants/data"
+import { superadminNavItems, adminNavItems } from "@/constants/data"
 import { Icon } from "../icon"
 
-const MobileSidebar = ({ className }) => {
+const MobileSidebar = ({ className, role }) => {
   const [open, setOpen] = useState(false)
   return (
     <>
@@ -20,7 +20,9 @@ const MobileSidebar = ({ className }) => {
               </h2>
               <div className="space-y-1">
                 <DashboardNav
-                  items={adminNavItems}
+                  items={
+                    role === "superadmin" ? superadminNavItems : adminNavItems
+                  }
                   isMobileNav={true}
                   setOpen={setOpen}
                 />
