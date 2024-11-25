@@ -29,6 +29,7 @@ class Competition extends Model
     'start_date',
     'end_date',
     'is_active',
+    'has_final_scores'
   ];
 
   public function levels(): BelongsToMany
@@ -51,6 +52,16 @@ class Competition extends Model
     return $this->belongsToMany(User::class, Participant::class)->withPivot(['kd_peserta', 'id'])->withTimestamps();
   }
 
+  public function finalScores(): HasManyThrough
+  {
+    return $this->hasManyThrough(
+      FinalScore::class,
+      Participant::class,
+      'competition_id',
+      'participant_id'
+    );
+  }
+
   public function scoreEntries(): HasManyThrough
   {
     return $this->hasManyThrough(
@@ -59,6 +70,16 @@ class Competition extends Model
       'competition_id',
       'participant_id'
     );
+  }
+
+  public function allParticipantHaveScore(): bool {
+    $totalParticipants = $this->participants()->count();
+
+    $participantsWithScores = $this->scoreEntries()
+      ->distinct('participant_id')
+      ->count('participant_id');
+
+    return $totalParticipants === $participantsWithScores;
   }
 
   public function generateParticipantCode()

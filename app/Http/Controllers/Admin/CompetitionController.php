@@ -14,6 +14,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Competition;
 use App\Models\Level;
 use App\Models\User;
+use App\Services\CompetitionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,13 @@ use Throwable;
 
 class CompetitionController extends Controller
 {
+  protected $competitionService;
+
+  public function __construct(CompetitionService $competitionService)
+  {
+    $this->competitionService = $competitionService;
+  }
+
   /**
    * Display a listing of the resource.
    */
@@ -250,5 +258,28 @@ class CompetitionController extends Controller
     $competition->update([
       'is_active' => $validated['isActive']
     ]);
+  }
+
+  public function calculateFinalScores(Competition $competition)
+  {
+    try {
+      if (!$competition->allParticipantHaveScore()) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Tidak semua peserta memiliki skor. Harap pastikan semua skor sudah diinput.',
+        ], 400);
+      }
+
+      $results = $this->competitionService->calculateAndSaveScores($competition);
+
+      $competition->update([
+        'is_active' => false,
+        'has_final_scores' => true
+      ]);
+
+      return response()->json(['success' => true, 'data' => $results]);
+    } catch (\Exception $e) {
+      return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
+    }
   }
 }

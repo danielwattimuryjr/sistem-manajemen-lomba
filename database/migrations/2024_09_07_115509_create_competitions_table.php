@@ -20,6 +20,7 @@ return new class extends Migration {
       $table->timestamp('start_date');
       $table->timestamp('end_date');
       $table->boolean('is_active');
+      $table->boolean('has_final_scores')->default(false);
       $table->timestamps();
     });
   }

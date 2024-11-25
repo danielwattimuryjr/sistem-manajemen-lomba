@@ -1,4 +1,4 @@
-import { Link, usePage } from "@inertiajs/react"
+import { Link, router, usePage } from "@inertiajs/react"
 import { Input } from "../ui/input"
 import { ScrollArea } from "../ui/scroll-area"
 import {
@@ -12,6 +12,7 @@ import {
 import participantTableColumns from "./columns"
 import { buttonVariants } from "../ui/button"
 import { useMemo } from "react"
+import ButtonDialog from "@/Components/button-dialog.jsx"
 
 const ParticipantTable = ({
   params,
@@ -20,8 +21,7 @@ const ParticipantTable = ({
   competition,
 }) => {
   const { criterias } = competition
-  const { scoreEntries } = usePage().props
-
+  const { scoreEntries, auth } = usePage().props
 
   const updatedTableColumns = useMemo(() => {
     if (!criterias || criterias.length === 0) return participantTableColumns
@@ -41,6 +41,15 @@ const ParticipantTable = ({
     return columns
   }, [criterias, participantTableColumns])
 
+  const user = auth.user?.data
+  const isSuperadmin = user?.role === 'superadmin'
+
+  function postCalculateFinalScores () {
+    router.post(
+      route('dashboard.superadmin.competitions.calculate-final-scores', competition)
+    )
+  }
+
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
@@ -54,6 +63,19 @@ const ParticipantTable = ({
             placeholder="Pencarian..."
           />
         </div>
+
+        {isSuperadmin && (
+            <ButtonDialog
+              triggerIcon={'IconMedal2'}
+              triggerButtonLabel={'Tentukan Pemenang'}
+              triggerButtonDisabled={!competition.isActive}
+              dialogTitle={'Konfirmasi'}
+              dialogDescription={'Pastikan bahwa seluruh peserta sudah dinilai. Aksi ini akan menghitung nilai akhir dan menonaktifkan perlombaan.'}
+              dialogCancelButtonLabel={'Batalkan'}
+              dialogActionButtonLabel={'Lanjutkan'}
+              dialogActionButtonOnClick={postCalculateFinalScores}
+            />
+        )}
       </div>
 
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">

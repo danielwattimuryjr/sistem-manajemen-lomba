@@ -85,6 +85,7 @@ export default function CompetitionDetailActionGroup({competition}) {
         <Tooltip>
           <TooltipTrigger>
             <ButtonDialog
+              triggerButtonVariant={'destructive'}
               dialogDescription={
                 "Keputusan ini tidak dapat di batalkan. Data perlombaan akan dihapus."
               }

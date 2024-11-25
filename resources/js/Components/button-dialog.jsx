@@ -15,11 +15,12 @@ import { Button } from "./ui/button"
 const ButtonDialog = ({
   triggerIcon,
   triggerButtonLabel,
-  triggerButtonVariant = "primary",
+  triggerButtonVariant = "default",
+  triggerButtonDisabled = false,
   dialogTitle,
   dialogDescription,
   dialogActionButtonLabel = "Yes",
-  dialogActionButtonVariant = "primary",
+  dialogActionButtonVariant = "default",
   dialogActionButtonOnClick,
   dialogCancelButtonLabel = "No",
   dialogCancelButtonVariant,
@@ -29,7 +30,8 @@ const ButtonDialog = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant={"destructive"}
+          disabled={triggerButtonDisabled}
+          variant={triggerButtonVariant}
           size={
             triggerIcon && triggerButtonLabel
               ? "default"
