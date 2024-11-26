@@ -1,6 +1,6 @@
-import FormField from '@/Components/form-field'
-import LoadingButton from '@/Components/loading-button'
-import { trans } from '@/lib/utils'
+import FormField from "@/Components/form-field"
+import LoadingButton from "@/Components/loading-button"
+import { trans } from "@/lib/utils"
 import { useForm } from "@inertiajs/react"
 import { toast } from "@/hooks/use-toast.js"
 import { getTimeStamp } from "@/lib/getTimeStamp.js"
@@ -12,6 +12,9 @@ export default function LevelForm({ initialData }) {
   })
 
   const isEditing = !!initialData
+  const toastMessage = isEditing
+    ? "Tingkat peserta berhasil diperbaharui"
+    : "Tingkat peserta berhasil dibuat"
   const handleSubmit = e => {
     e.preventDefault()
 
@@ -60,7 +63,7 @@ export default function LevelForm({ initialData }) {
         />
       </div>
       <LoadingButton
-        label={'Submit'}
+        label={"Submit"}
         loading={processing}
         disabled={processing}
       />

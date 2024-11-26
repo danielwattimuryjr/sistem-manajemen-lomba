@@ -31,6 +31,16 @@ class CompetitionController extends Controller
     $this->competitionService = $competitionService;
   }
 
+  private function allParticipantHaveScore(Competition $competition): bool {
+    $totalParticipants = $competition->participants()->count();
+
+    $participantsWithScores = $competition->scoreEntries()
+      ->distinct('participant_id')
+      ->count('participant_id');
+
+    return $totalParticipants === $participantsWithScores;
+  }
+
   /**
    * Display a listing of the resource.
    */
@@ -263,7 +273,7 @@ class CompetitionController extends Controller
   public function calculateFinalScores(Competition $competition)
   {
     try {
-      if (!$competition->allParticipantHaveScore()) {
+      if (!$this->allParticipantHaveScore($competition)) {
         return response()->json([
           'success' => false,
           'message' => 'Tidak semua peserta memiliki skor. Harap pastikan semua skor sudah diinput.',
@@ -277,7 +287,7 @@ class CompetitionController extends Controller
         'has_final_scores' => true
       ]);
 
-      return response()->json(['success' => true, 'data' => $results]);
+      return to_route('dashboard.superadmin.competitions.leaderboard', $competition);
     } catch (\Exception $e) {
       return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
     }

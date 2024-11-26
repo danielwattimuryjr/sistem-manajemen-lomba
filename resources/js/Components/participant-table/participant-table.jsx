@@ -150,7 +150,7 @@ const ParticipantTable = ({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={updatedTableColumns.length + 2}
                   className="animate-pulse py-5 text-center text-base font-semibold text-destructive"
                 >
                   Data Tidak Ada.

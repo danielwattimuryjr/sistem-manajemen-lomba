@@ -20,8 +20,7 @@ class Participant extends Pivot
     'kd_peserta'
   ];
 
-  public function scoreEntries(): HasMany
-  {
-    return $this->hasMany(ScoreEntry::class);
+  public function user(): BelongsTo {
+    return $this->belongsTo(User::class);
   }
 }

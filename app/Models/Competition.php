@@ -71,30 +71,4 @@ class Competition extends Model
       'participant_id'
     );
   }
-
-  public function allParticipantHaveScore(): bool {
-    $totalParticipants = $this->participants()->count();
-
-    $participantsWithScores = $this->scoreEntries()
-      ->distinct('participant_id')
-      ->count('participant_id');
-
-    return $totalParticipants === $participantsWithScores;
-  }
-
-  public function generateParticipantCode()
-  {
-    $words = explode(' ', $this->name);
-    $acronym = '';
-
-    foreach ($words as $word) {
-      $acronym .= strtoupper(substr($word, 0, 1));
-    }
-
-    $currentCount = $this->participants()->count() + 1;
-
-    $numberPart = str_pad($currentCount, 3, '0', STR_PAD_LEFT);
-
-    return $acronym . '-' . $numberPart;
-  }
 }

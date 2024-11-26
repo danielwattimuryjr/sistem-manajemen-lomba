@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\Admin\LevelController as AdminLevelController;
+use App\Http\Controllers\Admin\LeaderboardController;
 use App\Http\Controllers\Admin\ScoreEntryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\DashboardController;
@@ -96,11 +97,18 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
         Route::resource(
           'competitions',
           AdminCompetitionController::class
-        )->scoped(['competition' => 'slug']);
+        )->except(['edit', 'update'])
+          ->scoped(['competition' => 'slug']);
 
         Route::prefix('competitions/{competition:slug}')
           ->name('competitions.')
           ->group(function() {
+            Route::middleware(['hasFinalScores'])
+              ->group(function() {
+                Route::get('edit', [AdminCompetitionController::class, 'edit'])->name('edit');
+                Route::patch('/', [AdminCompetitionController::class, 'update'])->name('update');
+              });
+
             Route::patch(
               'update-competition-status',
               [AdminCompetitionController::class, 'updateCompetitionStatus']
@@ -110,6 +118,11 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
               'calculate-final-scores',
               [AdminCompetitionController::class, 'calculateFinalScores']
             )->name('calculate-final-scores');
+
+            Route::get(
+              'leaderboard',
+              LeaderboardController::class
+            )->name('leaderboard');
           });
 
       });
