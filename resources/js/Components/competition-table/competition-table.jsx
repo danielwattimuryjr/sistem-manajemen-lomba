@@ -107,8 +107,6 @@ const CompetitionTable = ({
                     </TableCell>
                     <TableCell>{competition.startDate}</TableCell>
                     <TableCell>{competition.endDate}</TableCell>
-                    <TableCell>{competition.createdAt}</TableCell>
-                    <TableCell>{competition.updatedAt}</TableCell>
                     <TableCell>
                       <CompetitionCellAction competition={competition} />
                     </TableCell>

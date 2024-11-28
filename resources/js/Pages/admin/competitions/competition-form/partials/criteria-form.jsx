@@ -71,7 +71,7 @@ export default function CompetitionCriteriaForm({
           <TableHeader>
             <TableRow>
               <TableHead>Nama Faktor</TableHead>
-              <TableHead>Value</TableHead>
+              <TableHead>Bobot</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>

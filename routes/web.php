@@ -128,5 +128,7 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
       });
   });
 
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
 // Auth Routes
 require __DIR__ . '/auth.php';

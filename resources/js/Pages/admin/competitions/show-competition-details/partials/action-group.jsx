@@ -47,6 +47,7 @@ export default function CompetitionDetailActionGroup({competition}) {
         <Tooltip>
           <TooltipTrigger>
             <Button
+              disabled={competition.hasFinalScores}
               size="icon"
               variant={competition.isActive ? "destructive" : "default"}
               onClick={toggleCompetitionStatusHandler}
@@ -72,7 +73,7 @@ export default function CompetitionDetailActionGroup({competition}) {
                 "dashboard.superadmin.competitions.edit",
                 competition,
               )}
-              className={buttonVariants({ variant: "outline", size: "icon" })}
+              className={buttonVariants({ variant: "outline", size: "icon"})}
             >
               <Icon icon={"IconEdit"} />
             </Link>

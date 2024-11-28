@@ -39,3 +39,18 @@ export const adminNavItems = [
     active: route().current() == "dashboard.admin.competitions.*",
   },
 ]
+
+export const guestNavItems = [
+  {
+    title: 'My Profile',
+    href: "#",
+    icon: 'IconUserCircle',
+    active: route().current() == "guest.profiles"
+  },
+  {
+    title: 'Perlombaan',
+    href: '#',
+    icon: 'IconHome2',
+    active: route().current() == 'guest.competitions'
+  }
+]

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\FinalScore;
 use Illuminate\Support\Facades\DB;
 
 trait SAWCalculator
@@ -94,7 +95,7 @@ trait SAWCalculator
 
     $rank = 1;
     foreach ($totalScores as $participantId => $totalScore) {
-      DB::table('final_scores')->updateOrInsert(
+      FinalScore::updateOrCreate(
         ['participant_id' => $participantId],
         ['total_score' => $totalScore, 'rank' => $rank++]
       );
@@ -143,8 +144,6 @@ trait SAWCalculator
         'participant_id' => $participantId,
         'total_score'    => $totalScore,
         'rank'           => $rank++,
-        'created_at'     => now(),
-        'updated_at'     => now()
       ];
     }
 

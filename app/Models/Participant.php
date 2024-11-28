@@ -23,4 +23,8 @@ class Participant extends Pivot
   public function user(): BelongsTo {
     return $this->belongsTo(User::class);
   }
+
+  public function competition(): BelongsTo {
+    return $this->belongsTo(Competition::class);
+  }
 }

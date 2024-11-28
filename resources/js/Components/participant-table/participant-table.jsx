@@ -14,12 +14,7 @@ import { buttonVariants } from "../ui/button"
 import { useMemo } from "react"
 import ButtonDialog from "@/Components/button-dialog.jsx"
 
-const ParticipantTable = ({
-  params,
-  setParams,
-  participants,
-  competition,
-}) => {
+const ParticipantTable = ({ params, setParams, participants, competition }) => {
   const { criterias } = competition
   const { scoreEntries, auth } = usePage().props
 
@@ -42,11 +37,14 @@ const ParticipantTable = ({
   }, [criterias, participantTableColumns])
 
   const user = auth.user?.data
-  const isSuperadmin = user?.role === 'superadmin'
+  const isSuperadmin = user?.role === "superadmin"
 
-  function postCalculateFinalScores () {
+  function postCalculateFinalScores() {
     router.post(
-      route('dashboard.superadmin.competitions.calculate-final-scores', competition)
+      route(
+        "dashboard.superadmin.competitions.calculate-final-scores",
+        competition,
+      ),
     )
   }
 
@@ -65,16 +63,20 @@ const ParticipantTable = ({
         </div>
 
         {isSuperadmin && (
-            <ButtonDialog
-              triggerIcon={'IconMedal2'}
-              triggerButtonLabel={'Tentukan Pemenang'}
-              triggerButtonDisabled={!competition.isActive}
-              dialogTitle={'Konfirmasi'}
-              dialogDescription={'Pastikan bahwa seluruh peserta sudah dinilai. Aksi ini akan menghitung nilai akhir dan menonaktifkan perlombaan.'}
-              dialogCancelButtonLabel={'Batalkan'}
-              dialogActionButtonLabel={'Lanjutkan'}
-              dialogActionButtonOnClick={postCalculateFinalScores}
-            />
+          <ButtonDialog
+            triggerIcon={"IconMedal2"}
+            triggerButtonLabel={"Tentukan Pemenang"}
+            triggerButtonDisabled={
+              !competition.isActive || competition.hasFinalScores
+            }
+            dialogTitle={"Konfirmasi"}
+            dialogDescription={
+              "Pastikan bahwa seluruh peserta sudah dinilai. Aksi ini akan menghitung nilai akhir dan menonaktifkan perlombaan."
+            }
+            dialogCancelButtonLabel={"Batalkan"}
+            dialogActionButtonLabel={"Lanjutkan"}
+            dialogActionButtonOnClick={postCalculateFinalScores}
+          />
         )}
       </div>
 
@@ -85,12 +87,9 @@ const ParticipantTable = ({
               <TableHead className="w-[50px] text-center">#</TableHead>
               {updatedTableColumns.map((col, i) => (
                 <TableHead key={i}>
-                  <div className="flex items-center">
                     <span className="mr-2 capitalize">{col.label}</span>
-                  </div>
                 </TableHead>
               ))}
-              <TableHead />
             </TableRow>
           </TableHeader>
 
@@ -141,9 +140,25 @@ const ParticipantTable = ({
                       )
                     })}
 
-                    <TableCell>0</TableCell>
-
-                    <TableCell>{/* Cell Action */}</TableCell>
+                    <TableCell>
+                      {competition.hasFinalScores ? (
+                        <Link
+                          href={route(
+                            "dashboard.superadmin.competitions.leaderboard",
+                            competition,
+                          )}
+                          className={buttonVariants({
+                            variant: "link",
+                          })}
+                        >
+                          Lihat di sini
+                        </Link>
+                      ) : (
+                        <span className="animate-pulse text-base font-semibold text-destructive">
+                          Belum Ada
+                        </span>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </>

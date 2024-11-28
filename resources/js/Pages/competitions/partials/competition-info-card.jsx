@@ -22,7 +22,16 @@ const CompetitionInfoCard = ({ competition }) => {
             <Row title={"Tanggal Mulai"}>{competition.startDate}</Row>
             <Row title={"Tanggal Selesai"}>{competition.endDate}</Row>
             <Row title={"Juri"}>{competition.judge}</Row>
+            <Row title={"Status Saat Ini"}>
+              <p
+                className={
+                  competition.isActive ? "text-green-400" : "text-destructive"
+                }
+              >
+                {competition.isActive ? "Aktif" : "Tidak Aktif "}
+              </p>
 
+            </Row>
             <Row title={"Tingkat Perlombaan"}>
               {competition.levels.length > 0 ? (
                 <>

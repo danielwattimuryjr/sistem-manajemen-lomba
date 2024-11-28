@@ -4,7 +4,6 @@ import React from "react"
 
 
 export default function LeaderboardTable({ finalScores }) {
-  console.log(finalScores)
   const columns = [
     "Peserta",
     "Kode Peserta",
