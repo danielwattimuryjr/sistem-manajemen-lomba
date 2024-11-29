@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class WelcomeController extends Controller
 {
-  public function __invoke()
+  public function __invoke(Request $request)
   {
     $user = Auth::user();
 
@@ -24,13 +24,17 @@ class WelcomeController extends Controller
         ->get()
     );
 
-    if ($user) {
-      $userCompetitions = UserCompetitionResource::collection(
-        $user->participants()->take(2)->get()
-      );
-    } else {
-      $userCompetitions = null;
-    }
+    $userCompetitions = $user
+        ? UserCompetitionResource::collection(
+            $user->participants()
+                ->when(
+                    $request->search,
+                    fn($query, $value) => $query->where('competitions.name', 'like', '%' . $value . '%')
+                )
+                ->orderBy('competitions.created_at', 'desc')
+                ->get()
+        )
+        : null;
 
     return Inertia::render('welcome/index', [
       'competitions' => fn() => $competitions,

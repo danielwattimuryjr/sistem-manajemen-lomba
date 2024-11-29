@@ -27,4 +27,8 @@ class Participant extends Pivot
   public function competition(): BelongsTo {
     return $this->belongsTo(Competition::class);
   }
+
+  public function finalScore() {
+    return $this->hasMany(FinalScore::class);
+  }
 }
