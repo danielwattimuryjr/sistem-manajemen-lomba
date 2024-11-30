@@ -17,7 +17,7 @@ export default function UserCompetition() {
   useFilter({
     route: route('welcome'),
     values: params,
-    only: ['competitions']
+    only: ['userCompetitions']
   })
 
   const user = auth?.user
