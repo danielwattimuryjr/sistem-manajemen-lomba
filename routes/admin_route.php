@@ -82,11 +82,6 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
               'calculate-final-scores',
               [AdminCompetitionController::class, 'calculateFinalScores']
             )->name('calculate-final-scores');
-
-            Route::get(
-              'leaderboard',
-              LeaderboardController::class
-            )->name('leaderboard');
           });
 
       });

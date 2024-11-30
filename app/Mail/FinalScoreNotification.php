@@ -43,7 +43,10 @@ class FinalScoreNotification extends Mailable
     return new Content(
       view: 'mail.final-score-notification',
       with: [
-        'leaderboardUrl' => '#',
+        'leaderboardUrl' => route(
+          'guest.competitions.leaderboard',
+          $this->competition
+        ),
         'name' => $this->name
       ]
     );

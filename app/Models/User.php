@@ -86,7 +86,8 @@ class User extends Authenticatable implements MustVerifyEmail
       Competition::class,
       Participant::class
     )->withPivot([
-      'kd_peserta'
+      'kd_peserta',
+      'id'
     ])->withTimestamps();
   }
 

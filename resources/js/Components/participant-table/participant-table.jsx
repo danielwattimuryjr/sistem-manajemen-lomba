@@ -144,7 +144,7 @@ const ParticipantTable = ({ params, setParams, participants, competition }) => {
                       {competition.hasFinalScores ? (
                         <Link
                           href={route(
-                            "dashboard.superadmin.competitions.leaderboard",
+                            "guest.competitions.leaderboard",
                             competition,
                           )}
                           className={buttonVariants({

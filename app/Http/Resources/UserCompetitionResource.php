@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,16 +16,15 @@ class UserCompetitionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-          'name' => $this->name,
-          'slug' => $this->slug,
-          'isActive' => $this->isActive,
+          'participantCode' => $this->participant_code,
+          'competitionName' => $this->competition_name,
+          'competitionSlug' => $this->competition_slug,
+          'finalScore' => $this->final_score,
           'hasFinalScores' => $this->has_final_scores,
-          'finalScore' => $this->whenLoaded('finalScore', fn () => $this->finalScore->total_score),
-          'rank' => $this->whenLoaded('finalScore', fn () => $this->finalScore->rank),
-          'participantCode' => 'T-0001',
-          'joinedAt' => 'smth',
-          'startDate' => $this->start_date->toDateString(),
-          'endDate' => $this->end_date->toDateString(),
+          'rank' => $this->rank,
+          'joinedAt' => Carbon::parse($this->joined_at)->toDateString(),
+          'startDate' => Carbon::parse($this->competition_start_at)->toDateString(),
+          'endDate' => Carbon::parse($this->competition_end_at)->toDateString(),
         ];
     }
 }

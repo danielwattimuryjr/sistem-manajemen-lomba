@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
+use App\Http\Controllers\Admin\LeaderboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('competitions')
@@ -18,4 +19,7 @@ Route::prefix('competitions')
       'postParticipantData'
     )->name('participate')
       ->middleware(['auth', 'isEligible']);
-  });
+    Route::get(
+      '{competition:slug}/leaderboard',
+      LeaderboardController::class
+    )->name('leaderboard');  });

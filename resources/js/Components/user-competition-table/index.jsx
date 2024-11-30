@@ -10,7 +10,9 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
 import { Icon } from "../icon"
+import ButtonTooltip from "@/Components/button-tooltip.jsx"
 import { Button } from "@/Components/ui/button.jsx"
+import { router } from "@inertiajs/react"
 
 const columns = [
   "Competition",
@@ -19,6 +21,10 @@ const columns = [
   "Kode Peserta",
   "Tgl. Pendaftaran",
 ]
+
+function openLeaderboard (competition) {
+  router.get(route("guest.competitions.leaderboard", { competition: competition.competitionSlug }))
+}
 
 const UserCompetitionTable = ({ competitions, params, setParams }) => {
   return (
@@ -56,23 +62,38 @@ const UserCompetitionTable = ({ competitions, params, setParams }) => {
                     <TableCell className="w-0 py-7 text-center">
                       {i + 1}
                     </TableCell>
-                    <TableCell>{competition.name}</TableCell>
+                    <TableCell>{competition.competitionName}</TableCell>
                     <TableCell>
                       {competition?.finalScore || "Sedang dinilai"}
                     </TableCell>
                     <TableCell>
                       {competition?.rank || "Sedang dinilai"}
                     </TableCell>
+                    <TableCell>{competition?.participantCode}</TableCell>
+                    <TableCell>{competition?.joinedAt}</TableCell>
                     <TableCell>
-                      {competition?.participantCode}
-                    </TableCell>
-                    <TableCell>
-                      {competition?.joinedAt}
-                    </TableCell>
-                    <TableCell>
-                      <Button size={"icon"} variant={"outline"}>
-                        <Icon icon={"IconDownload"} />
-                      </Button>
+                      {competition?.hasFinalScores ? (
+                        <div className={'space-x-2'}>
+                          <ButtonTooltip
+                            size={"icon"}
+                            variant={"outline"}
+                            tooltip={"download sertifikat"}
+                          >
+                            <Icon icon={"IconDownload"} />
+                          </ButtonTooltip>
+
+                          <ButtonTooltip
+                            size={'icon'}
+                            variant={'outline'}
+                            tooltip={'Lihat Hasil Perolehan'}
+                            onClick={() => openLeaderboard(competition)}
+                          >
+                            <Icon icon={'IconTrophy'} />
+                          </ButtonTooltip>
+                        </div>
+                      ) : (
+                        "Belum dinilai"
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
