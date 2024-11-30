@@ -2,7 +2,25 @@ import Banner from "@/Components/banner"
 import GuestNav from "@/Components/guest-nav"
 import PageContainer from "@/Components/layout/page-container"
 import { Toaster } from "@/Components/ui/toaster"
-import { Head, usePage } from "@inertiajs/react"
+import { Head,  router, usePage } from "@inertiajs/react"
+import { Button } from "@/Components/ui/button.jsx"
+import { toast } from "@/hooks/use-toast.js"
+import { getTimeStamp } from "@/lib/getTimeStamp.js"
+
+function resendEmailVerificationRequest () {
+  router.post(
+    route('verification.send'),
+    undefined,
+    {
+      onSuccess: () => {
+        toast({
+          title: 'Email send',
+          description: getTimeStamp()
+        })
+      }
+    }
+  )
+}
 
 const AppLayout = ({ title, children }) => {
   const { user } = usePage().props?.auth
@@ -23,6 +41,14 @@ const AppLayout = ({ title, children }) => {
                   {!user?.data?.isEmailVerified
                     ? "Email mu belum di verifikasi. Segera cek Email!"
                     : "Akun mu belum diverifikasi oleh admin."}
+                  {!user?.data?.isEmailVerified && (
+                    <Button
+                      variant={"link"}
+                      onClick={resendEmailVerificationRequest}
+                    >
+                      Kirim Email Ulang.
+                    </Button>
+                  )}
                 </p>
               </Banner>
             )}

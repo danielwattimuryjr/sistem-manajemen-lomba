@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CompetitionResource;
-use App\Http\Resources\UserCompetitionResource;
 use App\Http\Resources\GuestCompetitionResource;
-use App\Models\Competition;
-use App\Models\FinalScore;
+use App\Http\Resources\UserCompetitionResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 class WelcomeController extends Controller
 {
@@ -20,21 +17,21 @@ class WelcomeController extends Controller
     $user = Auth::user();
 
     $competitions = GuestCompetitionResource::collection(
-      DB::table('competition_level')
-        ->join('competitions', 'competition_level.competition_id', '=', 'competitions.id')
-        ->leftJoin('participants', 'participants.competition_id', '=', 'competitions.id') // Bergabung dengan table participants
+      DB::table('competitions')
+        ->leftJoin('competition_level', 'competitions.id', '=', 'competition_level.competition_id')
+        ->leftJoin('participants', 'participants.competition_id', '=', 'competitions.id') // Join with participants
         ->select(
           'competitions.name',
           'competitions.slug',
           'competitions.start_date',
           'competitions.end_date',
-          DB::raw('COUNT(participants.id) as participants_count')
+          DB::raw('COUNT(participants.id) as participants_count') // Count participants
         )
-        ->where('competitions.is_active', true)
+        ->where('competitions.is_active', true) // Only active competitions
         ->when($user, function ($query) use ($user) {
-          return $query->where('competition_level.level_id', $user->level_id);
+          return $query->where('competition_level.level_id', $user->level_id); // Add level condition if user exists
         })
-        ->orderBy('competitions.created_at', 'DESC')
+        ->orderBy('competitions.created_at', 'DESC') // Order by creation date
         ->groupBy(
           'competitions.id',
           'competitions.name',
@@ -42,11 +39,12 @@ class WelcomeController extends Controller
           'competitions.start_date',
           'competitions.end_date'
         )
+        ->limit(4)
         ->get()
     );
 
     $userCompetitions = $user
-        ? UserCompetitionResource::collection(
+      ? UserCompetitionResource::collection(
         DB::table('participants')
           ->join('competitions', 'participants.competition_id', '=', 'competitions.id')
           ->join('final_scores', 'participants.id', '=', 'final_scores.participant_id')
@@ -66,8 +64,8 @@ class WelcomeController extends Controller
             return $query->where('competitions.name', $request->search);
           })
           ->get()
-        )
-        : null;
+      )
+      : null;
 
     return Inertia::render('welcome/index', [
       'competitions' => fn() => $competitions,

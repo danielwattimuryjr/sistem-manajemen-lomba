@@ -60,7 +60,7 @@ const UserTable = ({ users, meta, links, params, setParams, handleSort }) => {
         <Table className="relative">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px] text-center">#</TableHead>
+              <TabeHead className="w-[50px] text-center">#</TabeHead>
               {userTableColumns.map((col, i) => (
                 <TableHead key={i} onClick={() => handleSort(col.column)}>
                   <SortIndicator

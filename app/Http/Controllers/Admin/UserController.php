@@ -26,7 +26,9 @@ class UserController extends Controller
     $request->validate([
       'field' => Rule::in(['updated_at', 'created_at', 'name', 'email_verified_at', 'account_verified_at']),
       'direction' => Rule::in(['asc', 'desc']),
-      'role' => Rule::in(['admin', 'guest'])
+      'role' => Rule::in(['admin', 'guest']),
+      'selected' => 'array',
+      'selected.*' => ['integer', Rule::exists('users', 'id')]
     ]);
 
     $limit = $request->input('limit', 10);
@@ -62,6 +64,7 @@ class UserController extends Controller
     return Inertia::render('admin/users/index', [
       'users' => fn() => $users,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction', 'role'),
+      'selected' => $request->input('selected', [])
     ]);
   }
 

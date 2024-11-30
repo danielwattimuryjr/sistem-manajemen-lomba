@@ -43,7 +43,7 @@ export const adminNavItems = [
 export const guestNavItems = [
   {
     title: 'My Profile',
-    href: "#",
+    href: route('profiles.index'),
     icon: 'IconUserCircle',
     active: route().current() == "guest.profiles"
   },

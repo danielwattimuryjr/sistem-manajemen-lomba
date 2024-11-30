@@ -26,7 +26,6 @@ const UserIndex = props => {
     values: params,
     only: ["users"],
   })
-
   const handleSort = newField => {
     let newDirection = params?.direction ?? "asc"
     const field = params?.field ?? "created_at"

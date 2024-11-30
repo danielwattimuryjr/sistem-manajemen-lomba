@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
 use App\Http\Controllers\Admin\LeaderboardController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('competitions')
@@ -23,3 +24,21 @@ Route::prefix('competitions')
       '{competition:slug}/leaderboard',
       LeaderboardController::class
     )->name('leaderboard');  });
+
+Route::prefix('profiles')
+  ->name('profiles.')
+  ->controller(ProfileController::class)
+  ->group(function() {
+    Route::get(
+      '/',
+      'index'
+    )->name('index');
+    Route::get(
+      '/edit',
+      'edit'
+    )->name('edit');
+    Route::patch(
+      '/edit',
+      'update'
+    )->name('update');
+  });
