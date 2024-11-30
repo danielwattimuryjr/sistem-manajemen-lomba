@@ -1,5 +1,8 @@
-import { useState } from "react"
-import { superadminNavItems, adminNavItems } from "@/constants/data"
+import {
+  superadminNavItems,
+  adminNavItems,
+  guestNavItems,
+} from "@/constants/data"
 import { useSidebar } from "@/hooks/useSidebar"
 import { Link, usePage } from "@inertiajs/react"
 import DashboardNav from "../dashboard-nav"
@@ -53,7 +56,11 @@ const Sidebar = ({ className }) => {
           <div className="mt-3 space-y-1">
             <DashboardNav
               items={
-                user?.role === "superadmin" ? superadminNavItems : adminNavItems
+                user.role === "superadmin"
+                  ? superadminNavItems
+                  : user?.role === "admin"
+                    ? adminNavItems
+                    : guestNavItems
               }
             />
           </div>

@@ -25,7 +25,6 @@ class RoleMiddleware
 
     return Inertia::render('errors/custom-error', [
       'code' => 403,
-
     ])->toResponse($request)->setStatusCode(403);
 
   }

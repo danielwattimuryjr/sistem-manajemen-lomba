@@ -6,27 +6,58 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CompetitionParticipantResource;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\CompetitionScoreEntryResource;
+use App\Http\Resources\GuestCompetitionResource;
 use App\Http\Resources\SingleCompetitionResource;
-use App\Http\Resources\UserResource;
 use App\Models\Competition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CompetitionController extends Controller
 {
+  private function generateParticipantCode(Competition $competition)
+  {
+    $words = explode(' ', $competition->name);
+    $acronym = '';
+
+    foreach ($words as $word) {
+      $acronym .= strtoupper(substr($word, 0, 1));
+    }
+
+    $currentCount = $competition->participants()->count() + 1;
+
+    $numberPart = str_pad($currentCount, 3, '0', STR_PAD_LEFT);
+
+    return $acronym . '-' . $numberPart;
+  }
+
   public function index(Request $request)
   {
     $user = Auth::user();
 
-    $competitions = CompetitionResource::collection(
-      Competition::query()
-        ->withCount('participants')
-        ->where('is_active', true)
-        ->when(
-          value: $request->search,
-          callback: fn($query, $value) => $query->where('name', 'like', '%' . $value . '%')
+    $competitions = GuestCompetitionResource::collection(
+      DB::table('competition_level')
+        ->join('competitions', 'competition_level.competition_id', '=', 'competitions.id')
+        ->leftJoin('participants', 'participants.competition_id', '=', 'competitions.id')
+        ->select(
+          'competitions.name',
+          'competitions.slug',
+          'competitions.start_date',
+          'competitions.end_date',
+          DB::raw('COUNT(participants.id) as participants_count')
+        )
+        ->where('competitions.is_active', true)
+        ->when($user, function ($query) use ($user) {
+          return $query->where('competition_level.level_id', $user->level_id);
+        })
+        ->orderBy('competitions.created_at', 'DESC')
+        ->groupBy(
+          'competitions.id',
+          'competitions.name',
+          'competitions.slug',
+          'competitions.start_date',
+          'competitions.end_date'
         )
         ->get()
     );
@@ -44,7 +75,7 @@ class CompetitionController extends Controller
       'judge',
       'levels',
       'scoreEntries',
-      'participants'=> function ($query) use ($request) {
+      'participants' => function ($query) use ($request) {
         $query->when($request->search, function ($q, $value) {
           $q->where('users.name', 'like', '%' . $value . '%')
             ->orWhere('users.email', 'like', '%' . $value . '%');
@@ -73,7 +104,7 @@ class CompetitionController extends Controller
   {
     $user = Auth::user();
 
-    $participantCode = $competition->generateParticipantCode();
+    $participantCode = $this->generateParticipantCode($competition);
 
     $competition->participants()->attach($user->id, [
       'kd_peserta' => $participantCode

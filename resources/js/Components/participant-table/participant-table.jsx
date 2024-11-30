@@ -1,4 +1,4 @@
-import { Link, usePage } from "@inertiajs/react"
+import { Link, router, usePage } from "@inertiajs/react"
 import { Input } from "../ui/input"
 import { ScrollArea } from "../ui/scroll-area"
 import {
@@ -12,16 +12,11 @@ import {
 import participantTableColumns from "./columns"
 import { buttonVariants } from "../ui/button"
 import { useMemo } from "react"
+import ButtonDialog from "@/Components/button-dialog.jsx"
 
-const ParticipantTable = ({
-  params,
-  setParams,
-  participants,
-  competition,
-}) => {
+const ParticipantTable = ({ params, setParams, participants, competition }) => {
   const { criterias } = competition
-  const { scoreEntries } = usePage().props
-
+  const { scoreEntries, auth } = usePage().props
 
   const updatedTableColumns = useMemo(() => {
     if (!criterias || criterias.length === 0) return participantTableColumns
@@ -41,6 +36,18 @@ const ParticipantTable = ({
     return columns
   }, [criterias, participantTableColumns])
 
+  const user = auth.user?.data
+  const isSuperadmin = user?.role === "superadmin"
+
+  function postCalculateFinalScores() {
+    router.post(
+      route(
+        "dashboard.superadmin.competitions.calculate-final-scores",
+        competition,
+      ),
+    )
+  }
+
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
@@ -54,6 +61,23 @@ const ParticipantTable = ({
             placeholder="Pencarian..."
           />
         </div>
+
+        {isSuperadmin && (
+          <ButtonDialog
+            triggerIcon={"IconMedal2"}
+            triggerButtonLabel={"Tentukan Pemenang"}
+            triggerButtonDisabled={
+              !competition.isActive || competition.hasFinalScores
+            }
+            dialogTitle={"Konfirmasi"}
+            dialogDescription={
+              "Pastikan bahwa seluruh peserta sudah dinilai. Aksi ini akan menghitung nilai akhir dan menonaktifkan perlombaan."
+            }
+            dialogCancelButtonLabel={"Batalkan"}
+            dialogActionButtonLabel={"Lanjutkan"}
+            dialogActionButtonOnClick={postCalculateFinalScores}
+          />
+        )}
       </div>
 
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
@@ -63,12 +87,9 @@ const ParticipantTable = ({
               <TableHead className="w-[50px] text-center">#</TableHead>
               {updatedTableColumns.map((col, i) => (
                 <TableHead key={i}>
-                  <div className="flex items-center">
                     <span className="mr-2 capitalize">{col.label}</span>
-                  </div>
                 </TableHead>
               ))}
-              <TableHead />
             </TableRow>
           </TableHeader>
 
@@ -119,16 +140,32 @@ const ParticipantTable = ({
                       )
                     })}
 
-                    <TableCell>0</TableCell>
-
-                    <TableCell>{/* Cell Action */}</TableCell>
+                    <TableCell>
+                      {competition.hasFinalScores ? (
+                        <Link
+                          href={route(
+                            "guest.competitions.leaderboard",
+                            competition,
+                          )}
+                          className={buttonVariants({
+                            variant: "link",
+                          })}
+                        >
+                          Lihat di sini
+                        </Link>
+                      ) : (
+                        <span className="animate-pulse text-base font-semibold text-destructive">
+                          Belum Ada
+                        </span>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </>
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={updatedTableColumns.length + 2}
                   className="animate-pulse py-5 text-center text-base font-semibold text-destructive"
                 >
                   Data Tidak Ada.

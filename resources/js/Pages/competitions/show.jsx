@@ -53,7 +53,7 @@ const GuestCompetitionShow = props => {
             <LoadingButton
               label={"Daftar"}
               loading={processing}
-              disabled={processing}
+              disabled={processing || !competition.isActive || competition.hasFinalScores}
             />
           </form>
         )}

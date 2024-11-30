@@ -19,6 +19,7 @@ class SingleCompetitionResource extends JsonResource
       'judge' => $this->judge->name,
       'slug' => $this->slug,
       'isActive' => $this->is_active,
+      'hasFinalScores' => $this->has_final_scores,
       'description' => $this->description,
       'startDate' => $this->start_date->toFormattedDateString(),
       'endDate' => $this->end_date->toFormattedDateString(),

@@ -19,7 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
       AddLinkHeadersForPreloadedAssets::class,
     ]);
     $middleware->alias([
-      'roles' => RoleMiddleware::class
+      'roles' => RoleMiddleware::class,
+      'hasFinalScores' => \App\Http\Middleware\CompetitionHasFinalScoresMiddleware::class,
+      'isEligible' => \App\Http\Middleware\CheckUserLevel::class
     ]);
     //
   })

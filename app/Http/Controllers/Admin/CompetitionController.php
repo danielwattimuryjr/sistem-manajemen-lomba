@@ -11,18 +11,29 @@ use App\Http\Resources\CompetitionScoreEntryResource;
 use App\Http\Resources\LevelResource;
 use App\Http\Resources\SingleCompetitionResource;
 use App\Http\Resources\UserResource;
+use App\Mail\FinalScoreNotification;
 use App\Models\Competition;
 use App\Models\Level;
 use App\Models\User;
+use App\Services\CompetitionService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Throwable;
 
 class CompetitionController extends Controller
 {
+  protected $competitionService;
+
+  public function __construct(CompetitionService $competitionService)
+  {
+    $this->competitionService = $competitionService;
+  }
+
   /**
    * Display a listing of the resource.
    */
@@ -62,26 +73,6 @@ class CompetitionController extends Controller
   }
 
   /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
-  {
-    $levels = LevelResource::collection(
-      Level::orderBy('name', 'ASC')->get()
-    );
-    $judges = UserResource::collection(
-      User::where('role', 'admin')
-        ->orderBy('name', 'ASC')
-        ->get()
-    );
-
-    return Inertia::render('admin/competitions/competition-form/index', [
-      'levels' => $levels,
-      'judges' => $judges
-    ]);
-  }
-
-  /**
    * Store a newly created resource in storage.
    */
   public function store(StoreCompetitionRequest $request)
@@ -113,6 +104,26 @@ class CompetitionController extends Controller
     } catch (Throwable $th) {
       DB::rollBack();
     }
+  }
+
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    $levels = LevelResource::collection(
+      Level::orderBy('name', 'ASC')->get()
+    );
+    $judges = UserResource::collection(
+      User::where('role', 'admin')
+        ->orderBy('name', 'ASC')
+        ->get()
+    );
+
+    return Inertia::render('admin/competitions/competition-form/index', [
+      'levels' => $levels,
+      'judges' => $judges
+    ]);
   }
 
   /**
@@ -189,6 +200,27 @@ class CompetitionController extends Controller
   }
 
   /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(Competition $competition)
+  {
+    $competition->delete();
+
+    return to_route('dashboard.superadmin.competitions.index');
+  }
+
+  public function updateCompetitionStatus(Competition $competition, Request $request)
+  {
+    $validated = $request->validate([
+      'isActive' => ['required', 'boolean']
+    ]);
+
+    $competition->update([
+      'is_active' => $validated['isActive']
+    ]);
+  }
+
+  /**
    * Update the specified resource in storage.
    */
   public function update(UpdateCompetitionRequest $request, Competition $competition)
@@ -231,24 +263,44 @@ class CompetitionController extends Controller
     }
   }
 
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(Competition $competition)
+  public function calculateFinalScores(Competition $competition)
   {
-    $competition->delete();
+    try {
+      if (!$this->allParticipantHaveScore($competition)) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Tidak semua peserta memiliki skor. Harap pastikan semua skor sudah diinput.',
+        ], 400);
+      }
 
-    return to_route('dashboard.superadmin.competitions.index');
+      $results = $this->competitionService->calculateAndSaveScores($competition);
+
+      $competition->update([
+        'is_active' => false,
+        'has_final_scores' => true
+      ]);
+
+      foreach ($competition->participants as $participant) {
+        Mail::to($participant->email)->queue(new FinalScoreNotification(
+          $competition,
+          $participant->name
+        ));
+      }
+
+      return to_route('dashboard.superadmin.competitions.leaderboard', $competition);
+    } catch (Exception $e) {
+      return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
+    }
   }
 
-  public function updateCompetitionStatus(Competition $competition, Request $request)
+  private function allParticipantHaveScore(Competition $competition): bool
   {
-    $validated = $request->validate([
-      'isActive' => ['required', 'boolean']
-    ]);
+    $totalParticipants = $competition->participants()->count();
 
-    $competition->update([
-      'is_active' => $validated['isActive']
-    ]);
+    $participantsWithScores = $competition->scoreEntries()
+      ->distinct('participant_id')
+      ->count('participant_id');
+
+    return $totalParticipants === $participantsWithScores;
   }
 }

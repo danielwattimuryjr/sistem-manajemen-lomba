@@ -80,6 +80,17 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasMany(Competition::class);
   }
 
+  public function participants(): BelongsToMany
+  {
+    return $this->belongsToMany(
+      Competition::class,
+      Participant::class
+    )->withPivot([
+      'kd_peserta',
+      'id'
+    ])->withTimestamps();
+  }
+
   public function canParticipate(Competition $competition): bool
   {
     if (!$this->level_id) {

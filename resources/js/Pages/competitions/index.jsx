@@ -11,6 +11,7 @@ import { useFilter } from "@/hooks/useFilter"
 import AppLayout from "@/Layouts/app-layout"
 import { Link } from "@inertiajs/react"
 import { useState } from "react"
+import CompetitionCard from "@/Components/competition-card.jsx"
 
 const GuestCompetitionIndex = props => {
   const [params, setParams] = useState(props.state)
@@ -40,30 +41,29 @@ const GuestCompetitionIndex = props => {
         />
       </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {competitions.map((competition, idx) => (
-          <Link href={route("guest.competitions.show", competition)}>
-            <Card
-              key={competition.slug}
-              className="duration-200 hover:scale-105"
-            >
-              <CardHeader>
-                <CardTitle>{competition.name}</CardTitle>
-                <CardDescription>{`${competition.startDate} - ${competition.endDate}`}</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <div className="flex w-full items-center justify-between">
-                  <p className="text-xs italic text-muted-foreground md:text-sm">
-                    Klik untuk melihat info lebih lanjut
-                  </p>
-
-                  <p>Peserta: {competition.participantsCount}</p>
-                </div>
-              </CardFooter>
-            </Card>
-          </Link>
-        ))}
+      <div className="mt-10">
+        {competitions.length > 0 ? (
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {competitions.map((competition, idx) => (
+              <Link
+                href={route("guest.competitions.show", competition)}
+                key={competition.slug}
+              >
+                <CompetitionCard
+                  competition={competition}
+                  withParticipantCount
+                />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="animate-pulse text-base font-semibold text-destructive text-center">
+            Belum Ada
+          </p>
+        )}
       </div>
+
+
     </AppLayout>
   )
 }

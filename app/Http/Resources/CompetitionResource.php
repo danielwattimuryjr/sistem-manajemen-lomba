@@ -19,6 +19,7 @@ class CompetitionResource extends JsonResource
       'slug' => $this->slug,
       'participantsCount' => $this->participants_count,
       'isActive' => $this->is_active,
+      'hasFinalScores' => $this->has_final_scores,
       'startDate' => $this->start_date->toDateString(),
       'endDate' => $this->end_date->toDateString(),
       'createdAt' => $this->created_at->diffForHumans(),

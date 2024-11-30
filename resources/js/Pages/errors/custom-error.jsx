@@ -13,7 +13,7 @@ const getDefaultMessage = code => {
   }
 }
 
-export default function ErrorWithCode({ code }) {
+export default function ErrorWithCode({ code, message }) {
   return (
     <>
       <Head title={`${code}`} />
@@ -24,7 +24,7 @@ export default function ErrorWithCode({ code }) {
             {code}
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            {getDefaultMessage(code)}
+            {message ?? getDefaultMessage(code)}
           </p>
           <div className="mt-6">
             <Link
