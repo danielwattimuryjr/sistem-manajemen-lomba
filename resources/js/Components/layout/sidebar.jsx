@@ -1,4 +1,3 @@
-import { useState } from "react"
 import {
   superadminNavItems,
   adminNavItems,
@@ -57,11 +56,11 @@ const Sidebar = ({ className }) => {
           <div className="mt-3 space-y-1">
             <DashboardNav
               items={
-                user?.role === "superadmin"
-                  ? user?.role === "admin"
+                user.role === "superadmin"
+                  ? superadminNavItems
+                  : user?.role === "admin"
                     ? adminNavItems
                     : guestNavItems
-                  : guestNavItems
               }
             />
           </div>

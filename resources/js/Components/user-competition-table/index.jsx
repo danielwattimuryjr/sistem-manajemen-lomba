@@ -11,7 +11,6 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
 import { Icon } from "../icon"
 import ButtonTooltip from "@/Components/button-tooltip.jsx"
-import { Button } from "@/Components/ui/button.jsx"
 import { router } from "@inertiajs/react"
 
 const columns = [
