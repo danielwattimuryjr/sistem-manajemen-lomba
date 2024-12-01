@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Icon } from "../icon"
 import ButtonTooltip from "@/Components/button-tooltip.jsx"
 import { router } from "@inertiajs/react"
+import { buttonVariants } from "@/Components/ui/button.jsx"
 
 const columns = [
   "Competition",
@@ -73,13 +74,14 @@ const UserCompetitionTable = ({ competitions, params, setParams }) => {
                     <TableCell>
                       {competition?.hasFinalScores ? (
                         <div className={'space-x-2'}>
-                          <ButtonTooltip
-                            size={"icon"}
-                            variant={"outline"}
-                            tooltip={"download sertifikat"}
-                          >
-                            <Icon icon={"IconDownload"} />
-                          </ButtonTooltip>
+                          <a href={route('generate-certificate', {final_score: competition.finalScoreId})}
+                            className={buttonVariants({
+                              size: 'icon',
+                              variant: 'outline'
+                            })}>
+
+                              <Icon icon={"IconDownload"} />
+                          </a>
 
                           <ButtonTooltip
                             size={'icon'}

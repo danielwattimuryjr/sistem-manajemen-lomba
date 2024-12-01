@@ -57,6 +57,7 @@ class WelcomeController extends Controller
             'competitions.end_date as competition_end_at',
             'final_scores.total_score as final_score',
             'final_scores.rank as rank',
+            'final_scores.id as final_score_id',
             'competitions.has_final_scores'
           )
           ->where('participants.user_id', $user->id)

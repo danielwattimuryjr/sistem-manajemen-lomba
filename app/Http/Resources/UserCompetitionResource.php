@@ -20,6 +20,7 @@ class UserCompetitionResource extends JsonResource
           'competitionName' => $this->competition_name,
           'competitionSlug' => $this->competition_slug,
           'finalScore' => $this->final_score,
+          'finalScoreId' => $this->final_score_id,
           'hasFinalScores' => $this->has_final_scores,
           'rank' => $this->rank,
           'joinedAt' => Carbon::parse($this->joined_at)->toDateString(),
