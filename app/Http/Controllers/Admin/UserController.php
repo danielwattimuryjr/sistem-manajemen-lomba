@@ -154,4 +154,31 @@ class UserController extends Controller
 
     return to_route('dashboard.superadmin.users.index');
   }
+
+  public function bulkVerifyUser(Request $request)
+  {
+    $request->validate([
+      'user_id' => [
+        'required',
+        'array',
+      ],
+      'user_id.*' => [
+        'integer',
+        Rule::exists('users', 'id')
+      ]
+    ]);
+
+    foreach ($request->user_id as $id) {
+      User::find($id)->update([
+        'account_verified_at' => now()
+      ]);
+    }
+
+    return to_route('dashboard.superadmin.users.index');
+  }
+
+  public function getAllUserId(Request $request) {
+    $userIds = User::where('role', $request->role ?? 'guest')->pluck('id');
+    return response()->json($userIds);
+  }
 }

@@ -52,6 +52,14 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
         )->scoped(['level' => 'slug']);
 
         // User Management
+        Route::post(
+          'users/ids',
+          [AdminUserController::class, 'getAllUserId']
+        )->name('users.ids');
+        Route::patch(
+          'users/bulk-verify',
+          [AdminUserController::class, 'bulkVerifyUser']
+        )->name('users.bulk-verify');
         Route::resource(
           'users',
           AdminUserController::class

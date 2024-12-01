@@ -18,24 +18,12 @@ const UserIndex = props => {
     { title: "Manajemen Pengguna" },
   ]
 
-  const { data: users, meta, links } = props.users
   const [params, setParams] = useState(props.state)
-
   useFilter({
     route: route("dashboard.superadmin.users.index"),
     values: params,
     only: ["users"],
   })
-  const handleSort = newField => {
-    let newDirection = params?.direction ?? "asc"
-    const field = params?.field ?? "created_at"
-
-    if (newField === field) {
-      newDirection = newDirection === "asc" ? "desc" : "asc"
-    }
-
-    setParams({ ...params, field: newField, direction: newDirection })
-  }
 
   const handleTab = selectedRole => {
     setParams({ ...params, role: selectedRole })
@@ -47,21 +35,19 @@ const UserIndex = props => {
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={"Pengguna"}
-            description={
-              <Tabs
-                defaultValue={params.role ?? "guest"}
-                className="mt-4 space-y-4"
-                onValueChange={val => handleTab(val)}
-              >
-                <TabsList>
-                  <TabsTrigger value="guest">Peserta</TabsTrigger>
-                  <TabsTrigger value="admin">Juri</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            }
-          />
+          <div>
+            <Heading title={"Pengguna"} />
+            <Tabs
+              defaultValue={params.role ?? "guest"}
+              className="mt-4 space-y-4"
+              onValueChange={val => handleTab(val)}
+            >
+              <TabsList>
+                <TabsTrigger value="guest">Peserta</TabsTrigger>
+                <TabsTrigger value="admin">Juri</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
 
           <Link
             href={route("dashboard.superadmin.users.create")}
@@ -75,14 +61,7 @@ const UserIndex = props => {
         <Separator />
 
         {/* Table */}
-        <UserTable
-          users={users}
-          meta={meta}
-          links={links}
-          params={params}
-          setParams={setParams}
-          handleSort={handleSort}
-        />
+        <UserTable selectedRole={params.role}/>
       </PageContainer>
     </AdminLayout>
   )
