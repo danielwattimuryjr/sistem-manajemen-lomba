@@ -13,7 +13,7 @@ const SimplePagination = ({ meta, links }) => {
       <div className="flex items-center justify-end gap-x-2">
         <Link
           className={buttonVariants({ variant: "outline", size: "sm" })}
-          disabled={links?.prev === null}
+          disabled={!links?.prev}
           as="button"
           preserveScroll
           preserveState
@@ -23,7 +23,7 @@ const SimplePagination = ({ meta, links }) => {
         </Link>
         <Link
           className={buttonVariants({ variant: "outline", size: "sm" })}
-          disabled={links?.next === null}
+          disabled={!links?.next}
           as="button"
           preserveScroll
           preserveState

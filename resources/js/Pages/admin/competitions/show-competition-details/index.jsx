@@ -14,21 +14,19 @@ const CompetitionShow = props => {
   return (
     <AdminLayout>
       <PageContainer scrollable>
-        <div className="space-y-8">
-          <CompetitionDetailHeader
-            competition={competition}
-            isSuperadmin={isSuperadmin}
-          />
-          <Separator />
-          <CompetitionDetailInfo competition={competition} />
-          <Separator />
-          <CompetitionDetailCriteriaTable criterias={competition.criterias} />
-          <Separator />
-          <CompetitionDetailParticipants
-            competition={competition}
-            isSuperadmin={isSuperadmin}
-          />
-        </div>
+        <CompetitionDetailHeader
+          competition={competition}
+          isSuperadmin={isSuperadmin}
+        />
+        <Separator />
+        <CompetitionDetailInfo competition={competition} />
+        <Separator />
+        <CompetitionDetailCriteriaTable criterias={competition.criterias} />
+        <Separator />
+        <CompetitionDetailParticipants
+          competition={competition}
+          isSuperadmin={isSuperadmin}
+        />
       </PageContainer>
     </AdminLayout>
   )

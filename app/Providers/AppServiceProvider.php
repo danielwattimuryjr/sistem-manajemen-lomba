@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\FinalScore;
-use App\Observers\FinalScoreObserver;
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+      Carbon::setLocale('id');
     }
 }

@@ -91,111 +91,109 @@ const UserForm = ({ initialData, levels }) => {
   return (
     <AdminLayout>
       <PageContainer scrollable={true}>
-        <div className="space-y-4">
-          <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} />
 
-          <Heading title={title} description={description} />
+        <Heading title={title} description={description} />
+
+        <Separator />
+
+        <form onSubmit={handleSubmit} className="w-full space-y-8">
+          <div className="gap-8 md:grid md:grid-cols-3">
+            <FormField.Input
+              label={"E- mail"}
+              value={data.email}
+              onChange={e => setData("email", e.target.value)}
+              error={errors.email}
+              type="email"
+              autoFocus
+            />
+
+            <FormField.Input
+              label={"username"}
+              value={data.username}
+              onChange={e => setData("username", e.target.value)}
+              error={errors.username}
+            />
+
+            {!initialData && (
+              <FormField.Input
+                label={"Password"}
+                value={data.password}
+                onChange={e => setData("password", e.target.value)}
+                error={errors.password}
+                type="password"
+              />
+            )}
+          </div>
 
           <Separator />
 
-          <form onSubmit={handleSubmit} className="w-full space-y-8">
-            <div className="gap-8 md:grid md:grid-cols-3">
-              <FormField.Input
-                label={"E- mail"}
-                value={data.email}
-                onChange={e => setData("email", e.target.value)}
-                error={errors.email}
-                type="email"
-                autoFocus
-              />
-
-              <FormField.Input
-                label={"username"}
-                value={data.username}
-                onChange={e => setData("username", e.target.value)}
-                error={errors.username}
-              />
-
-              {!initialData && (
-                <FormField.Input
-                  label={"Password"}
-                  value={data.password}
-                  onChange={e => setData("password", e.target.value)}
-                  error={errors.password}
-                  type="password"
-                />
-              )}
-            </div>
-
-            <Separator />
-
-            <div className="gap-8 md:grid md:grid-cols-3">
-              <FormField.Input
-                label={"Nama lengkap"}
-                value={data.name}
-                onChange={e => setData("name", e.target.value)}
-                error={errors.name}
-              />
-              <FormField.Input
-                label={"Nomor Induk Kependudukan (NIK)"}
-                value={data.nik}
-                onChange={e => setData("nik", e.target.value)}
-                error={errors.nik}
-                maxLength={16}
-              />
-              <FormField.Input
-                label={"Nomor Telepon"}
-                value={data.phone_number}
-                onChange={e => setData("phone_number", e.target.value)}
-                error={errors.phone_number}
-                maxLength={10}
-              />
-              <FormField.Date
-                label={"Tanggal Lahir"}
-                value={data.date_of_birth}
-                onChange={handleDateChange}
-                error={errors.date_of_birth}
-                placeholder="Pilih tanggal lahir"
-              />
-
-              <FormField.SelectOption
-                label={"role"}
-                value={data.role}
-                onChange={e => handleRoleChange(e)}
-                error={errors.role}
-                placeholder={"Pilih Jenis Pengguna"}
-                options={roleOptions}
-              />
-
-              {data.role === "guest" && (
-                <FormField.SelectOption
-                  label={"Tingkatan Peserta"}
-                  value={data.level_id}
-                  onChange={e => setData("level_id", e)}
-                  error={errors.level_id}
-                  placeholder={"Pilih Tingkat Peserta"}
-                  options={levels.data.map(level => ({
-                    id: level.id,
-                    label: level.name,
-                  }))}
-                />
-              )}
-
-              <FormField.Textarea
-                label={"Alamat"}
-                value={data.address}
-                onChange={e => setData("address", e.target.value)}
-                error={errors.address}
-              />
-            </div>
-
-            <LoadingButton
-              label={action}
-              loading={processing}
-              disabled={processing}
+          <div className="gap-8 md:grid md:grid-cols-3">
+            <FormField.Input
+              label={"Nama lengkap"}
+              value={data.name}
+              onChange={e => setData("name", e.target.value)}
+              error={errors.name}
             />
-          </form>
-        </div>
+            <FormField.Input
+              label={"Nomor Induk Kependudukan (NIK)"}
+              value={data.nik}
+              onChange={e => setData("nik", e.target.value)}
+              error={errors.nik}
+              maxLength={16}
+            />
+            <FormField.Input
+              label={"Nomor Telepon"}
+              value={data.phone_number}
+              onChange={e => setData("phone_number", e.target.value)}
+              error={errors.phone_number}
+              maxLength={10}
+            />
+            <FormField.Date
+              label={"Tanggal Lahir"}
+              value={data.date_of_birth}
+              onChange={handleDateChange}
+              error={errors.date_of_birth}
+              placeholder="Pilih tanggal lahir"
+            />
+
+            <FormField.SelectOption
+              label={"role"}
+              value={data.role}
+              onChange={e => handleRoleChange(e)}
+              error={errors.role}
+              placeholder={"Pilih Jenis Pengguna"}
+              options={roleOptions}
+            />
+
+            {data.role === "guest" && (
+              <FormField.SelectOption
+                label={"Tingkatan Peserta"}
+                value={data.level_id}
+                onChange={e => setData("level_id", e)}
+                error={errors.level_id}
+                placeholder={"Pilih Tingkat Peserta"}
+                options={levels.data.map(level => ({
+                  id: level.id,
+                  label: level.name,
+                }))}
+              />
+            )}
+
+            <FormField.Textarea
+              label={"Alamat"}
+              value={data.address}
+              onChange={e => setData("address", e.target.value)}
+              error={errors.address}
+            />
+          </div>
+
+          <LoadingButton
+            label={action}
+            loading={processing}
+            disabled={processing}
+          />
+        </form>
       </PageContainer>
     </AdminLayout>
   )

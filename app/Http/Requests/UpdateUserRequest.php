@@ -66,6 +66,8 @@ class UpdateUserRequest extends FormRequest
       ],
       'email' => [
         'required',
+        'string',
+        'lowercase',
         'email',
         Rule::unique('users', 'email')->ignore($user)
       ],

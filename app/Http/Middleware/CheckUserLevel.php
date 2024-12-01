@@ -21,14 +21,14 @@ class CheckUserLevel
         $user = Auth::user();
 
         $competitionLevels = $competition->criterias;
-        $userCriteriaId = $user->criteria_id; 
+        $userCriteriaId = $user->criteria_id;
 
         $isCriteriaInCompetition = $competitionLevels->contains('id', $userCriteriaId);
 
         if (!$isCriteriaInCompetition) {
           return Inertia::render('errors/custom-error', [
             'code' => 403,
-            'message' => 'Test'
+            'message' => 'Tingkatan peserta yang kamu miliki tidak masuk dalam kriteria perlombaan'
           ])->toResponse($request)->setStatusCode(403);
         }
 

@@ -1,7 +1,7 @@
-import PageContainer from '@/Components/layout/page-container'
-import AdminLayout from '@/Layouts/admin-layout'
-import React, { useState } from 'react'
-import LevelListHeader from './partials/header'
+import PageContainer from "@/Components/layout/page-container"
+import AdminLayout from "@/Layouts/admin-layout"
+import React, { useState } from "react"
+import LevelListHeader from "./partials/header"
 import { useFilter } from "@/hooks/useFilter.js"
 import { Separator } from "@/Components/ui/separator.jsx"
 import LevelTable from "@/Components/level-table/level-table.jsx"
@@ -30,18 +30,16 @@ export default function LevelList(props) {
   return (
     <AdminLayout>
       <PageContainer>
-        <div className="space-y-4">
-          <LevelListHeader />
-          <Separator />
-          <LevelTable
-            levels={levels}
-            meta={meta}
-            links={links}
-            params={params}
-            setParams={setParams}
-            handleSort={handleSort}
-          />
-        </div>
+        <LevelListHeader />
+        <Separator />
+        <LevelTable
+          levels={levels}
+          meta={meta}
+          links={links}
+          params={params}
+          setParams={setParams}
+          handleSort={handleSort}
+        />
       </PageContainer>
     </AdminLayout>
   )

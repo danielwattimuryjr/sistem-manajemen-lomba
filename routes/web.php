@@ -16,7 +16,6 @@ Route::get(
   [DashboardController::class, 'index']
 )->name('redirect');
 
-Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
 // Guest Routes
 require __DIR__ . '/guest_route.php';
@@ -24,5 +23,9 @@ require __DIR__ . '/guest_route.php';
 // Admin and Superadmin Routes
 require __DIR__ . '/admin_route.php';
 
+// Misc Routes
+require __DIR__ . '/misc_route.php';
+
 // Auth Routes
 require __DIR__ . '/auth.php';
+

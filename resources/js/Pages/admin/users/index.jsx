@@ -18,25 +18,12 @@ const UserIndex = props => {
     { title: "Manajemen Pengguna" },
   ]
 
-  const { data: users, meta, links } = props.users
   const [params, setParams] = useState(props.state)
-
   useFilter({
     route: route("dashboard.superadmin.users.index"),
     values: params,
     only: ["users"],
   })
-
-  const handleSort = newField => {
-    let newDirection = params?.direction ?? "asc"
-    const field = params?.field ?? "created_at"
-
-    if (newField === field) {
-      newDirection = newDirection === "asc" ? "desc" : "asc"
-    }
-
-    setParams({ ...params, field: newField, direction: newDirection })
-  }
 
   const handleTab = selectedRole => {
     setParams({ ...params, role: selectedRole })
@@ -45,47 +32,36 @@ const UserIndex = props => {
   return (
     <AdminLayout>
       <PageContainer>
-        <div className="space-y-4">
-          <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} />
 
-          <div className="flex items-start justify-between">
-            <Heading
-              title={"Pengguna"}
-              description={
-                <Tabs
-                  defaultValue={params.role ?? "guest"}
-                  className="mt-4 space-y-4"
-                  onValueChange={val => handleTab(val)}
-                >
-                  <TabsList>
-                    <TabsTrigger value="guest">Peserta</TabsTrigger>
-                    <TabsTrigger value="admin">Juri</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              }
-            />
-
-            <Link
-              href={route("dashboard.superadmin.users.create")}
-              className={cn(buttonVariants({ variant: "default" }))}
+        <div className="flex items-start justify-between">
+          <div>
+            <Heading title={"Pengguna"} />
+            <Tabs
+              defaultValue={params.role ?? "guest"}
+              className="mt-4 space-y-4"
+              onValueChange={val => handleTab(val)}
             >
-              <IconPlus className="mr-2 h-4 w-4" />
-              Tambah Data
-            </Link>
+              <TabsList>
+                <TabsTrigger value="guest">Peserta</TabsTrigger>
+                <TabsTrigger value="admin">Juri</TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
 
-          <Separator />
-
-          {/* Table */}
-          <UserTable
-            users={users}
-            meta={meta}
-            links={links}
-            params={params}
-            setParams={setParams}
-            handleSort={handleSort}
-          />
+          <Link
+            href={route("dashboard.superadmin.users.create")}
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            <IconPlus className="mr-2 h-4 w-4" />
+            Tambah Data
+          </Link>
         </div>
+
+        <Separator />
+
+        {/* Table */}
+        <UserTable selectedRole={params.role}/>
       </PageContainer>
     </AdminLayout>
   )
