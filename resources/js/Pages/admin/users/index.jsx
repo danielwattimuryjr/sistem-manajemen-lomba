@@ -44,47 +44,45 @@ const UserIndex = props => {
   return (
     <AdminLayout>
       <PageContainer>
-        <div className="space-y-4">
-          <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} />
 
-          <div className="flex items-start justify-between">
-            <Heading
-              title={"Pengguna"}
-              description={
-                <Tabs
-                  defaultValue={params.role ?? "guest"}
-                  className="mt-4 space-y-4"
-                  onValueChange={val => handleTab(val)}
-                >
-                  <TabsList>
-                    <TabsTrigger value="guest">Peserta</TabsTrigger>
-                    <TabsTrigger value="admin">Juri</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              }
-            />
-
-            <Link
-              href={route("dashboard.superadmin.users.create")}
-              className={cn(buttonVariants({ variant: "default" }))}
-            >
-              <IconPlus className="mr-2 h-4 w-4" />
-              Tambah Data
-            </Link>
-          </div>
-
-          <Separator />
-
-          {/* Table */}
-          <UserTable
-            users={users}
-            meta={meta}
-            links={links}
-            params={params}
-            setParams={setParams}
-            handleSort={handleSort}
+        <div className="flex items-start justify-between">
+          <Heading
+            title={"Pengguna"}
+            description={
+              <Tabs
+                defaultValue={params.role ?? "guest"}
+                className="mt-4 space-y-4"
+                onValueChange={val => handleTab(val)}
+              >
+                <TabsList>
+                  <TabsTrigger value="guest">Peserta</TabsTrigger>
+                  <TabsTrigger value="admin">Juri</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            }
           />
+
+          <Link
+            href={route("dashboard.superadmin.users.create")}
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            <IconPlus className="mr-2 h-4 w-4" />
+            Tambah Data
+          </Link>
         </div>
+
+        <Separator />
+
+        {/* Table */}
+        <UserTable
+          users={users}
+          meta={meta}
+          links={links}
+          params={params}
+          setParams={setParams}
+          handleSort={handleSort}
+        />
       </PageContainer>
     </AdminLayout>
   )

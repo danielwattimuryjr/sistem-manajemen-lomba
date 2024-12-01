@@ -60,31 +60,29 @@ export default function CompetitionForm({ initialData, levels, judges }) {
   return (
     <AdminLayout>
       <PageContainer scrollable>
-        <div className="space-y-4">
-          <CompetitionFormHeader isEditing={isEditing} />
+        <CompetitionFormHeader isEditing={isEditing} />
+        <Separator />
+        <form onSubmit={handleSubmit} className="w-full space-y-8">
+          <CompetitionMainForm
+            data={data}
+            setData={setData}
+            errors={errors}
+            levels={levels}
+            judges={judges}
+          />
           <Separator />
-          <form onSubmit={handleSubmit} className="w-full space-y-8">
-            <CompetitionMainForm
-              data={data}
-              setData={setData}
-              errors={errors}
-              levels={levels}
-              judges={judges}
-            />
-            <Separator />
-            <CompetitionCriteriaForm
-              initialFactors={data.assessment_factors}
-              setAssessmentFactors={setAssessmentFactors}
-              errors={errors}
-            />
-            <Separator />
-            <LoadingButton
-              label={action}
-              loading={processing}
-              disabled={processing}
-            />
-          </form>
-        </div>
+          <CompetitionCriteriaForm
+            initialFactors={data.assessment_factors}
+            setAssessmentFactors={setAssessmentFactors}
+            errors={errors}
+          />
+          <Separator />
+          <LoadingButton
+            label={action}
+            loading={processing}
+            disabled={processing}
+          />
+        </form>
       </PageContainer>
     </AdminLayout>
   )

@@ -2,6 +2,7 @@
 use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
 use App\Http\Controllers\Admin\LeaderboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Guest\MyCompetitionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('competitions')
@@ -34,11 +35,17 @@ Route::prefix('profiles')
       'index'
     )->name('index');
     Route::get(
-      '/edit',
+      'edit',
       'edit'
     )->name('edit');
     Route::patch(
-      '/edit',
+      'edit',
       'update'
     )->name('update');
+    Route::delete(
+      'delete',
+      'destroy'
+    )->name('destroy');
   });
+
+Route::get('my-competitions', MyCompetitionController::class)->name('my-competitions');

@@ -5,16 +5,14 @@ import LeaderboardHeader from "@/pages/admin/competitions/leaderboard/partials/h
 import LeaderboardTable from "@/pages/admin/competitions/leaderboard/partials/leaderboard-table.jsx"
 
 export default function LeaderboardPage(props) {
-  const {data: competition} = props.competition
+  const { data: competition } = props.competition
 
   return (
     <AdminLayout>
       <PageContainer scrollable>
-        <div className="space-y-8">
-          <LeaderboardHeader competition={competition} />
-          <Separator />
-          <LeaderboardTable finalScores={props.finalScores}/>
-        </div>
+        <LeaderboardHeader competition={competition} />
+        <Separator />
+        <LeaderboardTable finalScores={props.finalScores} />
       </PageContainer>
     </AdminLayout>
   )

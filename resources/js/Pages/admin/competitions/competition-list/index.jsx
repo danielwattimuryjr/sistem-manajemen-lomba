@@ -36,18 +36,16 @@ const CompetitionIndex = props => {
   return (
     <AdminLayout>
       <PageContainer>
-        <div className="space-y-4">
-          <CompetitionListHeader isSuperadmin={isSuperadmin}/>
-          <Separator />
-          <CompetitionTable
-            competitions={competitions}
-            meta={meta}
-            links={links}
-            params={params}
-            setParams={setParams}
-            handleSort={handleSort}
-          />
-        </div>
+        <CompetitionListHeader isSuperadmin={isSuperadmin} />
+        <Separator />
+        <CompetitionTable
+          competitions={competitions}
+          meta={meta}
+          links={links}
+          params={params}
+          setParams={setParams}
+          handleSort={handleSort}
+        />
       </PageContainer>
     </AdminLayout>
   )

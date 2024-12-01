@@ -49,7 +49,7 @@ export const guestNavItems = [
   },
   {
     title: 'Perlombaan',
-    href: '#',
+    href: route('my-competitions'),
     icon: 'IconHome2',
     active: route().current() == 'guest.competitions'
   }

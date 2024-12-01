@@ -11,18 +11,15 @@ export default function ScoreEntry({ data }) {
   return (
     <AdminLayout>
       <PageContainer scrollable={true}>
-        <div className="space-y-4">
-          <ScoreEntryHeader competition={competition} />
-
-          <Separator />
-
-          <ScoreEntryParticipantInfo participant={participant} />
-
-          <Separator />
-
-          {/* Penilaian */}
-          <ScoreEntryForm criterias={criterias} competition={competition} participant={participant} />
-        </div>
+        <ScoreEntryHeader competition={competition} />
+        <Separator />
+        <ScoreEntryParticipantInfo participant={participant} />
+        <Separator />
+        <ScoreEntryForm
+          criterias={criterias}
+          competition={competition}
+          participant={participant}
+        />
       </PageContainer>
     </AdminLayout>
   )
