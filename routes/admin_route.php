@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\Admin\LevelController as AdminLevelController;
-use App\Http\Controllers\Admin\LeaderboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ScoreEntryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Inertia\Inertia;
@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
     // Admin Dashboard
     Route::get(
       '/',
-      fn() => Inertia::render('admin/dashboard')
+      DashboardController::class
     )->name('home');
 
     // Admin Routes
@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
         Route::resource(
           'levels',
           AdminLevelController::class
-        )->scoped(['level' => 'slug']);
+        )->except(['show'])->scoped(['level' => 'slug']);
 
         // User Management
         Route::post(
@@ -63,7 +63,7 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
         Route::resource(
           'users',
           AdminUserController::class
-        )->scoped(['user' => 'username']);
+        )->except(['show'])->scoped(['user' => 'username']);
 
         // Competition Management
         Route::resource(

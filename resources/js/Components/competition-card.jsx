@@ -18,13 +18,13 @@ export default function CompetitionCard({
           "flex flex-col items-start justify-start gap-2 md:flex-row md:items-center md:justify-between"
         }
       >
-        <div className={'space-y-2'}>
+        <div className={"space-y-2"}>
           <CardTitle>{competition.name}</CardTitle>
           <CardDescription>{`${competition.startDate} - ${competition.endDate}`}</CardDescription>
         </div>
 
         {withCompetitionStatus && (
-          <div className={'space-y-2'}>
+          <div className={"space-y-2"}>
             <p>{competition.status}</p>
           </div>
         )}
