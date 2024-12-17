@@ -17,6 +17,7 @@ class AuthenticatedUserResource extends JsonResource
   {
     return [
       'id' => $this->id,
+      'levelId' => $this->level_id,
       'name' => $this->name,
       'email' => $this->email,
       'username' => $this->username,

@@ -47,7 +47,7 @@ class WelcomeController extends Controller
       ? UserCompetitionResource::collection(
         DB::table('participants')
           ->join('competitions', 'participants.competition_id', '=', 'competitions.id')
-          ->join('final_scores', 'participants.id', '=', 'final_scores.participant_id')
+          ->leftJoin('final_scores', 'participants.id', '=', 'final_scores.participant_id')
           ->select(
             'participants.created_at as joined_at',
             'participants.kd_peserta as participant_code',
