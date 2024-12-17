@@ -1,11 +1,3 @@
-import PageContainer from "@/Components/layout/page-container"
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/Components/ui/card"
 import { Input } from "@/Components/ui/input"
 import { useFilter } from "@/hooks/useFilter"
 import AppLayout from "@/Layouts/app-layout"
@@ -26,9 +18,7 @@ const GuestCompetitionIndex = props => {
   return (
     <AppLayout title={"Perlombaan"}>
       <header className="text-center">
-        <h2 className="text-3xl font-bold text-primary-foreground">
-          Daftar Perlombaan
-        </h2>
+        <h2 className="text-3xl font-bold">Daftar Perlombaan</h2>
       </header>
 
       <div className="mx-auto w-full md:w-96">
@@ -44,7 +34,7 @@ const GuestCompetitionIndex = props => {
       <div className="mt-10">
         {competitions.length > 0 ? (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {competitions.map((competition, idx) => (
+            {competitions.map((competition) => (
               <Link
                 href={route("guest.competitions.show", competition)}
                 key={competition.slug}
@@ -57,13 +47,11 @@ const GuestCompetitionIndex = props => {
             ))}
           </div>
         ) : (
-          <p className="animate-pulse text-base font-semibold text-destructive text-center">
+          <p className="animate-pulse text-center text-base font-semibold text-destructive">
             Belum Ada
           </p>
         )}
       </div>
-
-
     </AppLayout>
   )
 }

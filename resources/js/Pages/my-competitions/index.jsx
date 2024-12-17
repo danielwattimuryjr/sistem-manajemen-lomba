@@ -8,23 +8,17 @@ import { useState } from "react"
 import { useFilter } from "@/hooks/useFilter.js"
 
 export default function UserComepetition() {
-  const {
-    auth,
-    userCompetitions,
-    state
-  } = usePage().props
+  const { auth, userCompetitions, state } = usePage().props
   const [params, setParams] = useState(state)
   useFilter({
-    route: route('my-competitions'),
+    route: route("my-competitions"),
     values: params,
-    only: ['userCompetitions']
+    only: ["userCompetitions"],
   })
 
   const user = auth?.user
 
   if (!user) return
-
-
 
   const competitions = userCompetitions?.data
   return (

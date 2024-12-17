@@ -1,6 +1,4 @@
 import { Link, router, usePage } from "@inertiajs/react"
-import { Input } from "../ui/input"
-import { ScrollArea } from "../ui/scroll-area"
 import {
   Table,
   TableBody,
@@ -11,10 +9,11 @@ import {
 } from "../ui/table"
 import participantTableColumns from "./columns"
 import { buttonVariants } from "../ui/button"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import ButtonDialog from "@/Components/button-dialog.jsx"
+import DataTableSearchInput from "@/Components/data-table-search-input.jsx"
 
-const ParticipantTable = ({ params, setParams, participants, competition }) => {
+const Index = ({ params, setParams, participants, competition }) => {
   const { criterias } = competition
   const { scoreEntries, auth } = usePage().props
 
@@ -51,16 +50,12 @@ const ParticipantTable = ({ params, setParams, participants, competition }) => {
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
-        <div className="w-72">
-          <Input
-            type="text"
-            value={params?.search}
-            onChange={e =>
-              setParams(prev => ({ ...prev, search: e.target.value }))
-            }
-            placeholder="Pencarian..."
-          />
-        </div>
+        <DataTableSearchInput
+          value={params?.search}
+          onChange={e =>
+            setParams(prev => ({ ...prev, search: e.target.value }))
+          }
+        />
 
         {isSuperadmin && (
           <ButtonDialog
@@ -80,14 +75,14 @@ const ParticipantTable = ({ params, setParams, participants, competition }) => {
         )}
       </div>
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <div className="h-[calc(80vh-220px)] overflow-auto rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[50px] text-center">#</TableHead>
               {updatedTableColumns.map((col, i) => (
                 <TableHead key={i}>
-                    <span className="mr-2 capitalize">{col.label}</span>
+                  <span className="mr-2 capitalize">{col.label}</span>
                 </TableHead>
               ))}
             </TableRow>
@@ -174,9 +169,9 @@ const ParticipantTable = ({ params, setParams, participants, competition }) => {
             )}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
     </>
   )
 }
 
-export default ParticipantTable
+export default Index

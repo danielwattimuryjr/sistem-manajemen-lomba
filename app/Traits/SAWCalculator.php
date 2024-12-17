@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use App\Models\FinalScore;
+use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 trait SAWCalculator
@@ -11,7 +13,7 @@ trait SAWCalculator
    * Ambil data kriteria beserta bobot untuk sebuah kompetisi.
    *
    * @param int $competitionId
-   * @return \Illuminate\Support\Collection
+   * @return Collection
    */
   private function getCriterias(int $competitionId)
   {
@@ -24,7 +26,7 @@ trait SAWCalculator
    * Ambil data skor peserta berdasarkan kriteria dalam sebuah kompetisi.
    *
    * @param int $competitionId
-   * @return \Illuminate\Support\Collection
+   * @return Collection
    */
   private function getScores(int $competitionId)
   {
@@ -38,8 +40,8 @@ trait SAWCalculator
   /**
    * Normalisasi skor berdasarkan kriteria dengan asumsi semua kriteria adalah benefit.
    *
-   * @param \Illuminate\Support\Collection $scores
-   * @param \Illuminate\Support\Collection $criterias
+   * @param Collection $scores
+   * @param Collection $criterias
    * @return array Normalized scores [participant_id => [criteria_id => normalized_score]]
    */
   private function normalizeScores($scores, $criterias)
@@ -62,7 +64,7 @@ trait SAWCalculator
    * Hitung total skor peserta berdasarkan nilai yang di-normalisasi dan bobot kriteria.
    *
    * @param array $normalizedScores
-   * @param \Illuminate\Support\Collection $criterias
+   * @param Collection $criterias
    * @return array Total scores [participant_id => total_score]
    */
   private function calculateTotalScores(array $normalizedScores, $criterias)
@@ -112,12 +114,12 @@ trait SAWCalculator
   {
     $criterias = $this->getCriterias($competitionId);
     if ($criterias->isEmpty()) {
-      throw new \Exception('Tidak ada kriteria untuk kompetisi ini.');
+      throw new Exception('Tidak ada kriteria untuk kompetisi ini.');
     }
 
     $scores = $this->getScores($competitionId);
     if ($scores->isEmpty()) {
-      throw new \Exception('Tidak ada skor yang ditemukan untuk kompetisi ini.');
+      throw new Exception('Tidak ada skor yang ditemukan untuk kompetisi ini.');
     }
 
     $normalizedScores = $this->normalizeScores($scores, $criterias);

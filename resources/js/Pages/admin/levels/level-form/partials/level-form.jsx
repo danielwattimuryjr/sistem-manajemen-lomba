@@ -17,7 +17,6 @@ export default function LevelForm({ initialData }) {
     : "Tingkat peserta berhasil dibuat"
   const handleSubmit = e => {
     e.preventDefault()
-
     const onSuccess = () => {
       toast({
         title: toastMessage,

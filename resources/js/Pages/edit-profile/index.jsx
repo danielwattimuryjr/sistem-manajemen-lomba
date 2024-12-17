@@ -9,7 +9,7 @@ export default function EditProfile() {
     <AdminLayout>
       <PageContainer>
         <div className="space-y-8">
-          <EditProfileHeader/>
+          <EditProfileHeader />
           <Separator />
           <EditProfileForm />
         </div>

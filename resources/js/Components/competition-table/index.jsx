@@ -7,22 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import SortIndicator from "@/Components/sort-indicator"
 import SimplePagination from "@/Components/simple-pagination"
 import competitionTableColumns from "./columns"
 import CompetitionCellAction from "./cell-action"
 import { Icon } from "../icon"
+import DataTableLimitDropdown from "@/Components/data-table-limit-dropdown.jsx"
+import DataTableSearchInput from "@/Components/data-table-search-input.jsx"
 
-const CompetitionTable = ({
+const Index = ({
   competitions,
   meta,
   links,
@@ -33,36 +26,19 @@ const CompetitionTable = ({
   return (
     <>
       <div className="item-center mb-3 flex justify-between">
-        <div>
-          <Select
-            value={params?.limit}
-            onValueChange={e => setParams({ ...params, limit: e })}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={params?.limit ?? 10} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value="75">75</SelectItem>
-              <SelectItem value="100">100</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="w-72">
-          <Input
-            type="text"
-            value={params?.search}
-            onChange={e =>
-              setParams(prev => ({ ...prev, search: e.target.value }))
-            }
-            placeholder="Pencarian..."
-          />
-        </div>
+        <DataTableLimitDropdown
+          value={params?.limit}
+          onValueChange={e => setParams({ ...params, limit: e })}
+        />
+        <DataTableSearchInput
+          value={params?.search}
+          onChange={e =>
+            setParams(prev => ({ ...prev, search: e.target.value }))
+          }
+        />
       </div>
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <div className="h-[calc(80vh-220px)] overflow-auto rounded-md border">
         <Table className="relative">
           <TableHeader>
             <TableRow>
@@ -125,10 +101,10 @@ const CompetitionTable = ({
             )}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
       <SimplePagination link={links} meta={meta} />
     </>
   )
 }
 
-export default CompetitionTable
+export default Index

@@ -1,10 +1,13 @@
 import Heading from "@/Components/heading.jsx"
 import React, { useState } from "react"
-import ParticipantTable from "@/Components/participant-table/participant-table.jsx"
+import Index from "@/Components/participant-table/index.jsx"
 import { useFilter } from "@/hooks/useFilter.js"
 import { usePage } from "@inertiajs/react"
 
-export default function CompetitionDetailParticipants({ competition, isSuperadmin }) {
+export default function CompetitionDetailParticipants({
+  competition,
+  isSuperadmin,
+}) {
   const { participants, params: parameters } = usePage().props
 
   const [params, setParams] = useState(parameters)
@@ -24,7 +27,7 @@ export default function CompetitionDetailParticipants({ competition, isSuperadmi
     <>
       <Heading title={"Daftar Peserta"} />
 
-      <ParticipantTable
+      <Index
         competition={competition}
         params={params}
         participants={participants.data}

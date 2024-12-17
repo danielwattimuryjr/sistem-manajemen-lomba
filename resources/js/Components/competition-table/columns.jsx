@@ -15,7 +15,6 @@ const competitionTableColumns = [
     label: "Tgl. Selesai",
     column: "end_date",
   },
-
 ]
 
 export default competitionTableColumns

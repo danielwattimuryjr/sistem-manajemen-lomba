@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import CompetitionInfoCard from "./partials/competition-info-card"
 import CompetitionCriteriasCard from "./partials/competition-criterias-card"
 import CompetitionParticipantCard from "./partials/competition-participant-card"
-import { useForm, usePage } from "@inertiajs/react"
+import { useForm } from "@inertiajs/react"
 import { useFilter } from "@/hooks/useFilter"
 import { toast } from "@/hooks/use-toast"
 import { getTimeStamp } from "@/lib/getTimeStamp"
@@ -44,16 +44,18 @@ const GuestCompetitionShow = props => {
   return (
     <AppLayout title={`${competition.name}`}>
       <header className="flex flex-col items-center justify-around gap-y-4 md:flex-row md:justify-between">
-        <h2 className="text-3xl font-bold text-primary-foreground">
-          {competition.name}
-        </h2>
+        <h2 className="text-3xl font-bold">{competition.name}</h2>
 
         {user && (
           <form onSubmit={handleParticipationRequest}>
             <LoadingButton
               label={"Daftar"}
               loading={processing}
-              disabled={processing || !competition.isActive || competition.hasFinalScores}
+              disabled={
+                processing ||
+                !competition.isActive ||
+                competition.hasFinalScores
+              }
             />
           </form>
         )}

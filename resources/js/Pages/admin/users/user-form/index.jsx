@@ -1,28 +1,16 @@
 import React from "react"
 import { useForm } from "@inertiajs/react"
-import Heading from "@/Components/heading"
 import PageContainer from "@/Components/layout/page-container"
 import LoadingButton from "@/Components/loading-button"
 import { Separator } from "@/Components/ui/separator"
 import { toast } from "@/hooks/use-toast"
 import AdminLayout from "@/Layouts/admin-layout"
 import { getTimeStamp } from "@/lib/getTimeStamp"
-import Breadcrumbs from "@/Components/breadcrumbs"
 import FormField from "@/Components/form-field"
+import UserFormHeader from "@/pages/admin/users/user-form/partials/header.jsx"
 
 const UserForm = ({ initialData, levels }) => {
-  const breadcrumbItems = [
-    { title: "Dashboard", link: route("dashboard.home") },
-    {
-      title: "Manajemen Peserta",
-      link: route("dashboard.superadmin.users.index"),
-    },
-    { title: initialData ? "Update Data" : "Tambah Data" },
-  ]
-
   const isEditing = !!initialData
-  const title = isEditing ? "Edit Peserta" : "Tambah Peserta"
-  const description = isEditing ? "Update data peserta" : "Tambah data peserta"
   const toastMessage = isEditing
     ? "Peserta berhasil diperbaharui"
     : "Peserta berhasil ditambahkan"
@@ -91,12 +79,8 @@ const UserForm = ({ initialData, levels }) => {
   return (
     <AdminLayout>
       <PageContainer scrollable={true}>
-        <Breadcrumbs items={breadcrumbItems} />
-
-        <Heading title={title} description={description} />
-
+        <UserFormHeader isEditing={isEditing} />
         <Separator />
-
         <form onSubmit={handleSubmit} className="w-full space-y-8">
           <div className="gap-8 md:grid md:grid-cols-3">
             <FormField.Input

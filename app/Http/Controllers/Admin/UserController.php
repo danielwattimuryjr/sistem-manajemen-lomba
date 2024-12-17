@@ -61,7 +61,7 @@ class UserController extends Controller
         ->withQueryString()
     );
 
-    return Inertia::render('admin/users/index', [
+    return Inertia::render('admin/users/user-list/index', [
       'users' => fn() => $users,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction', 'role'),
       'selected' => $request->input('selected', [])
@@ -79,7 +79,7 @@ class UserController extends Controller
         ->get()
     );
 
-    return Inertia::render('admin/users/form', [
+    return Inertia::render('admin/users/user-form/index', [
       'levels' => fn() => $levels
     ]);
   }
@@ -106,16 +106,6 @@ class UserController extends Controller
   }
 
   /**
-   * Display the specified resource.
-   */
-  public function show(User $user)
-  {
-    return Inertia::render('admin/users/show', [
-      'user' => new SingleUserResource($user)
-    ]);
-  }
-
-  /**
    * Show the form for editing the specified resource.
    */
   public function edit(User $user)
@@ -126,7 +116,7 @@ class UserController extends Controller
         ->get()
     );
 
-    return Inertia::render('admin/users/form', [
+    return Inertia::render('admin/users/user-form/index', [
       'initialData' => $user,
       'levels' => fn() => $levels
     ]);

@@ -1,6 +1,9 @@
 import AdminLayout from "@/Layouts/admin-layout"
 import PageContainer from "@/Components/layout/page-container"
-import { Button } from "@/Components/ui/button"
+import { Separator } from "@/Components/ui/separator.jsx"
+import OverviewCard from "@/Components/overview-card.jsx"
+
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 import {
   Card,
   CardContent,
@@ -8,133 +11,113 @@ import {
   CardHeader,
   CardTitle,
 } from "@/Components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/Components/ui/chart.jsx"
 
-const Dashboard = () => {
+const Dashboard = props => {
+  const {
+    totalParticipants,
+    participantGrowth,
+    activeCompetitions,
+    activePercentage,
+    averageDailyRegistrations,
+    newParticipantsThisWeek,
+    completedThisMonth,
+    completedCompetitions,
+    participantStatistics,
+  } = props
+
+  const chartConfig = {
+    month: {
+      label: "Bulan",
+    },
+    totalParticipants: {
+      label: "Total Partisipan",
+      color: "hsl(var(--chart-1))",
+    },
+  }
+
   return (
     <AdminLayout>
       <PageContainer scrollable={true}>
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="tracking-light text-2xl font-bold">
-            Hi, Welcome back 👋
-          </h2>
-          <div className="hidden items-center space-x-2 md:flex">
-            <Button>Download</Button>
-          </div>
+        <h2 className="tracking-light text-2xl font-bold">
+          Hi, Welcome back 👋
+        </h2>
+        <Separator />
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <OverviewCard
+            title="Total Peserta"
+            subTitle={`${participantGrowth > 0 ? "+" : ""}${participantGrowth}% dari bulan lalu`}
+          >
+            {totalParticipants}
+          </OverviewCard>
+
+          <OverviewCard
+            title="Peserta Baru"
+            subTitle={`Rata-rata ${averageDailyRegistrations}/hari`}
+          >
+            {newParticipantsThisWeek}
+          </OverviewCard>
+
+          <OverviewCard
+            title="Kompetisi Aktif"
+            subTitle={`${activePercentage}% dari total kompetisi`}
+          >
+            {activeCompetitions}
+          </OverviewCard>
+
+          <OverviewCard
+            title="Kompetisi Selesai"
+            subTitle={`${completedThisMonth} bulan ini`}
+          >
+            {completedCompetitions}
+          </OverviewCard>
         </div>
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics" disabled>
-              Analytics
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Total Revenue
-                  </CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
-                  >
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">$45,231.89</div>
-                  <p className="text-xs text-muted-foreground">
-                    +20.1% from last month
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Subscriptions
-                  </CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
-                  >
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">+2350</div>
-                  <p className="text-xs text-muted-foreground">
-                    +180.1% from last month
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
-                  >
-                    <rect width="20" height="14" x="2" y="5" rx="2" />
-                    <path d="M2 10h20" />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">+12,234</div>
-                  <p className="text-xs text-muted-foreground">
-                    +19% from last month
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Active Now
-                  </CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
-                  >
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">+573</div>
-                  <p className="text-xs text-muted-foreground">
-                    +201 since last hour
-                  </p>
-                </CardContent>
-              </Card>
+        <Card>
+          <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+            <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+              <CardTitle>Grafik Pertumbuhan Peserta</CardTitle>
+              <CardDescription>
+                Menampilkan total pendaftar bulanan sepanjang tahun ini
+              </CardDescription>
             </div>
-          </TabsContent>
-        </Tabs>
+          </CardHeader>
+          <CardContent className="px-2 sm:p-6">
+            <ChartContainer
+              config={chartConfig}
+              className="aspect-auto h-[280px] w-full"
+            >
+              <LineChart
+                accessibilityLayer
+                data={participantStatistics}
+                margin={{
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  tickMargin={8}
+                  tickFormatter={value => value.slice(0, 3)}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent indicator="dashed" />}
+                />
+                <Line
+                  dataKey="totalParticipants"
+                  fill="var(--color-totalParticipants)"
+                  radius={4}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
       </PageContainer>
     </AdminLayout>
   )

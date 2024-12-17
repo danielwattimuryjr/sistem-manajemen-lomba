@@ -1,6 +1,6 @@
 import React from "react"
-import { Button } from "../ui/button"
-import { Icon } from "../icon"
+import { Button } from "@/Components/ui/button"
+import { Icon } from "@/Components/icon"
 import { Link, useForm } from "@inertiajs/react"
 import { toast } from "@/hooks/use-toast"
 import { getTimeStamp } from "@/lib/getTimeStamp"
@@ -11,18 +11,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import DropdownDialog from "../dropdown-dialog"
+} from "@/Components/ui/dropdown-menu"
+import DropdownDialog from "@/Components/dropdown-dialog"
 
-const LevelCellAction = ({ level }) => {
+const UserCellAction = ({ user }) => {
   const { delete: destroy } = useForm()
 
-  const deleteData = role => {
-    destroy(route("dashboard.superadmin.levels.destroy", role), {
+  const deleteData = user => {
+    destroy(route("dashboard.superadmin.users.destroy", user), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
-          title: "Tingkatan peserta berhasil dihapus",
+          title: "Pengguna berhasil dihapus",
           description: getTimeStamp(),
         })
       },
@@ -40,8 +40,8 @@ const LevelCellAction = ({ level }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownDialog
-          description="Keputusan ini tidak dapat di batalkan. Data tingkatan peserta akan dihapus."
-          action={() => deleteData(level)}
+          description="Keputusan ini tidak dapat di batalkan. Data pengguna akan dihapus."
+          action={() => deleteData(user)}
           submit_text="Ya, saya yakin!"
           cancel_text="Batalkan"
           buttonStyle="destructive"
@@ -51,7 +51,7 @@ const LevelCellAction = ({ level }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.superadmin.levels.edit", level)}
+            href={route("dashboard.superadmin.users.edit", user)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />
@@ -63,4 +63,4 @@ const LevelCellAction = ({ level }) => {
   )
 }
 
-export default LevelCellAction
+export default UserCellAction

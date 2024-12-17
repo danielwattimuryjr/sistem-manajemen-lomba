@@ -1,14 +1,13 @@
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link, usePage } from "@inertiajs/react"
 import {
   NavigationMenu,
-  NavigationMenuList,
   NavigationMenuLink,
+  NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { ThemeToggle } from "./theme-toggle"
 import UserNav from "./user-nav"
-import { useEffect } from "react"
 
 const guestNavItems = [
   {

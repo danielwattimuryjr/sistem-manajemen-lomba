@@ -1,4 +1,4 @@
-import {  router, usePage } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import {
@@ -13,32 +13,26 @@ import {
 import { toast } from "@/hooks/use-toast.js"
 import { getTimeStamp } from "@/lib/getTimeStamp.js"
 
-function logout () {
-  router.post(
-    route('logout'),
-    undefined,
-    {
-      onSuccess: () => {
-        toast({
-          title: 'Logout berhasil',
-          description: getTimeStamp()
-        })
-      },
-      onError: () => {
-        toast({
-          variant: 'destructive',
-          title: 'Terjadi kesalahan saat proses logout',
-          description: getTimeStamp()
-        })
-      }
-    }
-  )
+function logout() {
+  router.post(route("logout"), undefined, {
+    onSuccess: () => {
+      toast({
+        title: "Logout berhasil",
+        description: getTimeStamp(),
+      })
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Terjadi kesalahan saat proses logout",
+        description: getTimeStamp(),
+      })
+    },
+  })
 }
 
-function redirectToProfile () {
-  router.get(
-    route('profiles.index')
-  )
+function redirectToProfile() {
+  router.get(route("profiles.index"))
 }
 
 const UserNav = ({ ...props }) => {
@@ -70,10 +64,12 @@ const UserNav = ({ ...props }) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={redirectToProfile}>Profile</DropdownMenuItem>
+          <DropdownMenuItem onClick={redirectToProfile}>
+            Profile
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

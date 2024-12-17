@@ -20,81 +20,80 @@ export default function EditProfileForm() {
   function handleSubmit(e) {
     e.preventDefault()
 
-    patch(
-      route('profiles.update'),
-      {
-        preserveScroll: true,
-        onSuccess: () => {
-          toast({
-            title: 'Profile berhasil diperbaharui',
-            description: getTimeStamp()
-          })
-        }
-      }
-    )
+    patch(route("profiles.update"), {
+      preserveScroll: true,
+      onSuccess: () => {
+        toast({
+          title: "Profile berhasil diperbaharui",
+          description: getTimeStamp(),
+        })
+      },
+    })
   }
 
-  return <form onSubmit={handleSubmit} className="w-full space-y-8">
-    <div className="gap-8 md:grid md:grid-cols-3">
-      <FormField.Input
-        label={"Nama"}
-        value={data.name}
-        onChange={e => setData("name", e.target.value)}
-        error={errors.name}
-        autoFocus
-      />
+  return (
+    <form onSubmit={handleSubmit} className="w-full space-y-8">
+      <div className="gap-8 md:grid md:grid-cols-3">
+        <FormField.Input
+          label={"Nama"}
+          value={data.name}
+          onChange={e => setData("name", e.target.value)}
+          error={errors.name}
+          autoFocus
+        />
 
-      <FormField.Input
-        label={"E- mail"}
-        value={data.email}
-        onChange={e => setData("email", e.target.value)}
-        error={errors.email}
-        type="email"
-      />
+        <FormField.Input
+          label={"E- mail"}
+          value={data.email}
+          onChange={e => setData("email", e.target.value)}
+          error={errors.email}
+          type="email"
+        />
 
-      <FormField.Date
-        label={"Tanggal Lahir"}
-        value={data.date_of_birth}
-        onChange={(e) => setData('date_of_birth', e)}
-        error={errors.date_of_birth}
-        placeholder="Pilih tanggal lahir"
-      />
+        <FormField.Date
+          label={"Tanggal Lahir"}
+          value={data.date_of_birth}
+          onChange={e => setData("date_of_birth", e)}
+          error={errors.date_of_birth}
+          placeholder="Pilih tanggal lahir"
+        />
 
-      <FormField.Input
-        label={"username"}
-        value={data.username}
-        onChange={e => setData("username", e.target.value)}
-        error={errors.username}
-      />
+        <FormField.Input
+          label={"username"}
+          value={data.username}
+          onChange={e => setData("username", e.target.value)}
+          error={errors.username}
+        />
 
-      <FormField.Textarea
-        label={"Alamat"}
-        value={data.address}
-        onChange={e => setData("address", e.target.value)}
-        error={errors.address}
-      />
+        <FormField.Textarea
+          label={"Alamat"}
+          value={data.address}
+          onChange={e => setData("address", e.target.value)}
+          error={errors.address}
+        />
 
-      <FormField.Input
-        label={"Nomor Telepon"}
-        value={data.phone_number}
-        onChange={e => setData("phone_number", e.target.value)}
-        error={errors.phone_number}
-        maxLength={10}
-      />
+        <FormField.Input
+          label={"Nomor Telepon"}
+          value={data.phone_number}
+          onChange={e => setData("phone_number", e.target.value)}
+          error={errors.phone_number}
+          maxLength={10}
+        />
 
-      <FormField.Input
-        label={"Nomor Induk Kependudukan (NIK)"}
-        value={data.nik}
-        onChange={e => setData("nik", e.target.value)}
-        error={errors.nik}
-        maxLength={16}
-      />
-    </div>
+        <FormField.Input
+          label={"Nomor Induk Kependudukan (NIK)"}
+          value={data.nik}
+          onChange={e => setData("nik", e.target.value)}
+          error={errors.nik}
+          maxLength={16}
+        />
+      </div>
 
-    <LoadingButton
-      label={'Update'}
-      loading={processing}
-      disabled={processing}
-    />
-  </form>
+      <LoadingButton
+        label={"Update"}
+        loading={processing}
+        disabled={processing}
+      />
+    </form>
+  )
 }

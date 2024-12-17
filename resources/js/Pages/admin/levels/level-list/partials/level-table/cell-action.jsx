@@ -1,9 +1,9 @@
 import React from "react"
-import { Button } from "../ui/button"
-import { Icon } from "../icon"
+import { Button } from "@/Components/ui/button"
+import { Icon } from "@/Components/icon"
 import { Link, useForm } from "@inertiajs/react"
-import { toast } from "@/hooks/use-toast"
-import { getTimeStamp } from "@/lib/getTimeStamp"
+import { toast } from "@/hooks/use-toast.js"
+import { getTimeStamp } from "@/lib/getTimeStamp.js"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,18 +11,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import DropdownDialog from "../dropdown-dialog"
+} from "@/Components/ui/dropdown-menu"
+import DropdownDialog from "@/Components/dropdown-dialog"
 
-const UserCellAction = ({ user }) => {
+const LevelCellAction = ({ level }) => {
   const { delete: destroy } = useForm()
 
-  const deleteData = user => {
-    destroy(route("dashboard.superadmin.users.destroy", user), {
+  const deleteData = role => {
+    destroy(route("dashboard.superadmin.levels.destroy", role), {
       preserveScroll: true,
       onSuccess: () => {
         toast({
-          title: "Pengguna berhasil dihapus",
+          title: "Tingkatan peserta berhasil dihapus",
           description: getTimeStamp(),
         })
       },
@@ -40,8 +40,8 @@ const UserCellAction = ({ user }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownDialog
-          description="Keputusan ini tidak dapat di batalkan. Data pengguna akan dihapus."
-          action={() => deleteData(user)}
+          description="Keputusan ini tidak dapat di batalkan. Data tingkatan peserta akan dihapus."
+          action={() => deleteData(level)}
           submit_text="Ya, saya yakin!"
           cancel_text="Batalkan"
           buttonStyle="destructive"
@@ -51,7 +51,7 @@ const UserCellAction = ({ user }) => {
         </DropdownDialog>
         <DropdownMenuItem>
           <Link
-            href={route("dashboard.superadmin.users.edit", user)}
+            href={route("dashboard.superadmin.levels.edit", level)}
             className="flex items-center"
           >
             <Icon icon={"IconEdit"} className={"mr-2"} />
@@ -63,4 +63,4 @@ const UserCellAction = ({ user }) => {
   )
 }
 
-export default UserCellAction
+export default LevelCellAction

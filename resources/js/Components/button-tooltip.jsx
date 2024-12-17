@@ -8,15 +8,15 @@ import {
 
 export default function ButtonTooltip({ children, tooltip, ...props }) {
   return (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger>
-        <Button {...props}>{children}</Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p className={'capitalize'}>{tooltip}</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-  );
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button {...props}>{children}</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className={"capitalize"}>{tooltip}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
 }

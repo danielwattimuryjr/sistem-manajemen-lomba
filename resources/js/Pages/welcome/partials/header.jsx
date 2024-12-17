@@ -6,7 +6,7 @@ export default function WelcomeHeader() {
 
   return (
     <header className="text-center">
-      <h2 className="text-3xl font-bold text-primary-foreground">
+      <h2 className="text-3xl font-bold">
         {user ? `Hello, ${user?.data?.username}!` : `Selamat Datang!`}
       </h2>
     </header>

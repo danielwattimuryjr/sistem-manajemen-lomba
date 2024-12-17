@@ -1,6 +1,6 @@
-import Breadcrumbs from '@/Components/breadcrumbs'
-import Heading from '@/Components/heading'
-import React from 'react'
+import Breadcrumbs from "@/Components/breadcrumbs"
+import Heading from "@/Components/heading"
+import React from "react"
 
 export default function LevelFormHeader({ isEditing }) {
   const title = isEditing

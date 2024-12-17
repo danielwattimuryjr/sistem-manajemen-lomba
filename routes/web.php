@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +13,7 @@ Route::get(
 // Redirect Dashboard
 Route::get(
   '/redirect',
-  [DashboardController::class, 'index']
+  RedirectController::class
 )->name('redirect');
 
 

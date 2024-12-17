@@ -9,7 +9,7 @@ const Row = ({ title, children }) => (
   </div>
 )
 
-export default function CompetitionDetailInfo ({competition}) {
+export default function CompetitionDetailInfo({ competition }) {
   const sanitizedDescriptionHTML = DOMPurify.sanitize(competition?.description)
 
   return (
