@@ -1,13 +1,18 @@
 import { Link, router } from "@inertiajs/react"
 import { toast } from "@/hooks/use-toast.js"
 import { getTimeStamp } from "@/lib/getTimeStamp.js"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/Components/ui/tooltip.jsx"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/Components/ui/tooltip.jsx"
 import { Button, buttonVariants } from "@/Components/ui/button.jsx"
 import { Icon } from "@/Components/icon.jsx"
 import ButtonDialog from "@/Components/button-dialog.jsx"
 import React from "react"
 
-export default function CompetitionDetailActionGroup({competition}) {
+export default function CompetitionDetailActionGroup({ competition }) {
   const toggleCompetitionStatusHandler = () => {
     router.patch(
       route("dashboard.superadmin.competitions.update-status", competition),
@@ -73,7 +78,7 @@ export default function CompetitionDetailActionGroup({competition}) {
                 "dashboard.superadmin.competitions.edit",
                 competition,
               )}
-              className={buttonVariants({ variant: "outline", size: "icon"})}
+              className={buttonVariants({ variant: "outline", size: "icon" })}
             >
               <Icon icon={"IconEdit"} />
             </Link>
@@ -86,7 +91,7 @@ export default function CompetitionDetailActionGroup({competition}) {
         <Tooltip>
           <TooltipTrigger>
             <ButtonDialog
-              triggerButtonVariant={'destructive'}
+              triggerButtonVariant={"destructive"}
               dialogDescription={
                 "Keputusan ini tidak dapat di batalkan. Data perlombaan akan dihapus."
               }

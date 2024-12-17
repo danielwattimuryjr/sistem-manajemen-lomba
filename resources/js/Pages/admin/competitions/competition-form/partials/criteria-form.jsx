@@ -25,7 +25,7 @@ export default function CompetitionCriteriaForm({
   initialFactors = [],
   setAssessmentFactors,
   errors,
-}){
+}) {
   const [factors, setFactors] = useState(
     initialFactors.length > 0 ? initialFactors : [{ name: "", weight: 0 }],
   )

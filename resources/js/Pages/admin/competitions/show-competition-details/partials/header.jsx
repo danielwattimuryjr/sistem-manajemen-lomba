@@ -19,7 +19,12 @@ export default function CompetitionDetailHeader({ competition, isSuperadmin }) {
       <Breadcrumbs items={breadcrumbItems} />
 
       <header className="flex flex-col items-center justify-around gap-y-4 md:flex-row md:justify-between">
-        <Heading title={competition.name} description={competition.hasFinalScores && 'Perlombaan ini sudah dinilai'}/>
+        <Heading
+          title={competition.name}
+          description={
+            competition.hasFinalScores && "Perlombaan ini sudah dinilai"
+          }
+        />
         {isSuperadmin && (
           <CompetitionDetailActionGroup competition={competition} />
         )}
