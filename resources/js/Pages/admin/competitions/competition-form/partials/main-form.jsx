@@ -2,14 +2,20 @@ import { format } from "date-fns"
 import FormField from "@/Components/form-field"
 import { trans } from "@/lib/utils"
 
-export default function CompetitionMainForm({data, setData, errors, levels, judges}) {
+export default function CompetitionMainForm({
+  data,
+  setData,
+  errors,
+  levels,
+  judges,
+}) {
   const levelList = levels.data.map(level => ({
     value: level?.id,
-    label: level?.name
+    label: level?.name,
   }))
   const judgesList = judges.data.map(judge => ({
     id: judge?.id,
-    label: judge?.name
+    label: judge?.name,
   }))
 
   function handleDisplayNameChange(event) {
@@ -17,7 +23,7 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
     setData(data => ({
       ...data,
       name: newName,
-      slug: trans(newName)
+      slug: trans(newName),
     }))
   }
 
@@ -33,7 +39,7 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
     <>
       <div className="gap-8 md:grid md:grid-cols-3">
         <FormField.Input
-          label={'name perlombaan'}
+          label={"name perlombaan"}
           error={errors.name}
           value={data.name}
           onChange={handleDisplayNameChange}
@@ -41,7 +47,7 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
         />
 
         <FormField.Input
-          label={'slug'}
+          label={"slug"}
           error={errors.slug}
           value={data.slug}
           autoFocus
@@ -49,11 +55,11 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
         />
 
         <FormField.DateRangePicker
-          label={'tanggal pelaksanaan'}
+          label={"tanggal pelaksanaan"}
           error={errors.start_date || errors.end_date}
           value={{
             start_date: data.start_date,
-            end_date: data.end_date
+            end_date: data.end_date,
           }}
           onChange={handleDateChange}
         />
@@ -61,17 +67,17 @@ export default function CompetitionMainForm({data, setData, errors, levels, judg
 
       <div className="w-full space-y-8">
         <FormField.TipTap
-          label={'deskripsi perlombaan'}
+          label={"deskripsi perlombaan"}
           error={errors.description}
           value={data.description}
-          onChange={(e) => setData('description', e)}
+          onChange={e => setData("description", e)}
         />
       </div>
 
       <div className="w-full space-y-8">
         <div>
           <FormField.MultiSelect
-            label={'tingkat peserta'}
+            label={"tingkat peserta"}
             options={levelList}
             onChange={e => setData("levels", e)}
             value={data.levels}

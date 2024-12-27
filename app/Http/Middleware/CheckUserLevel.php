@@ -13,25 +13,34 @@ class CheckUserLevel
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Closure(Request): (Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $competition = $request->route('competition');
-        $user = Auth::user();
+      $competition = $request->route('competition');
+      $user = Auth::user();
 
-        $competitionLevels = $competition->criterias;
-        $userCriteriaId = $user->criteria_id;
+      $competitionLevelsArray = $competition->levels->pluck('id')->toArray();
+      $userLevelId = $user->level_id;
 
-        $isCriteriaInCompetition = $competitionLevels->contains('id', $userCriteriaId);
+      $isUserEligible = in_array($userLevelId, $competitionLevelsArray);
 
-        if (!$isCriteriaInCompetition) {
-          return Inertia::render('errors/custom-error', [
-            'code' => 403,
-            'message' => 'Tingkatan peserta yang kamu miliki tidak masuk dalam kriteria perlombaan'
-          ])->toResponse($request)->setStatusCode(403);
-        }
+      if (!$isUserEligible) {
+        return Inertia::render('errors/custom-error', [
+          'code' => 403,
+          'message' => 'Tingkatan peserta yang kamu miliki tidak masuk dalam kriteria perlombaan',
+        ])->toResponse($request)->setStatusCode(403);
+      }
 
-        return $next($request);
+      $userAlreadyParticipated = $competition->participants()->where('user_id', $user->id)->exists();
+
+      if ($userAlreadyParticipated) {
+        return Inertia::render('errors/custom-error', [
+          'code' => 401,
+          'message' => 'Kamu telah berpartisipasi dalam lomba ini',
+        ])->toResponse($request)->setStatusCode(403);
+      }
+
+      return $next($request);
     }
 }

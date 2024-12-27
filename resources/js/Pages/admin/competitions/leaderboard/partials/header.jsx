@@ -23,7 +23,12 @@ export default function LeaderboardHeader({ competition }) {
   return (
     <>
       <Breadcrumbs items={breadcrumbItems} />
-      <Heading title={'Hasil Akhir'} description={'Lihat hasil perolehan nilai akhir pada tabel di bawah ini.'}/>
+      <Heading
+        title={"Hasil Akhir"}
+        description={
+          "Lihat hasil perolehan nilai akhir pada tabel di bawah ini."
+        }
+      />
     </>
   )
 }

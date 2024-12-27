@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   Table,
   TableBody,
@@ -6,55 +6,55 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import SortIndicator from "@/Components/sort-indicator"
-import SimplePagination from "@/Components/simple-pagination"
-import levelTableColumns from "./columns"
-import LevelCellAction from "./cell-action"
+} from "@/Components/ui/table.jsx"
+import SortIndicator from "@/Components/sort-indicator.jsx"
+import SimplePagination from "@/Components/simple-pagination.jsx"
+import levelTableColumns from "./columns.jsx"
+import LevelCellAction from "./cell-action.jsx"
+import DataTableLimitDropdown from "@/Components/data-table-limit-dropdown.jsx"
+import { usePage } from "@inertiajs/react"
+import { useFilter } from "@/hooks/useFilter.js"
+import DataTableSearchInput from "@/Components/data-table-search-input.jsx"
 
-const LevelTable = ({ levels, meta, links, params, setParams, handleSort }) => {
+const Index = () => {
+  const props = usePage().props
+  const [params, setParams] = useState(props.state)
+  useFilter({
+    route: route("dashboard.superadmin.levels.index"),
+    values: params,
+    only: ["levels"],
+  })
+
+  const { data: levels, meta, links } = props.levels
+
+  const handleSort = newField => {
+    let newDirection = params?.direction ?? "asc"
+    const field = params?.field ?? "created_at"
+
+    if (newField === field) {
+      newDirection = newDirection === "asc" ? "desc" : "asc"
+    }
+
+    setParams({ ...params, field: newField, direction: newDirection })
+  }
+
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
-        <div>
-          <Select
-            value={params?.limit}
-            onValueChange={e => setParams({ ...params, limit: e })}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={params?.limit ?? 10} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value="75">75</SelectItem>
-              <SelectItem value="100">100</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="w-72">
-          <Input
-            type="text"
-            value={params?.search}
-            onChange={e =>
-              setParams(prev => ({ ...prev, search: e.target.value }))
-            }
-            placeholder="Pencarian..."
-          />
-        </div>
+        <DataTableLimitDropdown
+          value={params?.limit}
+          onValueChange={e => setParams({ ...params, limit: e })}
+        />
+
+        <DataTableSearchInput
+          search={params?.search}
+          onChange={e =>
+            setParams(prev => ({ ...prev, search: e.target.value }))
+          }
+        />
       </div>
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <div className="h-[calc(80vh-220px)] overflow-auto rounded-md border">
         <Table className="relative">
           <TableHeader>
             <TableRow>
@@ -103,10 +103,10 @@ const LevelTable = ({ levels, meta, links, params, setParams, handleSort }) => {
             )}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
       <SimplePagination link={links} meta={meta} />
     </>
   )
 }
 
-export default LevelTable
+export default Index

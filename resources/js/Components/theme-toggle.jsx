@@ -22,12 +22,13 @@ export function ThemeToggle() {
       window.localStorage.isDarkMode = isDarkMode
     }
   }
+
   return (
     <>
       <Button
         size="icon"
         variant="outline"
-        className="h-[2.6rem] w-[2.6rem] rounded-full [&>svg]:h-5 [&>svg]:w-5 [&>svg]:stroke-[1.2] "
+        className="h-[2.6rem] w-[2.6rem] rounded-full [&>svg]:h-5 [&>svg]:w-5 [&>svg]:stroke-[1.2]"
         type="button"
         aria-label="Toggle dark mode"
         onClick={toggleMode}

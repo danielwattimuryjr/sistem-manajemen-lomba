@@ -1,7 +1,5 @@
 import Heading from "@/Components/heading.jsx"
 
 export default function UserCompetitionHeader() {
-  return (
-    <Heading title={'Perlombaayan yang Kamu Ikuti'} />
-  )
+  return <Heading title={"Perlombaayan yang Kamu Ikuti"} />
 }

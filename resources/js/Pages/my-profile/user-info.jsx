@@ -2,6 +2,7 @@ import { Card, CardContent, CardTitle } from "@/Components/ui/card.jsx"
 import { usePage } from "@inertiajs/react"
 import { format } from "date-fns"
 import { Separator } from "@/Components/ui/separator.jsx"
+
 function Col({ title, children }) {
   return (
     <div>
@@ -31,7 +32,7 @@ export default function UserInfo() {
         <Separator />
 
         <CardTitle>Info Akun</CardTitle>
-        <ul className={"list-disc ml-4"}>
+        <ul className={"ml-4 list-disc"}>
           <li>
             {user?.isEmailVerified ? (
               <>
