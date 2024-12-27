@@ -1,10 +1,9 @@
 <?php
 use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\Admin\LevelController as AdminLevelController;
-use App\Http\Controllers\Admin\LeaderboardController;
 use App\Http\Controllers\Admin\ScoreEntryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-use Inertia\Inertia;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
@@ -14,7 +13,7 @@ Route::middleware(['auth', 'verified', 'roles:admin,superadmin'])
     // Admin Dashboard
     Route::get(
       '/',
-      fn() => Inertia::render('admin/dashboard')
+     DashboardController::class
     )->name('home');
 
     // Admin Routes
