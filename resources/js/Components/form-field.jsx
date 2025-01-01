@@ -124,18 +124,10 @@ FormField.Textarea = function InputField({
   )
 }
 
-FormField.TipTap = function InputField({
-  label,
-  value,
-  onChange,
-  error
-}) {
+FormField.TipTap = function InputField({ label, value, onChange, error }) {
   return (
     <FormField label={label} name={trans(label)} error={error}>
-      <Tiptap
-        description={value}
-        onChange={onChange}
-      />
+      <Tiptap description={value} onChange={onChange} />
     </FormField>
   )
 }
@@ -144,7 +136,7 @@ FormField.DateRangePicker = function InputField({
   label,
   value,
   onChange,
-  error
+  error,
 }) {
   return (
     <FormField label={label} name={trans(label)} error={error}>
@@ -166,7 +158,7 @@ FormField.MultiSelect = function InputField({
   placeholder,
   variant,
   animation = 2,
-  maxCount = 3
+  maxCount = 3,
 }) {
   return (
     <FormField label={label} name={trans(label)} error={error}>

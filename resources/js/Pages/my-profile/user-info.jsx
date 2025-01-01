@@ -2,6 +2,7 @@ import { Card, CardContent, CardTitle } from "@/Components/ui/card.jsx"
 import { usePage } from "@inertiajs/react"
 import { format } from "date-fns"
 import { Separator } from "@/Components/ui/separator.jsx"
+
 function Col({ title, children }) {
   return (
     <div>
@@ -13,6 +14,7 @@ function Col({ title, children }) {
 
 export default function UserInfo() {
   const user = usePage().props.auth?.user?.data
+  const props = usePage().props
   return (
     <Card>
       <CardContent className={"space-y-4 pt-4"}>
@@ -31,7 +33,7 @@ export default function UserInfo() {
         <Separator />
 
         <CardTitle>Info Akun</CardTitle>
-        <ul className={"list-disc ml-4"}>
+        <ul className={"ml-4 list-disc"}>
           <li>
             {user?.isEmailVerified ? (
               <>

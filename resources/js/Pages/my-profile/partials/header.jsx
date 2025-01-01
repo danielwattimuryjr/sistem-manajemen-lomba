@@ -11,41 +11,39 @@ function redirectToEditProfile() {
 }
 
 function handleDeleteAccount() {
-  router.delete(
-    route('profiles.destroy'),
-    undefined,
-    {
-      onSuccess: () => {
-        toast({
-          title: 'Akun berhasil dihapus',
-          description: getTimeStamp()
-        })
-      },
-      onError: () => {
-        toast({
-          variant: 'destructive',
-          title: 'Terjadi kesalahan saat mencoba menghapus akun',
-          description: getTimeStamp()
-        })
-      }
-    }
-  )
+  router.delete(route("profiles.destroy"), undefined, {
+    onSuccess: () => {
+      toast({
+        title: "Akun berhasil dihapus",
+        description: getTimeStamp(),
+      })
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Terjadi kesalahan saat mencoba menghapus akun",
+        description: getTimeStamp(),
+      })
+    },
+  })
 }
 
 export default function MyProfileHeader() {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col items-start justify-between gap-2 lg:flex-row lg:items-center">
       <Heading title={"My Profile"} />
 
       <div className="space-x-4">
         <ButtonDialog
-          triggerButtonVariant={'destructive'}
-          triggerIcon={'IconTrash'}
-          triggerButtonLabel={'Delete Account'}
-          dialogTitle={'Apa kamu yakin?'}
-          dialogDescription={'Akun yang dihapus tidak dapat dikembalikan lagi. Seluruh data yang terhubung dengan pengguna ini juga akan dihapus secara permanen'}
-          dialogActionButtonLabel={'Ya, saya yakin!'}
-          dialogCancelButtonLabel={'Batalkan'}
+          triggerButtonVariant={"destructive"}
+          triggerIcon={"IconTrash"}
+          triggerButtonLabel={"Delete Account"}
+          dialogTitle={"Apa kamu yakin?"}
+          dialogDescription={
+            "Akun yang dihapus tidak dapat dikembalikan lagi. Seluruh data yang terhubung dengan pengguna ini juga akan dihapus secara permanen"
+          }
+          dialogActionButtonLabel={"Ya, saya yakin!"}
+          dialogCancelButtonLabel={"Batalkan"}
           dialogActionButtonOnClick={handleDeleteAccount}
         />
         <Button onClick={redirectToEditProfile}>

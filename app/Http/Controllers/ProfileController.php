@@ -14,7 +14,10 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     public function index() {
-      return Inertia::render('my-profile/index');
+      $levelData = Auth::user()->level;
+      return Inertia::render('my-profile/index', [
+        'levelData' => $levelData
+      ]);
     }
 
     /**

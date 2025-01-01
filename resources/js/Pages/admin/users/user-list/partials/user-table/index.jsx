@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import {
   Table,
   TableBody,
@@ -7,19 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import SortIndicator from "@/Components/sort-indicator"
 import SimplePagination from "@/Components/simple-pagination"
 import userTableColumns from "./columns"
-import { Link, router, useForm, usePage } from "@inertiajs/react"
+import { useForm, usePage } from "@inertiajs/react"
 import { IconCircleCheckFilled } from "@tabler/icons-react"
 import UserCellAction from "./cell-action"
 import { Checkbox } from "@/Components/ui/checkbox.jsx"
@@ -29,21 +21,21 @@ import { Icon } from "@/Components/icon.jsx"
 import { getTimeStamp } from "@/lib/getTimeStamp.js"
 import { toast } from "@/hooks/use-toast.js"
 import axios from "axios"
+import DataTableLimitDropdown from "@/Components/data-table-limit-dropdown.jsx"
 
-const UserTable = ({ selectedRole }) => {
-  const { users: usersData, state } = usePage().props
+const Index = ({ selectedRole, params, setParams }) => {
+  const { users: usersData } = usePage().props
   const { data, setData, patch, reset } = useForm({
     user_id: [],
   })
-  const [params, setParams] = useState(state)
   useFilter({
     route: route("dashboard.superadmin.users.index"),
     values: params,
     only: ["users"],
   })
   useEffect(() => {
-    reset();
-  }, [selectedRole]);
+    reset()
+  }, [selectedRole])
 
   function handleSort(newField) {
     let newDirection = params?.direction ?? "asc"
@@ -76,15 +68,18 @@ const UserTable = ({ selectedRole }) => {
 
   function checkAllUser(isChecked) {
     if (isChecked) {
-      axios.post(route("dashboard.superadmin.users.ids"), {
-         role: selectedRole ,
-      }).then((response) => {
-        setData('user_id', response.data)
-        const test = response.data;
-        console.log("requested", test);
-      }).catch((error) => {
-        console.error("Error fetching user IDs:", error);
-      });
+      axios
+        .post(route("dashboard.superadmin.users.ids"), {
+          role: selectedRole,
+        })
+        .then(response => {
+          setData("user_id", response.data)
+          const test = response.data
+          console.log("requested", test)
+        })
+        .catch(error => {
+          console.error("Error fetching user IDs:", error)
+        })
     } else {
       reset()
     }
@@ -115,21 +110,10 @@ const UserTable = ({ selectedRole }) => {
     <>
       <div className="mb-3 flex items-center justify-between">
         <div className={"flex flex-row gap-x-2"}>
-          <Select
+          <DataTableLimitDropdown
             value={params?.limit}
             onValueChange={e => setParams({ ...params, limit: e })}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={params?.limit ?? 10} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value="75">75</SelectItem>
-              <SelectItem value="100">100</SelectItem>
-            </SelectContent>
-          </Select>
+          />
 
           <ButtonTooltip
             tooltip={"Verifikasi Pengguna"}
@@ -152,12 +136,12 @@ const UserTable = ({ selectedRole }) => {
         </div>
       </div>
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <div className="h-[calc(80vh-220px)] overflow-auto rounded-md border">
         <Table className="relative">
           <TableHeader>
             <TableRow>
               <TableHead>
-                <Checkbox onCheckedChange={e => checkAllUser(e)}/>
+                <Checkbox onCheckedChange={e => checkAllUser(e)} />
               </TableHead>
               <TableHead className="w-[50px] text-center">#</TableHead>
               {userTableColumns.map((col, i) => (
@@ -190,11 +174,7 @@ const UserTable = ({ selectedRole }) => {
                       {meta.from + i}
                     </TableCell>
                     <TableCell>
-                      <Link
-                        href={route("dashboard.superadmin.users.show", user)}
-                      >
-                        {user.name}
-                      </Link>
+                      {user.name}
 
                       <div className="text-muted-foreground">{user.email}</div>
                     </TableCell>
@@ -229,10 +209,10 @@ const UserTable = ({ selectedRole }) => {
             )}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
       <SimplePagination links={links} meta={meta} />
     </>
   )
 }
 
-export default UserTable
+export default Index

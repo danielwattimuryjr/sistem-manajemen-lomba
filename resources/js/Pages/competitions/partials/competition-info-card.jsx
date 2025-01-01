@@ -30,7 +30,6 @@ const CompetitionInfoCard = ({ competition }) => {
               >
                 {competition.isActive ? "Aktif" : "Tidak Aktif "}
               </p>
-
             </Row>
             <Row title={"Tingkat Perlombaan"}>
               {competition.levels.length > 0 ? (

@@ -1,10 +1,10 @@
 import {
-  IconH2,
   IconBold,
-  IconStrikethrough,
+  IconH2,
   IconItalic,
   IconList,
   IconListNumbers,
+  IconStrikethrough,
 } from "@tabler/icons-react"
 import { Toggle } from "../ui/toggle"
 

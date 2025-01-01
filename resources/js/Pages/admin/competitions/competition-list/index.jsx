@@ -3,7 +3,7 @@ import { useFilter } from "@/hooks/useFilter"
 import AdminLayout from "@/Layouts/admin-layout"
 import PageContainer from "@/Components/layout/page-container"
 import { Separator } from "@/Components/ui/separator"
-import CompetitionTable from "@/Components/competition-table/competition-table"
+import Index from "@/Components/competition-table/index.jsx"
 import CompetitionListHeader from "./partials/header"
 
 const CompetitionIndex = props => {
@@ -38,7 +38,7 @@ const CompetitionIndex = props => {
       <PageContainer>
         <CompetitionListHeader isSuperadmin={isSuperadmin} />
         <Separator />
-        <CompetitionTable
+        <Index
           competitions={competitions}
           meta={meta}
           links={links}

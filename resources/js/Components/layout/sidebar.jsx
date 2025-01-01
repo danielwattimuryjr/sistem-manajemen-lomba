@@ -1,7 +1,7 @@
 import {
-  superadminNavItems,
   adminNavItems,
   guestNavItems,
+  superadminNavItems,
 } from "@/constants/data"
 import { useSidebar } from "@/hooks/useSidebar"
 import { Link, usePage } from "@inertiajs/react"

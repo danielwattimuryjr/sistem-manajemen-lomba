@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import DashboardNav from "../dashboard-nav"
-import { superadminNavItems, adminNavItems } from "@/constants/data"
+import { adminNavItems, superadminNavItems } from "@/constants/data"
 import { Icon } from "../icon"
 
 const MobileSidebar = ({ className, role }) => {

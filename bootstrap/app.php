@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\CheckUserLevel;
+use App\Http\Middleware\CompetitionHasFinalScoresMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
@@ -20,8 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ]);
     $middleware->alias([
       'roles' => RoleMiddleware::class,
-      'hasFinalScores' => \App\Http\Middleware\CompetitionHasFinalScoresMiddleware::class,
-      'isEligible' => \App\Http\Middleware\CheckUserLevel::class
+      'hasFinalScores' => CompetitionHasFinalScoresMiddleware::class,
+      'isEligible' => CheckUserLevel::class,
+      'isVerified' => \App\Http\Middleware\IsUserVerifiedMiddleware::class
     ]);
     //
   })

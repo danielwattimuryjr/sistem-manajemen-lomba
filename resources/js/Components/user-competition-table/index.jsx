@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
 import { Icon } from "../icon"
 import ButtonTooltip from "@/Components/button-tooltip.jsx"
@@ -22,8 +21,12 @@ const columns = [
   "Tgl. Pendaftaran",
 ]
 
-function openLeaderboard (competition) {
-  router.get(route("guest.competitions.leaderboard", { competition: competition.competitionSlug }))
+function openLeaderboard(competition) {
+  router.get(
+    route("guest.competitions.leaderboard", {
+      competition: competition.competitionSlug,
+    }),
+  )
 }
 
 const UserCompetitionTable = ({ competitions, params, setParams }) => {
@@ -42,7 +45,7 @@ const UserCompetitionTable = ({ competitions, params, setParams }) => {
         </div>
       </div>
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <div className="h-[calc(80vh-220px)] overflow-auto rounded-md border">
         <Table className="relative">
           <TableHeader>
             <TableRow>
@@ -73,23 +76,26 @@ const UserCompetitionTable = ({ competitions, params, setParams }) => {
                     <TableCell>{competition?.joinedAt}</TableCell>
                     <TableCell>
                       {competition?.hasFinalScores ? (
-                        <div className={'space-x-2'}>
-                          <a href={route('generate-certificate', {final_score: competition.finalScoreId})}
+                        <div className={"space-x-2"}>
+                          <a
+                            href={route("generate-certificate", {
+                              final_score: competition.finalScoreId,
+                            })}
                             className={buttonVariants({
-                              size: 'icon',
-                              variant: 'outline'
-                            })}>
-
-                              <Icon icon={"IconDownload"} />
+                              size: "icon",
+                              variant: "outline",
+                            })}
+                          >
+                            <Icon icon={"IconDownload"} />
                           </a>
 
                           <ButtonTooltip
-                            size={'icon'}
-                            variant={'outline'}
-                            tooltip={'Lihat Hasil Perolehan'}
+                            size={"icon"}
+                            variant={"outline"}
+                            tooltip={"Lihat Hasil Perolehan"}
                             onClick={() => openLeaderboard(competition)}
                           >
-                            <Icon icon={'IconTrophy'} />
+                            <Icon icon={"IconTrophy"} />
                           </ButtonTooltip>
                         </div>
                       ) : (
@@ -111,7 +117,7 @@ const UserCompetitionTable = ({ competitions, params, setParams }) => {
             )}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
     </>
   )
 }
