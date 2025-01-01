@@ -22,7 +22,7 @@ export default function CompetitionDetailHeader({ competition, isSuperadmin }) {
         <Heading
           title={competition.name}
           description={
-            competition.hasFinalScores && "Perlombaan ini sudah dinilai"
+            competition.hasFinalScores ? "Perlombaan ini sudah dinilai" : ""
           }
         />
         {isSuperadmin && (

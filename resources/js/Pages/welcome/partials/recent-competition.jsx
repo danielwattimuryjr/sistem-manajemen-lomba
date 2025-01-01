@@ -13,7 +13,7 @@ export default function RecentCompetition() {
       <div className="mt-8">
         {competitions.data.length > 0 ? (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {competitions.data.map((competition) => (
+            {competitions.data.map(competition => (
               <Link
                 href={route("guest.competitions.show", competition)}
                 key={competition.slug}

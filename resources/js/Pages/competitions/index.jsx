@@ -34,7 +34,7 @@ const GuestCompetitionIndex = props => {
       <div className="mt-10">
         {competitions.length > 0 ? (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {competitions.map((competition) => (
+            {competitions.map(competition => (
               <Link
                 href={route("guest.competitions.show", competition)}
                 key={competition.slug}

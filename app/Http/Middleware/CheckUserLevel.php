@@ -21,16 +21,6 @@ class CheckUserLevel
       $user = Auth::user();
 
       $competitionLevelsArray = $competition->levels->pluck('id')->toArray();
-      $userLevelId = $user->level_id;
-
-      $isUserEligible = in_array($userLevelId, $competitionLevelsArray);
-
-      if (!$isUserEligible) {
-        return Inertia::render('errors/custom-error', [
-          'code' => 403,
-          'message' => 'Tingkatan peserta yang kamu miliki tidak masuk dalam kriteria perlombaan',
-        ])->toResponse($request)->setStatusCode(403);
-      }
 
       $userAlreadyParticipated = $competition->participants()->where('user_id', $user->id)->exists();
 
@@ -41,6 +31,21 @@ class CheckUserLevel
         ])->toResponse($request)->setStatusCode(403);
       }
 
-      return $next($request);
+      if (empty($competitionLevelsArray)) {
+        return $next($request);
+      } else {
+        $userLevelId = $user->level_id;
+
+        $isUserEligible = in_array($userLevelId, $competitionLevelsArray);
+
+        if (!$isUserEligible) {
+          return Inertia::render('errors/custom-error', [
+            'code' => 403,
+            'message' => 'Tingkatan peserta yang kamu miliki tidak masuk dalam kriteria perlombaan',
+          ])->toResponse($request)->setStatusCode(403);
+        }
+
+        return $next($request);
+      }
     }
 }

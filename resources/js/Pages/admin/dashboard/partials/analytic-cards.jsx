@@ -10,7 +10,7 @@ export default function AnalyticCards() {
     activeCompetitions,
     activePercentage,
     completedCompetitions,
-    completedThisMonth
+    completedThisMonth,
   } = usePage().props
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import {
   Table,
   TableBody,
@@ -23,12 +23,11 @@ import { toast } from "@/hooks/use-toast.js"
 import axios from "axios"
 import DataTableLimitDropdown from "@/Components/data-table-limit-dropdown.jsx"
 
-const Index = ({ selectedRole }) => {
-  const { users: usersData, state } = usePage().props
+const Index = ({ selectedRole, params, setParams }) => {
+  const { users: usersData } = usePage().props
   const { data, setData, patch, reset } = useForm({
     user_id: [],
   })
-  const [params, setParams] = useState(state)
   useFilter({
     route: route("dashboard.superadmin.users.index"),
     values: params,

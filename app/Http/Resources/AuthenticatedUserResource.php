@@ -28,7 +28,7 @@ class AuthenticatedUserResource extends JsonResource
       'isAdmin' => Auth::user()->hasRole(['superadmin', 'admin']),
       'role' => $this->role,
       'isEmailVerified' => Auth::user()->hasVerifiedEmail(),
-      'isAccountVerified' => false
+      'isAccountVerified' => !!$this->account_verified_at
     ];
   }
 }

@@ -30,7 +30,7 @@ function handleDeleteAccount() {
 
 export default function MyProfileHeader() {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col items-start justify-between gap-2 lg:flex-row lg:items-center">
       <Heading title={"My Profile"} />
 
       <div className="space-x-4">

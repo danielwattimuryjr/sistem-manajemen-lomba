@@ -21,7 +21,7 @@ Route::prefix('competitions')
       '{competition:slug}/participate',
       'postParticipantData'
     )->name('participate')
-      ->middleware(['auth', 'isEligible']);
+      ->middleware(['auth', 'isEligible', 'isVerified']);
     Route::get(
       '{competition:slug}/leaderboard',
       LeaderboardController::class

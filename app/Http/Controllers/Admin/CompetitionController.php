@@ -287,7 +287,7 @@ class CompetitionController extends Controller
         ));
       }
 
-      return to_route('dashboard.superadmin.competitions.leaderboard', $competition);
+      return to_route('guest.competitions.leaderboard', $competition);
     } catch (Exception $e) {
       return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
     }

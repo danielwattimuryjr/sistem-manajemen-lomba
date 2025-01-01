@@ -23,7 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
     $middleware->alias([
       'roles' => RoleMiddleware::class,
       'hasFinalScores' => CompetitionHasFinalScoresMiddleware::class,
-      'isEligible' => CheckUserLevel::class
+      'isEligible' => CheckUserLevel::class,
+      'isVerified' => \App\Http\Middleware\IsUserVerifiedMiddleware::class
     ]);
     //
   })

@@ -14,6 +14,7 @@ function Col({ title, children }) {
 
 export default function UserInfo() {
   const user = usePage().props.auth?.user?.data
+  const props = usePage().props
   return (
     <Card>
       <CardContent className={"space-y-4 pt-4"}>

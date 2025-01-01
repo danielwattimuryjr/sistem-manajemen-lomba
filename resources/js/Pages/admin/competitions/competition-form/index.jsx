@@ -17,7 +17,7 @@ export default function CompetitionForm({ initialData, levels, judges }) {
     : "Perlombaan berhasil ditambahkan"
   const action = isEditing ? "Simpan Perubahan" : "Tambah Data"
 
-  const { data, setData, post, put, processing, errors } = useForm({
+  const { data, setData, post, patch, processing, errors } = useForm({
     name: initialData?.name || "",
     user_id: initialData?.user_id || "",
     slug: initialData?.slug || "",
@@ -44,7 +44,7 @@ export default function CompetitionForm({ initialData, levels, judges }) {
     }
 
     isEditing
-      ? put(route("dashboard.superadmin.competitions.update", initialData), {
+      ? patch(route("dashboard.superadmin.competitions.update", initialData), {
           onSuccess,
         })
       : post(route("dashboard.superadmin.competitions.store"), { onSuccess })

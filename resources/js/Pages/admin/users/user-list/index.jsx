@@ -27,7 +27,11 @@ const UserIndex = props => {
         />
         <Separator />
         {/* Table */}
-        <UserTable selectedRole={params.role} />
+        <UserTable
+          selectedRole={params.role}
+          params={params}
+          setParams={setParams}
+        />
       </PageContainer>
     </AdminLayout>
   )
