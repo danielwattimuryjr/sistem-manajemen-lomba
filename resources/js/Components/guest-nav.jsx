@@ -53,6 +53,22 @@ export default function GuestNav() {
                 {item.title}
               </Link>
             ))}
+            {!auth?.user && (
+              <>
+                <Link
+                  href={route('login')}
+                  className="flex w-full items-center py-2 text-lg font-semibold"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href={route('register')}
+                  className="flex w-full items-center py-2 text-lg font-semibold"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </SheetContent>
       </Sheet>

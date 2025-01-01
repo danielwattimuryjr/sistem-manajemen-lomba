@@ -8,7 +8,7 @@ export default function RecentCompetition() {
 
   return (
     <>
-      <Heading title={"Perlombaan Terbaru"} />
+      <h2 className="text-3xl font-bold tracking-tight text-center md:text-start">Perlombaan Terbaru</h2>
 
       <div className="mt-8">
         {competitions.data.length > 0 ? (

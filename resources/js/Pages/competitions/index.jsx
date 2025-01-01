@@ -17,9 +17,8 @@ const GuestCompetitionIndex = props => {
 
   return (
     <AppLayout title={"Perlombaan"}>
-      <header className="text-center">
-        <h2 className="text-3xl font-bold">Daftar Perlombaan</h2>
-      </header>
+      <h2 className="text-3xl font-bold tracking-tight text-center md:text-start">Daftar Perlombaan</h2>
+
 
       <div className="mx-auto w-full md:w-96">
         <Input

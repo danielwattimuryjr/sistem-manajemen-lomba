@@ -36,7 +36,7 @@ const AppLayout = ({ title, children }) => {
           </>
         )}
 
-        <PageContainer scrollable>
+        <PageContainer>
           <div className="mx-auto max-w-screen-xl space-y-8 px-4 py-4 sm:px-6 lg:px-8 lg:pb-14">
             {children}
           </div>

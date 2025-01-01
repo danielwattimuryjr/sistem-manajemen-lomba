@@ -23,7 +23,7 @@ export default function UserCompetition() {
   return (
     <>
       <Separator />
-      <Heading title={"Perlombaan Yang Kamu Ikuti"} />
+      <h2 className="text-3xl font-bold tracking-tight text-center md:text-start">Perlombaan yang Kamu Ikuti</h2>
 
       <UserCompetitionTable
         competitions={competitions}
