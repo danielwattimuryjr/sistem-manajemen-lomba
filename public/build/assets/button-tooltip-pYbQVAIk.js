@@ -1,0 +1,1 @@
+import{j as o}from"./app-BLqjA7mZ.js";import{B as s}from"./button-CZsnkR0p.js";import{T as e,a as n,b as a,c as l}from"./tooltip-Dw5Dabwf.js";function j({children:t,tooltip:i,...r}){return o.jsx(e,{children:o.jsxs(n,{children:[o.jsx(a,{children:o.jsx(s,{...r,children:t})}),o.jsx(l,{children:o.jsx("p",{className:"capitalize",children:i})})]})})}export{j as B};
