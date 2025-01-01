@@ -31,15 +31,14 @@ class HandleInertiaRequests extends Middleware
    */
   public function share(Request $request): array
   {
+    $ziggy = new Ziggy($group = null, $request->url());
+
     return [
       ...parent::share($request),
       'auth' => [
         'user' => $request->user() ? AuthenticatedUserResource::make($request->user()) : null,
       ],
-      'ziggy' => fn() => [
-        ...(new Ziggy)->toArray(),
-        'location' => $request->url(),
-      ],
+      'ziggy' => $ziggy->toArray(),
     ];
   }
 }
