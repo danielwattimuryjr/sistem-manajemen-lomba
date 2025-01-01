@@ -17,8 +17,8 @@ return new class extends Migration {
       $table->string('name');
       $table->string('slug')->unique();
       $table->longText('description');
-      $table->timestamp('start_date')->nullable();
-      $table->timestamp('end_date')->nullable();
+      $table->timestamp('start_date');
+      $table->timestamp('end_date');
       $table->boolean('is_active');
       $table->boolean('has_final_scores')->default(false);
       $table->timestamps();
