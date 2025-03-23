@@ -29,7 +29,7 @@ export default function LeaderboardTable({ finalScores }) {
               <TableCell className={"text-center"}>{score.rank}</TableCell>
               <TableCell>{score.participant.user.name}</TableCell>
               <TableCell>{score.participant.kd_peserta}</TableCell>
-              <TableCell>{score.total_score}</TableCell>
+              <TableCell>{score.total_score.toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

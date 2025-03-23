@@ -20,9 +20,10 @@ const Index = ({ params, setParams, participants, competition }) => {
   const updatedTableColumns = useMemo(() => {
     if (!criterias || criterias.length === 0) return participantTableColumns
 
-    const criteriaColumns = criterias.map(criteria => ({
+    const criteriaColumns = criterias.map((criteria, i) => ({
       column: `criteria_${criteria.id}`,
-      label: `${criteria.name} (${criteria.weight}%)`,
+      label: `C${i + 1}`,
+      textAlign: "text-center",
     }))
 
     const finalScoreIndex = participantTableColumns.findIndex(
@@ -79,10 +80,12 @@ const Index = ({ params, setParams, participants, competition }) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px] text-center">#</TableHead>
               {updatedTableColumns.map((col, i) => (
-                <TableHead key={i}>
-                  <span className="mr-2 capitalize">{col.label}</span>
+                <TableHead
+                  key={i}
+                  className={`mr-2 capitalize ${col.textAlign && col.textAlign}`}
+                >
+                  {col.label}
                 </TableHead>
               ))}
             </TableRow>
@@ -93,9 +96,8 @@ const Index = ({ params, setParams, participants, competition }) => {
               <>
                 {participants.map((participant, i) => (
                   <TableRow key={participant.id}>
-                    <TableCell className="w-0 py-7 text-center">
-                      {i + 1}
-                    </TableCell>
+                    <TableCell>{participant.participantCode}</TableCell>
+
                     <TableCell>
                       <h3>{participant.name}</h3>
 
@@ -103,8 +105,6 @@ const Index = ({ params, setParams, participants, competition }) => {
                         {participant.email}
                       </div>
                     </TableCell>
-
-                    <TableCell>{participant.participantCode}</TableCell>
 
                     <TableCell>{participant.createdAt}</TableCell>
 
@@ -116,7 +116,7 @@ const Index = ({ params, setParams, participants, competition }) => {
                       const score = scoreObject?.score
 
                       return (
-                        <TableCell key={idx}>
+                        <TableCell key={idx} className={"text-center"}>
                           {score ?? (
                             <Link
                               href={route(

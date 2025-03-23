@@ -46,13 +46,16 @@ class UpdateUserRequest extends FormRequest
       ],
       'phone_number' => [
         'required',
-        'digits:10'
+        'numeric',
+        'min_digits:10',
+        'max_digits:12'
       ],
       'address' => [
         'required'
       ],
       'nik' => [
         'required',
+        'numeric',
         'digits:16',
         Rule::unique('users', 'nik')->ignore($user)
       ],

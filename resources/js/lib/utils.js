@@ -7,7 +7,7 @@ export function cn(...inputs) {
 }
 
 export function trans(text) {
-  return slugify(text, {
+  return slugify(text.replace(/\//g, "-"), {
     lower: true,
     replacement: "-",
     trim: true,

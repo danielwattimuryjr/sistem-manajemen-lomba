@@ -18,7 +18,9 @@ class CompetitionController extends Controller
 {
   private function generateParticipantCode(Competition $competition)
   {
-    $words = explode(' ', $competition->name);
+    $cleanName = preg_replace('/[()\/]/', '', $competition->name);
+
+    $words = explode(' ', $cleanName);
     $acronym = '';
 
     foreach ($words as $word) {
@@ -26,7 +28,6 @@ class CompetitionController extends Controller
     }
 
     $currentCount = $competition->participants()->count() + 1;
-
     $numberPart = str_pad($currentCount, 3, '0', STR_PAD_LEFT);
 
     return $acronym . '-' . $numberPart;

@@ -15,7 +15,7 @@ export default function LevelListHeader() {
     <>
       <Breadcrumbs items={breadcrumbItems} />
 
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
         <Heading
           title={"Tingkatan Peserta"}
           description={

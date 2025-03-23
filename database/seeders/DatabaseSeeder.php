@@ -49,10 +49,10 @@ class DatabaseSeeder extends Seeder
       'role' => 'guest'
     ]);
 
-    User::factory(10)->create([
-      'role' => 'guest'
-    ]);
+    // User::factory(10)->create([
+    //   'role' => 'guest'
+    // ]);
 
-    $this->call([CompetitionSeeder::class]);
+    // $this->call([CompetitionSeeder::class]);
   }
 }

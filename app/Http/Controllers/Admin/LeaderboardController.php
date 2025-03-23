@@ -10,15 +10,18 @@ use Inertia\Inertia;
 
 class LeaderboardController extends Controller
 {
-    public function __invoke(Competition $competition)
-    {
-      $competition->load([
-        'finalScores.participant.user'
-      ]);
+  public function __invoke(Competition $competition)
+  {
+    $competition->load([
+      'finalScores' => function ($query) {
+        $query->orderBy('rank');
+      },
+      'finalScores.participant.user'
+    ]);
 
-      return Inertia::render('admin/competitions/leaderboard/index', [
-        'competition' => new SingleCompetitionResource($competition),
-        'finalScores' => $competition->finalScores
-      ]);
-    }
+    return Inertia::render('admin/competitions/leaderboard/index', [
+      'competition' => new SingleCompetitionResource($competition),
+      'finalScores' => $competition->finalScores
+    ]);
+  }
 }

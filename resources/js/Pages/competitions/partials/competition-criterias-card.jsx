@@ -28,7 +28,7 @@ const CompetitionCriteriasCard = ({ criterias }) => {
               <>
                 {criterias.map((criteria, idx) => (
                   <TableRow key={idx}>
-                    <TableCell className="text-center">{idx + 1}</TableCell>
+                    <TableCell className="text-center">C{idx + 1}</TableCell>
                     <TableCell>{criteria.name}</TableCell>
                     <TableCell>{criteria.weight}</TableCell>
                   </TableRow>
