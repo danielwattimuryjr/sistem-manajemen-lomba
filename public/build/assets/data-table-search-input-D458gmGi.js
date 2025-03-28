@@ -1,0 +1,1 @@
+import{j as a}from"./app-B60EcP0F.js";import{I as r}from"./input-D8GnZ1_W.js";function o({search:e,onChange:t}){return a.jsx("div",{className:"w-72",children:a.jsx(r,{type:"text",value:e,onChange:t,placeholder:"Pencarian..."})})}export{o as D};

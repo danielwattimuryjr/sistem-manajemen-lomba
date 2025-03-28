@@ -44,7 +44,7 @@ class StoreUserRequest extends FormRequest
       ],
       'role' => [
         'required',
-        Rule::in(['admin', 'guest'])
+        Rule::in(['admin', 'participants', 'judges'])
       ],
       'phone_number' => [
         'required',
@@ -66,7 +66,7 @@ class StoreUserRequest extends FormRequest
         'date'
       ],
       'level_id' => [
-        'required_if:role,guest',
+        'required_if:role,participants',
         Rule::exists('levels', 'id')
       ],
       'email' => [

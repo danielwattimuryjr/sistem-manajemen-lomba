@@ -21,7 +21,7 @@ return new class extends Migration {
 
       // Additional Fields
       $table->string('username')->unique();
-      $table->enum('role', ['superadmin', 'admin', 'guest'])->default('guest');
+      $table->enum('role', ['superadmin', 'admin', 'guest', 'judges', 'participants'])->default('participants');
       $table->string('phone_number');
       $table->text('address');
       $table->string('nik')->unique();

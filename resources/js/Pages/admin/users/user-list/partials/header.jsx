@@ -20,13 +20,14 @@ export default function UserListHeader({ onValueChange, defaultValue }) {
         <div>
           <Heading title={"Pengguna"} />
           <Tabs
-            defaultValue={defaultValue ?? "guest"}
+            defaultValue={defaultValue ?? "admin"}
             className="mt-4 space-y-4"
             onValueChange={onValueChange}
           >
             <TabsList>
-              <TabsTrigger value="guest">Peserta</TabsTrigger>
-              <TabsTrigger value="admin">Juri</TabsTrigger>
+              <TabsTrigger value="admin">Admin</TabsTrigger>
+              <TabsTrigger value="judges">Juri</TabsTrigger>
+              <TabsTrigger value="participants">Peserta</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

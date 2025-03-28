@@ -21,7 +21,7 @@ Route::get(
 require __DIR__ . '/guest_route.php';
 
 // Admin and Superadmin Routes
-require __DIR__ . '/admin_route.php';
+require __DIR__ . '/super_admin_route.php';
 
 // Misc Routes
 require __DIR__ . '/misc_route.php';

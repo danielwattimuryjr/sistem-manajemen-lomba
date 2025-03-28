@@ -47,15 +47,8 @@ const UserForm = ({ initialData, levels }) => {
   }
 
   const handleRoleChange = selectedRole => {
-    if (selectedRole === "admin") {
-      setData(data => ({
-        ...data,
-        role: selectedRole,
-        level_id: undefined,
-      }))
-    } else {
-      setData("role", selectedRole)
-    }
+    setData("role", selectedRole)
+    if (selectedRole !== "participants") setData("level_id", undefined)
   }
 
   const handleDateChange = selectedDate => {
@@ -68,11 +61,15 @@ const UserForm = ({ initialData, levels }) => {
   const roleOptions = [
     {
       id: "admin",
-      label: "Admin (Juri)",
+      label: "Admin",
     },
     {
-      id: "guest",
-      label: "Guest (Peserta)",
+      id: "judges",
+      label: "Juri",
+    },
+    {
+      id: "participants",
+      label: "Peserta",
     },
   ]
 
@@ -150,7 +147,7 @@ const UserForm = ({ initialData, levels }) => {
               options={roleOptions}
             />
 
-            {data.role === "guest" && (
+            {data.role === "participants" && (
               <FormField.SelectOption
                 label={"Tingkatan Peserta"}
                 value={data.level_id}

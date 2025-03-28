@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\LeaderboardController;
+use App\Http\Controllers\Superadmin\LeaderboardController;
 use App\Http\Controllers\Guest\CompetitionController as GuestCompetitionController;
 use App\Http\Controllers\Guest\MyCompetitionController;
 use App\Http\Controllers\ProfileController;
@@ -16,7 +16,8 @@ Route::prefix('competitions')
     )->name('index');
     Route::get(
       '{competition:slug}',
-      'show')->name('show');
+      'show'
+    )->name('show');
     Route::post(
       '{competition:slug}/participate',
       'postParticipantData'
