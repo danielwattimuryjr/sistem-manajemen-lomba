@@ -43,7 +43,7 @@ class RegisteredUserController extends Controller
   public function store(RegisterRequest $request): RedirectResponse
   {
     $validated = $request->validated();
-    $validated['role'] = 'guest';
+    $validated['role'] = 'participants';
     $validated['password'] = Hash::make($request->password);
 
     $user = User::create($validated);
