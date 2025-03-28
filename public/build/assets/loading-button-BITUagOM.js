@@ -1,1 +1,0 @@
-import{j as o}from"./app-B60EcP0F.js";import{I as r}from"./icon-CDAD0Rl-.js";import{B as m}from"./button-CSYySzoJ.js";const p=({loading:s=!1,disabled:t=!1,label:a,props:n})=>o.jsxs(m,{disabled:t,...n,children:[a??"Submit",s&&o.jsx(r,{icon:"IconLoader2",className:"ml-2 animate-spin"})]});export{p as L};

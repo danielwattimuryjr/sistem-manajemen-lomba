@@ -74,7 +74,7 @@ class DashboardController extends Controller
       ];
     });
 
-    return Inertia::render('admin/dashboard/index', [
+    return Inertia::render('superadmin/dashboard/index', [
       'totalParticipants' => $totalParticipants,
       'participantGrowth' => round($growth, 1),
       'newParticipantsThisWeek' => $newParticipantsThisWeek,

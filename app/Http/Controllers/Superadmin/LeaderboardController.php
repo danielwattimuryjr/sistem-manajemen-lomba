@@ -19,7 +19,7 @@ class LeaderboardController extends Controller
       'finalScores.participant.user'
     ]);
 
-    return Inertia::render('admin/competitions/leaderboard/index', [
+    return Inertia::render('superadmin/competitions/leaderboard/index', [
       'competition' => new SingleCompetitionResource($competition),
       'finalScores' => $competition->finalScores
     ]);

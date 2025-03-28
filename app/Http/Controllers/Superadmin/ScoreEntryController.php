@@ -18,7 +18,7 @@ class ScoreEntryController extends Controller
     $competition->load(['criterias']);
     $competitionData = new ScoreEntryFormResource($competition, $participant);
 
-    return Inertia::render('admin/competitions/score-entry/index', [
+    return Inertia::render('superadmin/competitions/score-entry/index', [
       'data' => $competitionData,
     ]);
   }

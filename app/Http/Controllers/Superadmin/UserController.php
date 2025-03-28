@@ -60,7 +60,7 @@ class UserController extends Controller
         ->withQueryString()
     );
 
-    return Inertia::render('admin/users/user-list/index', [
+    return Inertia::render('superadmin/users/user-list/index', [
       'users' => fn() => $users,
       'state' => $request->only('limit', 'page', 'search', 'field', 'direction', 'role'),
       'selected' => $request->input('selected', [])
@@ -78,7 +78,7 @@ class UserController extends Controller
         ->get()
     );
 
-    return Inertia::render('admin/users/user-form/index', [
+    return Inertia::render('superadmin/users/user-form/index', [
       'levels' => fn() => $levels
     ]);
   }
@@ -115,7 +115,7 @@ class UserController extends Controller
         ->get()
     );
 
-    return Inertia::render('admin/users/user-form/index', [
+    return Inertia::render('superadmin/users/user-form/index', [
       'initialData' => $user,
       'levels' => fn() => $levels
     ]);
