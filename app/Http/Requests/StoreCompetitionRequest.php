@@ -16,7 +16,7 @@ class StoreCompetitionRequest extends FormRequest
   {
     $user = Auth::user();
 
-    if ($user->hasRole('superadmin')) {
+    if ($user->hasRole(['superadmin', 'admin'])) {
       return true;
     }
     return false;

@@ -46,13 +46,9 @@ class CompetitionController extends Controller
     $limit = $request->input('limit', 10);
 
     $user = Auth::user();
-    $baseCompetition = Competition::query();
-    if ($user->role === 'admin') {
-      $baseCompetition = $user->competitions();
-    }
 
     $competitions = CompetitionResource::collection(
-      $baseCompetition
+      Competition::query()
         ->when(
           value: $request->search,
           callback: fn($query, $value) => $query->where('name', 'like', '%' . $value . '%')
@@ -79,8 +75,7 @@ class CompetitionController extends Controller
   {
     $validated = $request->validated();
 
-    DB::beginTransaction();
-    try {
+    DB::transaction(function () use ($validated) {
       $competition = Competition::create([
         'name' => $validated['name'],
         'slug' => $validated['slug'],
@@ -98,12 +93,9 @@ class CompetitionController extends Controller
           'weight' => $criteria['weight']
         ]);
       }
-      DB::commit();
+    });
 
-      return to_route('dashboard.superadmin.competitions.index');
-    } catch (Throwable $th) {
-      DB::rollBack();
-    }
+    return to_route('dashboard.superadmin.competitions.index');
   }
 
   /**
@@ -115,7 +107,7 @@ class CompetitionController extends Controller
       Level::orderBy('name', 'ASC')->get()
     );
     $judges = UserResource::collection(
-      User::where('role', 'admin')
+      User::where('role', 'judges')
         ->orderBy('name', 'ASC')
         ->get()
     );
@@ -131,7 +123,6 @@ class CompetitionController extends Controller
    */
   public function show(Competition $competition, Request $request)
   {
-
     $competition->load([
       'criterias',
       'judge',
@@ -227,8 +218,7 @@ class CompetitionController extends Controller
   {
     $validated = $request->validated();
 
-    DB::beginTransaction();
-    try {
+    DB::transaction(function () use ($validated, $competition) {
       $competition->update([
         'name' => $validated['name'],
         'user_id' => $validated['user_id'],
@@ -254,13 +244,9 @@ class CompetitionController extends Controller
         ->delete();
 
       $competition->levels()->sync($validated['levels']);
+    });
 
-      DB::commit();
-
-      return to_route('dashboard.superadmin.competitions.index');
-    } catch (Throwable $th) {
-      DB::rollBack();
-    }
+    return to_route('dashboard.superadmin.competitions.index');
   }
 
   public function calculateFinalScores(Competition $competition)

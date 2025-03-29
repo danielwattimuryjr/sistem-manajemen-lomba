@@ -18,6 +18,11 @@ const CompetitionCellAction = ({ competition }) => {
   const { delete: destroy } = useForm()
   const { auth } = usePage().props
   const user = auth.user?.data
+  var editRoute = route("dashboard.superadmin.competitions.edit", competition)
+
+  if (user?.role === "admin") {
+    editRoute = route("dashboard.admin.competitions.edit", competition)
+  }
 
   const deleteData = competition => {
     destroy(route("dashboard.superadmin.competitions.destroy", competition), {
@@ -98,20 +103,15 @@ const CompetitionCellAction = ({ competition }) => {
               <Icon icon={"IconTrash"} className={"mr-2"} />
               Delete Permanently
             </DropdownDialog>
-            <DropdownMenuItem>
-              <Link
-                href={route(
-                  "dashboard.superadmin.competitions.edit",
-                  competition,
-                )}
-                className="flex items-center"
-              >
-                <Icon icon={"IconEdit"} className={"mr-2"} />
-                Perbaharui Data
-              </Link>
-            </DropdownMenuItem>
           </>
         )}
+
+        <DropdownMenuItem>
+          <Link href={editRoute} className="flex items-center">
+            <Icon icon={"IconEdit"} className={"mr-2"} />
+            Perbaharui Data
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <Link
             href={

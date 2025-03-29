@@ -1,6 +1,6 @@
 import {
   adminNavItems,
-  guestNavItems,
+  judgesNavItems,
   superadminNavItems,
 } from "@/constants/data"
 import { useSidebar } from "@/hooks/useSidebar"
@@ -60,7 +60,9 @@ const Sidebar = ({ className }) => {
                   ? superadminNavItems
                   : user?.role === "admin"
                     ? adminNavItems
-                    : guestNavItems
+                    : user?.role === "judges"
+                      ? judgesNavItems
+                      : null
               }
             />
           </div>
