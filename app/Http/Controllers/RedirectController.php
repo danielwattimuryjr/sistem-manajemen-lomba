@@ -14,7 +14,7 @@ class RedirectController extends Controller
   {
     $user = Auth::user();
 
-    if ($user->hasRole(['admin', 'superadmin'])) {
+    if ($user->hasRole(['admin', 'superadmin', 'judges'])) {
       return to_route('dashboard.home');
     } else {
       return to_route('welcome');

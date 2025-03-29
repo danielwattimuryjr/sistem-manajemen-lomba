@@ -33,14 +33,47 @@ export const adminNavItems = [
     active: route().current() == "dashboard.home",
   },
   {
+    title: "Tingkat Peserta",
+    href: route("dashboard.admin.levels.index"),
+    icon: "IconLabelImportantFilled",
+    active: route().current() == "dashboard.levels.*",
+  },
+  {
+    title: "Pengguna",
+    href: route("dashboard.admin.users.index"),
+    icon: "IconUsersGroup",
+    active: route().current() == "dashboard.admin.users.*",
+  },
+  {
+    title: "Manajemen Perlombaan",
+    href: route("dashboard.admin.competitions.index"),
+    icon: "IconTournament",
+    active: route().current() == "dashboard.superadmin.*",
+  },
+  // {
+  //   title: "Pengguna",
+  //   href: route("dashboard.superadmin.users.index"),
+  //   icon: "IconUsersGroup",
+  //   active: route().current() == "dashboard.superadmin.users.*",
+  // },
+]
+
+export const judgesNavItems = [
+  {
+    title: "Dashboard",
+    href: route("dashboard.home"),
+    icon: "IconHome2",
+    active: route().current() == "dashboard.home",
+  },
+  {
     title: "Perlombaan",
     href: route("dashboard.admin.competitions.index"),
     icon: "IconTournament",
-    active: route().current() == "dashboard.admin.competitions.*",
+    active: route().current() == "dashboard.competitions.*",
   },
 ]
 
-export const guestNavItems = [
+export const participantsNavItems = [
   {
     title: "My Profile",
     href: route("profiles.index"),

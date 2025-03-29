@@ -30,24 +30,24 @@ class DatabaseSeeder extends Seeder
     User::factory()->create([
       'name' => 'Juri 1',
       'email' => 'juri.1@app.com',
-      'role' => 'admin'
+      'role' => 'judges'
     ]);
     User::factory()->create([
       'name' => 'Juri 2',
       'email' => 'juri.2@app.com',
-      'role' => 'admin'
+      'role' => 'judges'
     ]);
     User::factory()->create([
       'name' => 'Juri 3',
       'email' => 'juri.3@app.com',
-      'role' => 'admin'
+      'role' => 'judges'
     ]);
 
-    User::factory()->create([
-      'name' => 'Guest',
-      'email' => 'guest@app.com',
-      'role' => 'guest'
-    ]);
+    // User::factory()->create([
+    //   'name' => 'Guest',
+    //   'email' => 'guest@app.com',
+    //   'role' => 'guest'
+    // ]);
 
     // User::factory(10)->create([
     //   'role' => 'guest'
